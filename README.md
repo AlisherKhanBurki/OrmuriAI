@@ -11,24 +11,30 @@ An open-source digital preservation and AI generative linguistics engine for **O
 
 ## 🌟 Key Features
 
-1. **53K-Token Generative Knowledge Base (`ormuri_knowledge_base.md`)**:
-   - Comprehensive codification of **TAM Split Ergativity** (Nominative-Accusative for Present/Future; Ergative-Absolutive for Past Transitive).
-   - **Wackernagel (2P) Clitic Syntax** and placement rules (`-m`, `-t`, `-wə/-l`, `-n`, `يې`, `ال`, `دې`).
-   - Full verbal paradigms (Class 1 `-oak`/`-ək` vs Class 2 `-aek`/`-yæk`; verbal nouns in `-tsən` vs `-aw`).
-   - Exhaustive consolidated lexicon of **6,900+ words** with IPA phonetic transcriptions, grammatical categories, and English/Urdu glosses.
+1. **Complete 13-Module Generative Knowledge Base (`ormuri_knowledge_base.md`)**:
+   - Synthesizes **100% of the 11 primary works** provided in the Ormuri archive (215,000+ characters, 48,000+ words).
+   - **Full Master Verb Inventory (from *10 Ormuri Infinitive Verbs*)**: All 39 Category-A irregular verbs (`-ok`/`-ək`) with verbal nouns in `څن` (*-t͡sən*), plus the complete inventory of 466 Category-B regular verbs (`-aek`/`-yæk`).
+   - **Pedagogical Primers & Numerals (from *Ormuri Primer 2*)**: Archaic vigesimal (base-20) counting system, 12 traditional Kaniguram months, and grammar drills.
+   - **Idioms & Figurative Expressions (from Farah Naz Burki's *Warmaṛo Muhāwari*)**: Hundreds of native idioms and phrases.
+   - **Proverbs & Cultural Maxims (from Farhana Burki's *Warmaṛo Matali*)**: Comprehensive proverb database with literal meanings and practical usage.
+   - **Literature & Natural Narrative**: Authentic folk tales (*Shwaxay Khekany*), complete Gospel of Luke (Chapters 1–24) prose narrative, Rozi Khan Burki's novel *Prechaak*, and the 52-page poetic corpus.
+   - **Modern Civic & Legal Prose**: Complete translation of the Universal Declaration of Human Rights (*Tə Insānī Haqqī a ‘Ālamī Manshūr*).
+   - **Split Ergativity Algebra**: Mathematical rules for Nominative-Accusative present/future vs Ergative-Absolutive past transitive.
+   - **Wackernagel (2P) Clitic Syntax**: Exact placement rules for `-m`, `-t`, `-wə/-l`, `-nyē`, `-n`, `يې`, `ال`, and `دې`.
+   - **Consolidated Lexicon**: 6,650+ structured entries with IPA, POS, and definitions.
 
 2. **In-Context Learning & Context Caching Engine (`generate_ormuri.py`)**:
    - Powered by the official **Google GenAI SDK** (`google-genai`) and `gemini-3.8-flash`.
-   - Explicit Context Caching with 24-hour TTL (`ttl="86400s"`).
-   - **Anti-Hallucination Cage**: Zero Pashto/Persian fallback, ensuring 100% authentic Ormuri roots.
-   - **Mandatory Morphological Scratchpad**: Deconstructs every clause, verifying TAM alignment, clitic hosting, and object-verb agreement before surface generation.
+   - Explicit persistent server-side Context Caching with 24-hour TTL (`ttl="86400s"`).
+   - **Anti-Hallucination Guardrails**: Zero Pashto/Persian fallback.
+   - **Mandatory Morphological Scratchpad**: Deconstructs every clause, verifying TAM alignment, clitic hosting, and object-verb agreement.
 
 3. **Interactive Testing Playground & Web UI (`server.py` & `frontend/`)**:
-   - Multithreaded local server with fast JSON API endpoints.
+   - Multithreaded local server with fast JSON API endpoints (`/api/generate`, `/api/lexicon`, `/api/status`).
    - High-aesthetic dark mode interface with glassmorphism and Noto Nastaliq Urdu / Amiri typography.
-   - 1-click quick scenarios (Kaniguram folklore, knife-making history, proverbs with moral lessons, daily greetings).
-   - **Live Lexicon Explorer**: Real-time searchable dictionary of 6,900+ words with part-of-speech filtering.
-   - **Grammar Cheat Sheet**: Interactive formula modal for split ergativity and clitic matrices.
+   - Quick scenarios: Universal Declaration of Human Rights, Kaniguram knife craftsmanship, Proverbs, and Greetings.
+   - **Live Lexicon Explorer**: Real-time searchable dictionary of 6,650+ words with POS filtering.
+   - **Grammar Formula Modal**: Visual reference for split ergativity and clitic syntax.
 
 ---
 
@@ -41,14 +47,16 @@ OrmuriAI/
 │   ├── style.css                   # High-aesthetic dark design system
 │   └── app.js                      # Client application logic & lexicon explorer
 ├── Ormuri Data/
-│   ├── WORD/                       # Primary manuscripts (Dictionary, Proverbs, Stories, Luke)
-│   └── PDF/                        # Verified grammar and poetry publications
-├── ormuri_knowledge_base.md        # 53K-token authoritative generative grammar & lexicon
+│   ├── WORD/                       # Primary manuscripts (Dictionary, Proverbs, Stories, Luke, UDHR, Idioms)
+│   └── PDF/                        # Verified verb books, primers, poetry, and novel Prechaak
+├── ormuri_knowledge_base.md        # Complete 13-module master linguistic knowledge base (215K chars)
 ├── generate_ormuri.py              # GenAI SDK engine with caching & CLI
-├── build_knowledge_base.py         # Automated extraction pipeline from raw corpus
+├── extract_full_corpus.py          # Master extraction pipeline covering 100% of all 11 corpus files
+├── build_knowledge_base.py         # Secondary extraction utility
 ├── server.py                       # Local API backend and static web server (:8080)
-├── lexicon.json                    # 6,930 structured lexical entries (1.3 MB)
+├── lexicon.json                    # 6,652 structured lexical entries (1.3 MB)
 ├── kaniguram_verification.md       # Verified 3-paragraph descriptive passage
+├── .env.example                    # Environment template for Gemini API key
 └── README.md                       # Documentation and setup guide
 ```
 
