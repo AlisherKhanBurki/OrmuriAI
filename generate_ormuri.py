@@ -18,8 +18,17 @@ from google import genai
 from google.genai import types
 from google.genai.errors import APIError, ClientError
 
-# Default API Key provided by the user
-DEFAULT_API_KEY = os.environ.get("GEMINI_API_KEY", "AIzaSyBWcJEdFIP0zP5p2MWlXCCoVBocjUeRqq8")
+# Load .env file if present
+_env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
+if os.path.exists(_env_path):
+    with open(_env_path, "r", encoding="utf-8") as _f:
+        for _line in _f:
+            _line = _line.strip()
+            if _line and not _line.startswith("#") and "=" in _line:
+                _k, _v = _line.split("=", 1)
+                os.environ.setdefault(_k.strip(), _v.strip())
+
+DEFAULT_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 MODEL_NAME = "gemini-3.8-flash"
 CACHE_TTL = "86400s"  # 24-hour TTL
 
