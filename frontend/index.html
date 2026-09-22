@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ormuri AI Playground — Generative Linguistics & In-Context Testing</title>
+  <meta name="description" content="Interactive testing playground for Ormuri (Bargista / اُرموړی) language generation, split ergativity validation, and morphological inspection.">
+  
+  <!-- Modern Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&family=Noto+Nastaliq+Urdu:wght@400;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top Navigation Bar -->
+    <header class="navbar">
+      <div class="brand">
+        <div class="brand-icon">
+          <span>اُ</span>
+        </div>
+        <div class="brand-text">
+          <h1>Ormuri AI <span class="badge-lang">بارګِسته</span></h1>
+          <p class="subtitle">Endangered Language Generative Engine & Linguistic Playground</p>
+        </div>
+      </div>
+
+      <div class="header-badges">
+        <div class="badge badge-model" title="Underlying foundational model">
+          <span class="dot pulse"></span>
+          <span>Gemini 3.8 Flash</span>
+        </div>
+        <div class="badge badge-kb" title="Loaded knowledge base size">
+          <span>📚 53,881 Tokens Context</span>
+        </div>
+        <div class="badge badge-erg" title="Split ergativity guardrail active">
+          <span>⚡ Split Ergativity Guardrail</span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button id="btnOpenLexicon" class="btn btn-secondary" title="Search 6,900+ Ormuri words">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          Lexicon Search
+        </button>
+        <button id="btnOpenGrammar" class="btn btn-secondary" title="View Ergativity & Clitic Grammar Tables">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+          Grammar Formula
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Playground Workspace -->
+    <main class="workbench-layout">
+      
+      <!-- Left Panel: Prompt Formulation -->
+      <section class="panel prompt-panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+            <h2>Prompt Formulation</h2>
+          </div>
+          <div class="mode-selector" id="modeSelector">
+            <button class="mode-btn active" data-mode="free">Free Prompt</button>
+            <button class="mode-btn" data-mode="story">Folk Story</button>
+            <button class="mode-btn" data-mode="proverb">Proverb</button>
+            <button class="mode-btn" data-mode="dialogue">Dialogue</button>
+            <button class="mode-btn" data-mode="grammar_check">Ergativity Test</button>
+          </div>
+        </div>
+
+        <!-- Quick Launch Scenario Chips -->
+        <div class="quick-chips">
+          <span class="chips-label">Quick Scenarios:</span>
+          <button class="chip" data-prompt="Write a 3-paragraph descriptive passage in authentic Ormuri about Kaniguram (کانیګرام), its mountains (ګری), cold mountain streams (تاک), and the ancient iron-forging craft of the Burki people.">🏔️ Kaniguram Homeland</button>
+          <button class="chip" data-prompt="Describe the ancient Burki blacksmith craft of extracting iron from furnace-stone (ته بټخِنړئ ګپ لاسته ا رو جدا کېک) and forging famous knives in Kaniguram.">⚔️ Blacksmith Craft</button>
+          <button class="chip" data-prompt="Present an authentic Ormuri proverb about hospitality (مېلمۀ) and honor (ننګ), with literal word breakdown, cultural meaning, and moral lesson.">📜 Proverbs & Wisdom</button>
+          <button class="chip" data-prompt="Write a natural conversational dialogue between two Ormuri speakers meeting in the morning, greeting each other, asking about health, family, and sheep grazing.">🗣️ Daily Greetings</button>
+          <button class="chip" data-prompt="Translate and linguistically explain: 'Asima took Asim to the mountain, but the boy gave the bread to his mother' (verify past transitive object agreement vs agentive clitic al).">⚡ Ergativity Test</button>
+        </div>
+
+        <!-- Textarea input -->
+        <div class="input-container">
+          <textarea 
+            id="promptInput" 
+            placeholder="Type your prompt in English, Urdu, or Ormuri...&#10;E.g., 'Describe the snowfall on Baar Pit mountain and the warmth of traditional hearths in Kaniguram.'"
+            rows="8"
+          ></textarea>
+        </div>
+
+        <!-- Controls Bar -->
+        <div class="controls-bar">
+          <div class="slider-group">
+            <label for="tempSlider">Creativity / Temp: <span id="tempValue">0.2</span></label>
+            <input type="range" id="tempSlider" min="0.0" max="1.0" step="0.05" value="0.2">
+          </div>
+          
+          <div class="action-buttons">
+            <button id="btnClear" class="btn btn-ghost" title="Clear input">Clear</button>
+            <button id="btnGenerate" class="btn btn-primary">
+              <span class="btn-spinner" id="btnSpinner"></span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              <span>Generate Ormuri</span>
+              <kbd>Ctrl+↵</kbd>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Panel: Output & Scratchpad Inspector -->
+      <section class="panel output-panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+            <h2>Linguistic Output & Inspector</h2>
+          </div>
+
+          <div class="output-tabs" id="outputTabs">
+            <button class="tab-btn active" data-tab="rendered">Polished Output</button>
+            <button class="tab-btn" data-tab="scratchpad">
+              Morphological Scratchpad
+              <span class="badge-mini" id="scratchpadBadge">Verified</span>
+            </button>
+            <button class="tab-btn" data-tab="raw">Raw Markdown</button>
+          </div>
+
+          <div class="output-actions">
+            <button id="btnCopyText" class="btn btn-icon" title="Copy Ormuri Text">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="output-content-wrapper">
+          
+          <!-- State 1: Placeholder -->
+          <div id="outputPlaceholder" class="output-state placeholder-state">
+            <div class="empty-illustration">✨</div>
+            <h3>Ready to Generate</h3>
+            <p>Select a scenario chip on the left or write a custom prompt to test Ormuri generation with anti-hallucination verification.</p>
+          </div>
+
+          <!-- State 2: Loading State -->
+          <div id="outputLoading" class="output-state loading-state hidden">
+            <div class="spinner-large"></div>
+            <h3>Generating Ormuri Generation...</h3>
+            <p class="loading-subtext">Grounding prompt against 53K-token knowledge base and verifying split-ergativity alignment...</p>
+            <div class="timer-display">Elapsed: <span id="timerText">0.0s</span></div>
+          </div>
+
+          <!-- State 3: Rendered Content Tab -->
+          <div id="tabRendered" class="tab-content active hidden">
+            
+            <!-- Ormuri Text Card -->
+            <div class="card ormuri-card">
+              <div class="card-header">
+                <span class="card-tag tag-ormuri">اُرموړی رسم الخط (Bargista Script)</span>
+                <button class="btn-copy-card" onclick="copyCard('ormuriText')">Copy</button>
+              </div>
+              <div id="ormuriText" class="ormuri-prose" dir="rtl"></div>
+            </div>
+
+            <!-- Phonetic Romanization Card -->
+            <div class="card phonetic-card" id="cardRomanization">
+              <div class="card-header">
+                <span class="card-tag tag-phonetic">Phonetic Romanization (IPA Guide)</span>
+                <button class="btn-copy-card" onclick="copyCard('romanText')">Copy</button>
+              </div>
+              <div id="romanText" class="phonetic-prose"></div>
+            </div>
+
+            <!-- English Translation Card -->
+            <div class="card translation-card" id="cardTranslation">
+              <div class="card-header">
+                <span class="card-tag tag-trans">English Translation</span>
+                <button class="btn-copy-card" onclick="copyCard('transText')">Copy</button>
+              </div>
+              <div id="transText" class="translation-prose"></div>
+            </div>
+          </div>
+
+          <!-- State 4: Scratchpad Tab -->
+          <div id="tabScratchpad" class="tab-content hidden">
+            <div class="scratchpad-banner">
+              <div class="banner-icon">🛡️</div>
+              <div class="banner-text">
+                <strong>Anti-Hallucination Guardrail Active</strong>
+                <span>Every sentence below was linguistically decomposed to verify TAM alignment, Wackernagel clitic hosting, and object-verb agreement before surface generation.</span>
+              </div>
+            </div>
+            <div id="scratchpadContent" class="scratchpad-inspector"></div>
+          </div>
+
+          <!-- State 5: Raw Output Tab -->
+          <div id="tabRaw" class="tab-content hidden">
+            <pre id="rawContent" class="raw-pre"></pre>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Slide-over Drawer: Lexicon Explorer -->
+    <aside id="lexiconDrawer" class="drawer">
+      <div class="drawer-header">
+        <div class="drawer-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <h3>Ormuri Lexicon Explorer</h3>
+          <span class="count-pill" id="lexiconTotalPill">6,930 Words</span>
+        </div>
+        <button id="btnCloseLexicon" class="btn-close">&times;</button>
+      </div>
+
+      <div class="drawer-controls">
+        <input type="text" id="lexiconSearchInput" placeholder="Search by Ormuri, English, Urdu, or IPA...">
+        <div class="pos-filters" id="posFilters">
+          <button class="pos-chip active" data-pos="">All</button>
+          <button class="pos-chip" data-pos="N">Nouns</button>
+          <button class="pos-chip" data-pos="V">Verbs</button>
+          <button class="pos-chip" data-pos="Adj">Adjectives</button>
+          <button class="pos-chip" data-pos="Adv">Adverbs</button>
+          <button class="pos-chip" data-pos="Prn">Pronouns/Clitics</button>
+        </div>
+      </div>
+
+      <div class="lexicon-results" id="lexiconResults">
+        <!-- Result cards injected via JS -->
+      </div>
+    </aside>
+
+    <!-- Modal: Grammar Formula & Cheat Sheet -->
+    <div id="grammarModal" class="modal-overlay hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>📐 Ormuri Generative Grammar Cheat Sheet</h3>
+          <button id="btnCloseGrammar" class="btn-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          
+          <div class="grammar-section">
+            <h4>1. Split Ergativity Sentence Formula</h4>
+            <div class="formula-box">
+              <div class="formula-line">
+                <span class="formula-tag pres">Present / Future</span>
+                <code>Subject[DIR] + Object + VerbStem[Pres]-Agr[Subj] + {بُو / سُو}</code>
+              </div>
+              <div class="formula-desc">Verb agrees with the SUBJECT in person and number. Particle <code>بُو</code> for present/habitual, <code>سُو</code> for future.</div>
+              
+              <div class="formula-line mt-3">
+                <span class="formula-tag past">Past Transitive</span>
+                <code>Agent-Clitic + Object[ABS] + VerbStem[Past]-Agr[Obj(Gender, Number)]</code>
+              </div>
+              <div class="formula-desc">Verb agrees with the OBJECT in gender and number. Agent is marked by an enclitic hosted on the first constituent or <code>ال</code> (al).</div>
+            </div>
+          </div>
+
+          <div class="grammar-section">
+            <h4>2. Wackernagel (2P) Pronominal Enclitics Matrix</h4>
+            <table class="cheat-table">
+              <thead>
+                <tr>
+                  <th>Person</th>
+                  <th>Enclitic</th>
+                  <th>Past Agentive ("by...")</th>
+                  <th>Possessive ("my/your...")</th>
+                  <th>Object/Dative</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>1st Sg</td><td><code>-m</code></td><td><code>داک-م</code> (done by me)</td><td><code>نام-م</code> (my name)</td><td><code>آر</code> (to me)</td></tr>
+                <tr><td>2nd Sg</td><td><code>-t</code></td><td><code>داک-ت</code> (done by you)</td><td><code>نام-ت</code> (your name)</td><td><code>آت</code> (to you)</td></tr>
+                <tr><td>3rd Sg</td><td><code>-wə / -l</code></td><td><code>دوک-وه</code> (done by him)</td><td><code>نام-وې</code> (his/her name)</td><td><code>آل</code> (to him/her)</td></tr>
+                <tr><td>1st Pl</td><td><code>-nyē / -n</code></td><td><code>داک-ن</code> (done by us)</td><td><code>نام-نيې</code> (our name)</td><td><code>ماخ کی</code> (to us)</td></tr>
+                <tr><td>2nd Pl</td><td><code>-dəl / -n</code></td><td><code>داک-ن</code> (done by you)</td><td><code>نام-نيې</code> (your name)</td><td><code>دل</code> (to you pl)</td></tr>
+                <tr><td>3rd Pl</td><td><code>-n</code></td><td><code>داک-ن</code> (done by them)</td><td><code>نام-نيې</code> (their name)</td><td><code>کُورئ کی</code> (to them)</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="grammar-section">
+            <h4>3. Core Suppletive Verb Roots</h4>
+            <table class="cheat-table">
+              <thead>
+                <tr>
+                  <th>Verb</th>
+                  <th>Infinitive</th>
+                  <th>Pres Stem</th>
+                  <th>Past Masc</th>
+                  <th>Past Fem</th>
+                  <th>Verbal Noun</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>to be</td><td><code>بیوک</code></td><td><code>هـ-</code> (h-)</td><td><code>بیوک</code></td><td><code>بُک</code></td><td><code>بېڅن</code></td></tr>
+                <tr><td>to do</td><td><code>کېک</code></td><td><code>کې-</code> (kē-)</td><td><code>دوک</code></td><td><code>داک</code></td><td><code>کېڅن</code></td></tr>
+                <tr><td>to give</td><td><code>ڒیوک</code></td><td><code>ڒ-</code> (ř-)</td><td><code>ڒُوک</code></td><td><code>ڒُوک</code></td><td><code>ڒیوڅن</code></td></tr>
+                <tr><td>to go</td><td><code>څېک</code></td><td><code>څ-</code> (ts-)</td><td><code>څېک</code></td><td><code>څلک</code></td><td><code>څېڅن</code></td></tr>
+                <tr><td>to come</td><td><code>زوک</code></td><td><code>ز-</code> (z-)</td><td><code>زوک</code></td><td><code>زوک</code></td><td><code>زېڅن</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
