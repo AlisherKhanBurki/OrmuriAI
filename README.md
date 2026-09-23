@@ -11,17 +11,19 @@ An open-source digital preservation and AI generative linguistics engine for **O
 
 ## 🌟 Key Features
 
-1. **Complete 13-Module Generative Knowledge Base (`ormuri_knowledge_base.md`)**:
-   - Synthesizes **100% of the 11 primary works** provided in the Ormuri archive (215,000+ characters, 48,000+ words).
-   - **Full Master Verb Inventory (from *10 Ormuri Infinitive Verbs*)**: All 39 Category-A irregular verbs (`-ok`/`-ək`) with verbal nouns in `څن` (*-t͡sən*), plus the complete inventory of 466 Category-B regular verbs (`-aek`/`-yæk`).
-   - **Pedagogical Primers & Numerals (from *Ormuri Primer 2*)**: Archaic vigesimal (base-20) counting system, 12 traditional Kaniguram months, and grammar drills.
-   - **Idioms & Figurative Expressions (from Farah Naz Burki's *Warmaṛo Muhāwari*)**: Hundreds of native idioms and phrases.
-   - **Proverbs & Cultural Maxims (from Farhana Burki's *Warmaṛo Matali*)**: Comprehensive proverb database with literal meanings and practical usage.
-   - **Literature & Natural Narrative**: Authentic folk tales (*Shwaxay Khekany*), complete Gospel of Luke (Chapters 1–24) prose narrative, Rozi Khan Burki's novel *Prechaak*, and the 52-page poetic corpus.
-   - **Modern Civic & Legal Prose**: Complete translation of the Universal Declaration of Human Rights (*Tə Insānī Haqqī a ‘Ālamī Manshūr*).
-   - **Split Ergativity Algebra**: Mathematical rules for Nominative-Accusative present/future vs Ergative-Absolutive past transitive.
-   - **Wackernagel (2P) Clitic Syntax**: Exact placement rules for `-m`, `-t`, `-wə/-l`, `-nyē`, `-n`, `يې`, `ال`, and `دې`.
-   - **Consolidated Lexicon**: 6,650+ structured entries with IPA, POS, and definitions.
+1. **100% Unabridged Generative Knowledge Base (`ormuri_knowledge_base.md`)**:
+   - Synthesizes **100% of all 11 primary works** unabridged without omitting a single page or verse: **2,001,849 characters, 424,448 words, and 866,060 Gemini tokens**.
+   - **Complete Novel *Prechaak* (پرېچاک)**: All 311 pages in full by Rozi Khan Burki (416,828 characters).
+   - **Complete Gospel of Luke (لُوقا 1- 24)**: All 24 chapters in full (869 paragraphs, 132,807 characters).
+   - **Complete *Warmaṛo Muhāwari***: All 1,491 paragraphs and 1,199 idioms by Farah Naz Burki (104,969 characters).
+   - **Complete *Warmaṛo Matali***: All 1,029 paragraphs and 1,012 proverbs with cultural commentaries by Farhana Burki (102,788 characters).
+   - **Complete Ormuri Folk Stories**: All 623 paragraphs of traditional oral tales (*Shwaxay Khekany*, *Zargatay*, etc.).
+   - **Complete Ormuri Poetry Anthology**: All 52 pages of classical and contemporary verse (67,827 characters).
+   - **Complete Universal Declaration of Human Rights**: All 155 paragraphs translated into Ormuri.
+   - **Complete 10 Ormuri Infinitive Verbs**: All 47 pages containing all Category-A irregulars and all 466+ Category-B verbs.
+   - **Complete Ormuri Primer 2**: All 109 pages of pedagogical grammar, vigesimal numbers, and reading drills.
+   - **Complete Linguistic Abbreviations**: Dialectology distinctions (Kanigrami vs Logari).
+   - **Complete Illustrated Dictionary**: All 7,025 entries consolidated in [`lexicon.json`](file:///c:/Users/IMRAN/Downloads/Ormuri%20AI/Ormuri%20Data/lexicon.json).
 
 2. **In-Context Learning & Context Caching Engine (`generate_ormuri.py`)**:
    - Powered by the official **Google GenAI SDK** (`google-genai`) and `gemini-3.8-flash`.
