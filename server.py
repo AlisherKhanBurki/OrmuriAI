@@ -31,7 +31,7 @@ FRONTEND_DIR = os.path.join(BASE_DIR, "frontend")
 KB_PATH = os.path.join(BASE_DIR, "ormuri_knowledge_base.md")
 LEXICON_PATH = os.path.join(BASE_DIR, "lexicon.json")
 
-PORT = 8080
+PORT = int(os.environ.get("PORT", 8080))
 
 # Preload resources
 print("[*] Initializing Ormuri AI Playground Server...")
@@ -51,10 +51,13 @@ CACHE_NAME = get_or_create_cache(CLIENT, KB_CONTENT, model_name=MODEL_NAME)
 
 def parse_ormuri_output(raw_text: str) -> Dict[str, Any]:
     """Parse output into scratchpad, ormuri text, romanization, and translation."""
+    # Replace all '*' symbols in the model's response with a space ' '
+    raw_text = raw_text.replace('*', ' ')
+
     scratchpad = ""
     scratchpad_m = re.search(r'<morphological_scratchpad>(.*?)</morphological_scratchpad>', raw_text, re.DOTALL | re.IGNORECASE)
     if scratchpad_m:
-        scratchpad = scratchpad_m.group(1).strip()
+        scratchpad = scratchpad_m.group(1).replace('*', ' ').strip()
     
     # Remove scratchpad from remaining text
     content_after = re.sub(r'<morphological_scratchpad>.*?</morphological_scratchpad>', '', raw_text, flags=re.DOTALL | re.IGNORECASE).strip()
@@ -64,10 +67,10 @@ def parse_ormuri_output(raw_text: str) -> Dict[str, Any]:
     romanization = ""
     translation = ""
     
-    # Section matching
-    sec_ormuri = re.search(r'(?:###?\s*(?:Polished\s*)?Ormuri.*?\n)(.*?)(?=(?:###?\s*Phonetic|###?\s*Romanization|###?\s*English|$))', content_after, re.DOTALL | re.IGNORECASE)
-    sec_roman = re.search(r'(?:###?\s*(?:Phonetic\s*)?Romanization.*?\n)(.*?)(?=(?:###?\s*English|###?\s*Translation|$))', content_after, re.DOTALL | re.IGNORECASE)
-    sec_trans = re.search(r'(?:###?\s*(?:English\s*)?Translation.*?\n)(.*?)(?=$)', content_after, re.DOTALL | re.IGNORECASE)
+    # Section matching (handles English "Ormuri", "Bargista", and Arabic "اُرموړی", "ارموړی", "اورموړی", "Perso-Arabic")
+    sec_ormuri = re.search(r'(?:###?\s*(?:Polished\s*)?(?:Ormuri|Bargista|[\u0600-\u06FF]+|Perso-Arabic).*?\n)(.*?)(?=(?:###?\s*(?:Phonetic|Romanization|Roman|IPA|English|Translation)|$))', content_after, re.DOTALL | re.IGNORECASE)
+    sec_roman = re.search(r'(?:###?\s*(?:Phonetic\s*)?(?:Romanization|Roman|IPA).*?\n)(.*?)(?=(?:###?\s*(?:English|Translation|Literal)|$))', content_after, re.DOTALL | re.IGNORECASE)
+    sec_trans = re.search(r'(?:###?\s*(?:English\s*)?(?:Translation|Meaning).*?\n)(.*?)(?=$)', content_after, re.DOTALL | re.IGNORECASE)
     
     if sec_ormuri:
         ormuri_text = sec_ormuri.group(1).strip()
@@ -76,35 +79,45 @@ def parse_ormuri_output(raw_text: str) -> Dict[str, Any]:
     if sec_trans:
         translation = sec_trans.group(1).strip()
     
-    # Fallback if headings were slightly different
-    if not ormuri_text and not romanization and not translation:
-        # Check for Arabic blocks
-        arabic_blocks = []
-        other_blocks = []
-        for p in content_after.split('\n\n'):
-            p_clean = p.strip()
-            if not p_clean: continue
-            arabic_count = len(re.findall(r'[\u0600-\u06FF]', p_clean))
-            if arabic_count > 15:
-                arabic_blocks.append(p_clean)
-            else:
-                other_blocks.append(p_clean)
-        
-        ormuri_text = '\n\n'.join(arabic_blocks)
-        translation = '\n\n'.join(other_blocks)
+    # Fallback if ormuri_text was not matched by heading
+    if not ormuri_text:
+        # 1. Try text before romanization/translation
+        before_roman = re.split(r'###?\s*(?:Phonetic|Romanization|English|Translation)', content_after, flags=re.IGNORECASE)[0].strip()
+        # Clean any remaining markdown header lines
+        cleaned_before = re.sub(r'^#+.*?\n', '', before_roman).strip()
+        if cleaned_before and len(cleaned_before) > 5:
+            ormuri_text = cleaned_before
+        else:
+            # 2. Extract any paragraphs with Arabic characters
+            arabic_blocks = []
+            for p in content_after.split('\n\n'):
+                p_clean = p.strip()
+                if not p_clean:
+                    continue
+                arabic_count = len(re.findall(r'[\u0600-\u06FF]', p_clean))
+                if arabic_count >= 5:
+                    arabic_blocks.append(p_clean)
+            if arabic_blocks:
+                ormuri_text = '\n\n'.join(arabic_blocks)
 
     return {
-        "scratchpad": scratchpad,
-        "ormuri_text": ormuri_text,
-        "romanization": romanization,
-        "translation": translation,
-        "raw_text": raw_text
+        "scratchpad": scratchpad.replace('*', ' ').strip(),
+        "ormuri_text": ormuri_text.replace('*', ' ').strip(),
+        "romanization": romanization.replace('*', ' ').strip(),
+        "translation": translation.replace('*', ' ').strip(),
+        "raw_text": raw_text.replace('*', ' ').strip()
     }
 
 
 class PlaygroundHandler(SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=FRONTEND_DIR, **kwargs)
+
+    def end_headers(self):
+        self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
+        self.send_header("Pragma", "no-cache")
+        self.send_header("Expires", "0")
+        super().end_headers()
 
     def do_GET(self):
         parsed = urllib.parse.urlparse(self.path)
@@ -118,7 +131,7 @@ class PlaygroundHandler(SimpleHTTPRequestHandler):
                 "cached": bool(CACHE_NAME),
                 "cache_name": CACHE_NAME or "Direct In-Context Learning",
                 "kb_characters": len(KB_CONTENT),
-                "kb_tokens": 53881,
+                "kb_tokens": 866060,
                 "lexicon_entries": len(LEXICON_DATA)
             })
             return
@@ -131,15 +144,26 @@ class PlaygroundHandler(SimpleHTTPRequestHandler):
             results = []
             for item in LEXICON_DATA:
                 match = True
+                hw = item.get("headword", item.get("word", ""))
+                ipa = item.get("ipa", "")
+                meaning = item.get("meaning", item.get("gloss", ""))
                 if search_query:
-                    text_corpus = f"{item['word']} {item.get('ipa','')} {item.get('gloss','')}".lower()
+                    text_corpus = f"{hw} {ipa} {meaning}".lower()
                     if search_query not in text_corpus:
                         match = False
                 if pos_filter and match:
                     if pos_filter not in item.get("pos", "").lower():
                         match = False
                 if match:
-                    results.append(item)
+                    # Provide uniform keys for frontend
+                    results.append({
+                        "word": hw,
+                        "headword": hw,
+                        "ipa": ipa,
+                        "pos": item.get("pos", ""),
+                        "gloss": meaning,
+                        "meaning": meaning
+                    })
                     if len(results) >= limit:
                         break
 
@@ -200,11 +224,16 @@ class PlaygroundHandler(SimpleHTTPRequestHandler):
                 })
 
             except Exception as exc:
-                print(f"[ERROR] API generation failed: {exc}")
+                err_msg = str(exc)
+                print(f"[ERROR] API generation failed: {err_msg}")
+                is_quota = any(w in err_msg.lower() for w in [
+                    "429", "quota", "resource_exhausted", "rate", "limit", "cost", "credit", "exceeded", "exhausted", "billing"
+                ])
                 self.send_json({
                     "success": False,
-                    "error": str(exc)
-                }, status=500)
+                    "error": err_msg,
+                    "is_quota_limit": is_quota
+                }, status=200)
             return
 
         self.send_response(404)
@@ -229,7 +258,7 @@ def run_server(port: int = PORT):
     print(f"\n==================================================================")
     print(f"  🚀 Ormuri AI Playground Server running at http://localhost:{port}")
     print(f"  📂 Serving Frontend from: {FRONTEND_DIR}")
-    print(f"  🧠 Model: {MODEL_NAME} | KB Tokens: 53,881 | Lexicon: {len(LEXICON_DATA)}")
+    print(f"  🧠 Model: {MODEL_NAME} | KB Tokens: 866,060 | Lexicon: {len(LEXICON_DATA)}")
     print(f"==================================================================\n")
     try:
         httpd.serve_forever()

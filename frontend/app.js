@@ -1,9 +1,9 @@
 /**
- * Ormuri AI Playground — Client Application Logic
+ * Ormuri AI Playground — Client Application Logic (v3.0)
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // DOM Elements
+  // DOM Elements - Prompt & Inputs
   const promptInput = document.getElementById('promptInput');
   const tempSlider = document.getElementById('tempSlider');
   const tempValue = document.getElementById('tempValue');
@@ -13,9 +13,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const modeSelector = document.getElementById('modeSelector');
   const quickChips = document.querySelectorAll('.chip');
 
-  // Output Elements
+  // Output Elements & States
+  const outputPanel = document.getElementById('outputPanel');
+  const outputWrapper = document.querySelector('.output-content-wrapper');
   const outputPlaceholder = document.getElementById('outputPlaceholder');
   const outputLoading = document.getElementById('outputLoading');
+  const outputQuotaError = document.getElementById('outputQuotaError');
   const timerText = document.getElementById('timerText');
   const outputTabs = document.getElementById('outputTabs');
   const tabRendered = document.getElementById('tabRendered');
@@ -44,11 +47,55 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnCloseGrammar = document.getElementById('btnCloseGrammar');
   const grammarModal = document.getElementById('grammarModal');
 
+  // Support / Donation Modal Elements
+  const btnOpenSupport = document.getElementById('btnOpenSupport');
+  const btnCloseSupport = document.getElementById('btnCloseSupport');
+  const supportModal = document.getElementById('supportModal');
+
   let currentMode = 'free';
   let currentTab = 'rendered';
+  let hasGenerated = false;
   let timerInterval = null;
   let lexiconDebounce = null;
   let activePosFilter = '';
+
+  /**
+   * Universal State Switcher for Output View
+   * Directly sets inline display and toggles classes to guarantee instant, 
+   * cache-immune replacement of "Ready to Generate".
+   */
+  function showOutputState(stateName) {
+    const states = {
+      placeholder: outputPlaceholder,
+      loading: outputLoading,
+      quota: outputQuotaError,
+      rendered: tabRendered,
+      scratchpad: tabScratchpad,
+      raw: tabRaw
+    };
+
+    Object.keys(states).forEach(key => {
+      const el = states[key];
+      if (!el) return;
+      if (key === stateName) {
+        el.style.display = 'flex';
+        el.classList.remove('hidden');
+      } else {
+        el.style.display = 'none';
+        el.classList.add('hidden');
+      }
+    });
+
+    if (outputWrapper && (stateName === 'rendered' || stateName === 'scratchpad' || stateName === 'raw')) {
+      outputWrapper.scrollTop = 0;
+    }
+  }
+
+  // Helper: Strip all '*' symbols and replace with a space
+  function cleanAsterisks(str) {
+    if (!str) return '';
+    return str.replaceAll('*', ' ');
+  }
 
   // 1. Temperature Slider
   tempSlider.addEventListener('input', (e) => {
@@ -75,6 +122,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // 4. Clear Button
   btnClear.addEventListener('click', () => {
     promptInput.value = '';
+    hasGenerated = false;
+    showOutputState('placeholder');
     promptInput.focus();
   });
 
@@ -86,17 +135,9 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.classList.add('active');
     currentTab = btn.dataset.tab;
 
-    // Switch visible tab
-    tabRendered.classList.add('hidden');
-    tabScratchpad.classList.add('hidden');
-    tabRaw.classList.add('hidden');
-
-    if (currentTab === 'rendered') {
-      tabRendered.classList.remove('hidden');
-    } else if (currentTab === 'scratchpad') {
-      tabScratchpad.classList.remove('hidden');
-    } else if (currentTab === 'raw') {
-      tabRaw.classList.remove('hidden');
+    // Only switch tabs if model output has been generated
+    if (hasGenerated) {
+      showOutputState(currentTab);
     }
   });
 
@@ -119,14 +160,15 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // Set Loading State
+    // Set Loading State: replaces "Ready to Generate" with the loading indicator
     btnGenerate.disabled = true;
     btnSpinner.classList.add('active');
-    outputPlaceholder.classList.add('hidden');
-    tabRendered.classList.add('hidden');
-    tabScratchpad.classList.add('hidden');
-    tabRaw.classList.add('hidden');
-    outputLoading.classList.remove('hidden');
+    showOutputState('loading');
+
+    // Auto-scroll to output panel if on smaller/stacked screens
+    if (outputPanel && (window.innerWidth <= 1024 || outputPanel.getBoundingClientRect().top > 80)) {
+      outputPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
 
     let startTime = Date.now();
     timerInterval = setInterval(() => {
@@ -149,29 +191,45 @@ document.addEventListener('DOMContentLoaded', () => {
       clearInterval(timerInterval);
 
       if (!data.success) {
+        // Check for Quota / Rate limit / Cost errors
+        const isQuota = data.is_quota_limit || 
+          (data.error && /429|quota|resource_exhausted|rate|limit|cost|credit|exhausted|billing/i.test(data.error));
+        
+        if (isQuota) {
+          showOutputState('quota');
+          if (outputPanel && window.innerWidth <= 1024) {
+            outputPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+          return;
+        }
         throw new Error(data.error || 'Server generation error');
       }
 
       const parsed = data.parsed || {};
       
-      // Render Content
+      // Render Content with clean asterisks
       renderOrmuriOutput(parsed);
 
-      // Restore UI State
-      outputLoading.classList.add('hidden');
-      if (currentTab === 'rendered') {
-        tabRendered.classList.remove('hidden');
-      } else if (currentTab === 'scratchpad') {
-        tabScratchpad.classList.remove('hidden');
-      } else {
-        tabRaw.classList.remove('hidden');
+      // DIRECTLY REPLACE "Ready to Generate" where it was written
+      showOutputState(currentTab);
+
+      // Smooth scroll viewport to output panel if on stacked layout
+      if (outputPanel && window.innerWidth <= 1024) {
+        outputPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
 
     } catch (err) {
       clearInterval(timerInterval);
-      outputLoading.classList.add('hidden');
-      outputPlaceholder.classList.remove('hidden');
-      alert(`Generation Failed: ${err.message}`);
+      const isQuotaErr = /429|quota|resource_exhausted|rate|limit|cost|credit|exhausted|billing/i.test(err.message);
+      if (isQuotaErr) {
+        showOutputState('quota');
+        if (outputPanel && window.innerWidth <= 1024) {
+          outputPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      } else {
+        showOutputState('placeholder');
+        alert(`Generation Failed: ${err.message}`);
+      }
     } finally {
       btnGenerate.disabled = false;
       btnSpinner.classList.remove('active');
@@ -179,34 +237,45 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function renderOrmuriOutput(parsed) {
+    hasGenerated = true;
+
+    // Replace all '*' symbols in the model's response with a space
+    const cleanedOrmuri = cleanAsterisks(parsed.ormuri_text || 'No text extracted');
+    const cleanedRoman = cleanAsterisks(parsed.romanization || '');
+    const cleanedTrans = cleanAsterisks(parsed.translation || '');
+    const cleanedScratchpad = cleanAsterisks(parsed.scratchpad || 'No morphological scratchpad found.');
+    const cleanedRaw = cleanAsterisks(parsed.raw_text || '');
+
     // 1. Ormuri Text
-    ormuriText.innerHTML = formatProse(parsed.ormuri_text || 'No text extracted');
+    ormuriText.innerHTML = formatProse(cleanedOrmuri);
 
     // 2. Romanization
-    if (parsed.romanization) {
-      romanText.innerHTML = formatProse(parsed.romanization);
+    if (cleanedRoman) {
+      romanText.innerHTML = formatProse(cleanedRoman);
       cardRomanization.style.display = 'block';
     } else {
       cardRomanization.style.display = 'none';
     }
 
     // 3. Translation
-    if (parsed.translation) {
-      transText.innerHTML = formatProse(parsed.translation);
+    if (cleanedTrans) {
+      transText.innerHTML = formatProse(cleanedTrans);
       cardTranslation.style.display = 'block';
     } else {
       cardTranslation.style.display = 'none';
     }
 
     // 4. Scratchpad
-    scratchpadContent.textContent = parsed.scratchpad || 'No morphological scratchpad found.';
+    scratchpadContent.textContent = cleanedScratchpad;
 
     // 5. Raw output
-    rawContent.textContent = parsed.raw_text || '';
+    rawContent.textContent = cleanedRaw;
   }
 
   function formatProse(text) {
-    return text.split('\n\n')
+    if (!text) return '';
+    return cleanAsterisks(text)
+      .split('\n\n')
       .map(p => p.trim())
       .filter(p => p.length > 0)
       .map(p => `<p>${escapeHtml(p)}</p>`)
@@ -240,29 +309,45 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Support / Account Copying
+  window.copySupportAccount = () => {
+    const iban = "PK62ASCM0001143230003241";
+    navigator.clipboard.writeText(iban).then(() => {
+      showToast('Account details copied: PK62ASCM0001143230003241 (ALI SHER KHAN BURKI) ✓');
+    }).catch(() => {
+      prompt("Copy Account Number / IBAN:", iban);
+    });
+  };
+
+  window.resetToPlaceholder = () => {
+    hasGenerated = false;
+    showOutputState('placeholder');
+    promptInput.focus();
+  };
+
   function showToast(message) {
     const toast = document.createElement('div');
     toast.className = 'toast-notification';
     toast.textContent = message;
     toast.style.cssText = `
       position: fixed;
-      bottom: 2rem;
+      bottom: 4rem;
       right: 2rem;
       background: #10B981;
       color: #03201c;
       font-weight: 600;
-      padding: 0.65rem 1.25rem;
+      padding: 0.75rem 1.4rem;
       border-radius: 8px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-      z-index: 999;
-      font-size: 0.85rem;
+      z-index: 9999;
+      font-size: 0.88rem;
       transition: opacity 0.3s;
     `;
     document.body.appendChild(toast);
     setTimeout(() => {
       toast.style.opacity = '0';
       setTimeout(() => toast.remove(), 300);
-    }, 2000);
+    }, 2500);
   }
 
   // 9. Lexicon Explorer Drawer
@@ -344,5 +429,63 @@ document.addEventListener('DOMContentLoaded', () => {
       grammarModal.classList.add('hidden');
     }
   });
+
+  // 11. Support & Donation Modal
+  if (btnOpenSupport && supportModal) {
+    btnOpenSupport.addEventListener('click', () => {
+      supportModal.classList.remove('hidden');
+    });
+
+    if (btnCloseSupport) {
+      btnCloseSupport.addEventListener('click', () => {
+        supportModal.classList.add('hidden');
+      });
+    }
+
+    supportModal.addEventListener('click', (e) => {
+      if (e.target === supportModal) {
+        supportModal.classList.add('hidden');
+      }
+    });
+  }
+
+  // 12. Dynamic System Status Sync
+  async function fetchSystemStatus() {
+    try {
+      const res = await fetch('/api/status');
+      if (!res.ok) return;
+      const data = await res.json();
+      
+      const badgeModel = document.getElementById('badgeModel');
+      if (badgeModel && data.model) {
+        badgeModel.textContent = `${data.model} (Cached)`;
+      }
+
+      const badgeKb = document.getElementById('badgeKb');
+      if (badgeKb && data.kb_tokens) {
+        const tokensFmt = Number(data.kb_tokens).toLocaleString();
+        const charsFmt = data.kb_characters ? `${(data.kb_characters / 1000000).toFixed(1)}M Chars` : '2.0M Chars';
+        badgeKb.textContent = `📚 ${tokensFmt} Tokens (${charsFmt})`;
+      }
+
+      const lexiconBtnText = document.getElementById('lexiconBtnText');
+      if (lexiconBtnText && data.lexicon_entries) {
+        const countFmt = Number(data.lexicon_entries).toLocaleString();
+        lexiconBtnText.textContent = `Lexicon (${countFmt} Words)`;
+      }
+
+      const lexiconTotalPill = document.getElementById('lexiconTotalPill');
+      if (lexiconTotalPill && data.lexicon_entries) {
+        const countFmt = Number(data.lexicon_entries).toLocaleString();
+        lexiconTotalPill.textContent = `${countFmt} Words`;
+      }
+    } catch (err) {
+      console.warn('Could not sync status:', err);
+    }
+  }
+
+  // Initial State Setup
+  showOutputState('placeholder');
+  fetchSystemStatus();
 
 });

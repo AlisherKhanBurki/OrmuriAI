@@ -72,11 +72,23 @@ body {
   background: rgba(255, 255, 255, 0.25);
 }
 
+/* Utility Classes */
+.hidden {
+  display: none !important;
+}
+
 /* App Wrapper */
 .app-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+}
+
+@media (min-width: 961px) {
+  .app-container {
+    height: 100vh;
+    overflow: hidden;
+  }
 }
 
 /* ==========================================================================
@@ -86,13 +98,16 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 2rem;
-  background: rgba(14, 19, 31, 0.85);
+  padding: 0.75rem 1.5rem;
+  height: 64px;
+  flex-shrink: 0;
+  background: rgba(14, 19, 31, 0.9);
   backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-subtle);
   position: sticky;
   top: 0;
   z-index: 50;
+  box-sizing: border-box;
 }
 
 .brand {
@@ -284,14 +299,25 @@ kbd {
 .workbench-layout {
   display: grid;
   grid-template-columns: 1fr 1.25fr;
-  gap: 1.5rem;
-  padding: 1.5rem 2rem;
+  gap: 1.25rem;
+  padding: 1rem 1.5rem;
   flex: 1;
+  min-height: 0;
+  box-sizing: border-box;
 }
 
-@media (max-width: 1024px) {
+@media (min-width: 961px) {
+  .workbench-layout {
+    height: calc(100vh - 64px - 44px);
+    overflow: hidden;
+  }
+}
+
+@media (max-width: 960px) {
   .workbench-layout {
     grid-template-columns: 1fr;
+    height: auto;
+    overflow: visible;
   }
 }
 
@@ -305,6 +331,14 @@ kbd {
   flex-direction: column;
   overflow: hidden;
   position: relative;
+  min-height: 0;
+}
+
+@media (min-width: 961px) {
+  .panel {
+    height: 100%;
+    max-height: 100%;
+  }
 }
 
 .panel-header {
@@ -395,13 +429,16 @@ kbd {
 
 /* Prompt Input Container */
 .input-container {
-  padding: 1.4rem;
+  padding: 1.25rem 1.4rem;
   flex: 1;
+  min-height: 0;
   display: flex;
 }
 
 textarea#promptInput {
   width: 100%;
+  height: 100%;
+  min-height: 100px;
   background: rgba(0, 0, 0, 0.25);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
@@ -410,9 +447,10 @@ textarea#promptInput {
   font-family: var(--font-ui);
   font-size: 0.95rem;
   line-height: 1.6;
-  resize: vertical;
+  resize: none;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
 }
 textarea#promptInput:focus {
   border-color: var(--primary-emerald);
@@ -511,10 +549,12 @@ textarea#promptInput:focus {
 }
 
 .output-content-wrapper {
-  padding: 1.4rem;
+  padding: 1.25rem 1.4rem;
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
-  min-height: 480px;
+  display: flex;
+  flex-direction: column;
 }
 
 /* State: Placeholder */
@@ -523,10 +563,14 @@ textarea#promptInput:focus {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%;
-  min-height: 380px;
+  flex: 1;
+  min-height: 240px;
+  padding: 2.5rem 1.5rem;
   text-align: center;
   color: var(--text-dim);
+}
+.output-state.hidden {
+  display: none !important;
 }
 .empty-illustration {
   font-size: 3rem;
@@ -972,4 +1016,347 @@ textarea#promptInput:focus {
 .cheat-table code {
   font-family: var(--font-code);
   color: #A7F3D0;
+}
+
+/* ==========================================================================
+   Quota / Limit Hit State (Right Panel)
+   ========================================================================== */
+.quota-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-height: 280px;
+  padding: 1.5rem;
+  text-align: center;
+  color: var(--text-main);
+}
+.quota-state.hidden {
+  display: none !important;
+}
+.quota-icon {
+  font-size: 2.8rem;
+  margin-bottom: 0.75rem;
+  filter: drop-shadow(0 4px 12px rgba(245, 158, 11, 0.4));
+}
+.quota-state h3 {
+  font-size: 1.15rem;
+  color: #FBBF24;
+  margin-bottom: 0.4rem;
+}
+.quota-subtext {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  max-width: 520px;
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+}
+.quota-lang-snippets {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  width: 100%;
+  max-width: 540px;
+  margin-bottom: 1.25rem;
+}
+.quota-snippet {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+  padding: 0.7rem 0.9rem;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: #E2E8F0;
+  text-align: right;
+  font-family: var(--font-ormuri);
+}
+.quota-snippet strong {
+  font-family: var(--font-ui);
+  color: #FBBF24;
+}
+
+.bank-details-card {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(16, 185, 129, 0.06));
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: var(--radius-md);
+  padding: 1.1rem 1.4rem;
+  width: 100%;
+  max-width: 540px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+.bank-card-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #FBBF24;
+  margin-bottom: 0.75rem;
+}
+.bank-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+}
+.bank-label {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+.bank-val {
+  color: #F8FAFC;
+  font-weight: 600;
+}
+.iban-val {
+  font-family: var(--font-code);
+  color: #34D399;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+}
+.bank-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  justify-content: center;
+}
+
+/* ==========================================================================
+   Main Page Bottom Footer Banner (Dignified & Concise)
+   ========================================================================== */
+.app-footer {
+  height: 44px;
+  background: rgba(10, 14, 23, 0.95);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+  box-sizing: border-box;
+}
+
+.footer-inner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.footer-mission {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.footer-badge {
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: #FBBF24;
+  padding: 0.12rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.footer-dot {
+  color: var(--text-dim);
+}
+
+.footer-txt-ur, .footer-txt-ps {
+  font-family: var(--font-ormuri);
+  font-size: 0.85rem;
+}
+
+.footer-bank {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-shrink: 0;
+}
+
+.footer-bank-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.2rem 0.6rem;
+  font-size: 0.75rem;
+}
+
+.footer-acc-title {
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.footer-iban {
+  font-family: var(--font-code);
+  color: #34D399;
+  letter-spacing: 0.03em;
+}
+
+.btn-copy-footer {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(6, 182, 212, 0.2));
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #34D399;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+.btn-copy-footer:hover {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.35), rgba(6, 182, 212, 0.35));
+  border-color: #34D399;
+  color: #fff;
+}
+
+@media (max-width: 960px) {
+  .app-footer {
+    height: auto;
+    padding: 0.75rem 1rem;
+  }
+  .footer-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .footer-mission {
+    white-space: normal;
+  }
+  .footer-bank {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+/* Support Button in Navbar */
+.btn-support {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.3);
+  color: #FBBF24;
+}
+.btn-support:hover {
+  background: rgba(245, 158, 11, 0.2);
+  border-color: rgba(245, 158, 11, 0.5);
+  color: #fff;
+}
+.btn-support-icon {
+  font-size: 0.95rem;
+}
+
+/* Support Modal */
+.modal-support {
+  max-width: 820px;
+}
+.support-modal-title {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+.support-icon {
+  font-size: 1.4rem;
+}
+.support-lang-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.support-lang-card {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.1rem 1.3rem;
+  font-size: 0.85rem;
+  line-height: 1.65;
+  color: #CBD5E1;
+}
+.support-lang-card .lang-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #38BDF8;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+.support-lang-card[dir="rtl"] {
+  font-family: var(--font-ormuri);
+  font-size: 0.95rem;
+  line-height: 1.9;
+  color: #E2E8F0;
+}
+.support-lang-card[dir="rtl"] .lang-label {
+  font-family: var(--font-ui);
+  color: #FBBF24;
+}
+.bank-details-box {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.09), rgba(16, 185, 129, 0.07));
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  border-radius: var(--radius-md);
+  padding: 1.3rem 1.6rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+.bank-details-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.bank-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #FBBF24;
+  background: rgba(245, 158, 11, 0.15);
+  padding: 0.15rem 0.55rem;
+  border-radius: 4px;
+}
+.bank-name {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+.bank-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.bank-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.field-label {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+.field-value {
+  font-size: 0.95rem;
+  color: #fff;
+}
+.field-value.iban-value {
+  font-family: var(--font-code);
+  color: #34D399;
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+}
+.btn-copy-full {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 0.9rem;
 }

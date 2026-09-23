@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&family=Noto+Nastaliq+Urdu:wght@400;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=3.0">
 </head>
 <body>
   <div class="app-container">
@@ -30,24 +30,31 @@
       <div class="header-badges">
         <div class="badge badge-model" title="Underlying foundational model">
           <span class="dot pulse"></span>
-          <span>Gemini 3.8 Flash</span>
+          <span id="badgeModel">Gemini 3.8 Flash (Cached)</span>
         </div>
-        <div class="badge badge-kb" title="Loaded knowledge base size">
-          <span>📚 53,881 Tokens Context</span>
+        <div class="badge badge-kb" title="Loaded unabridged knowledge base size">
+          <span id="badgeKb">📚 866,060 Tokens (2.0M Chars)</span>
         </div>
         <div class="badge badge-erg" title="Split ergativity guardrail active">
-          <span>⚡ Split Ergativity Guardrail</span>
+          <span>⚡ Split Ergativity Active</span>
+        </div>
+        <div class="badge badge-corpus" title="Unabridged 11-work primary archive">
+          <span>📖 11 Primary Works (Unabridged)</span>
         </div>
       </div>
 
       <div class="header-actions">
-        <button id="btnOpenLexicon" class="btn btn-secondary" title="Search 6,900+ Ormuri words">
+        <button id="btnOpenLexicon" class="btn btn-secondary" title="Search 6,657+ verified Ormuri words">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          Lexicon Search
+          <span id="lexiconBtnText">Lexicon (6,657 Words)</span>
         </button>
         <button id="btnOpenGrammar" class="btn btn-secondary" title="View Ergativity & Clitic Grammar Tables">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-          Grammar Formula
+          Grammar & Corpus
+        </button>
+        <button id="btnOpenSupport" class="btn btn-secondary btn-support" title="Support Ormuri AI Language Preservation">
+          <span class="btn-support-icon">🏛️</span>
+          <span>Support Cause</span>
         </button>
       </div>
     </header>
@@ -74,9 +81,11 @@
         <!-- Quick Launch Scenario Chips -->
         <div class="quick-chips">
           <span class="chips-label">Quick Scenarios:</span>
-          <button class="chip" data-prompt="Write a 3-paragraph descriptive passage in authentic Ormuri about Kaniguram (کانیګرام), its mountains (ګری), cold mountain streams (تاک), and the ancient iron-forging craft of the Burki people.">🏔️ Kaniguram Homeland</button>
-          <button class="chip" data-prompt="Describe the ancient Burki blacksmith craft of extracting iron from furnace-stone (ته بټخِنړئ ګپ لاسته ا رو جدا کېک) and forging famous knives in Kaniguram.">⚔️ Blacksmith Craft</button>
-          <button class="chip" data-prompt="Present an authentic Ormuri proverb about hospitality (مېلمۀ) and honor (ننګ), with literal word breakdown, cultural meaning, and moral lesson.">📜 Proverbs & Wisdom</button>
+          <button class="chip" data-prompt="Translate and explain in authentic Ormuri using vocabulary from the novel Prechaak: 'In the cold winter of Kaniguram, the tribal elders gathered in the council house to resolve the blood dispute.'">📖 Novel Prechaak</button>
+          <button class="chip" data-prompt="Translate in natural Ormuri narrative prose (following the style of Luke): 'The shepherd rejoiced with his friends because he found his lost sheep on the mountain.'">🐑 Luke Parable</button>
+          <button class="chip" data-prompt="Translate into formal civic Ormuri (following the Charter of Human Rights): 'All human beings are born free and equal in dignity and rights.'">🕊️ Human Rights (UDHR)</button>
+          <button class="chip" data-prompt="Present an authentic Ormuri proverb about hospitality (مېلمۀ) and honor (ننګ), with literal word breakdown, cultural meaning, and practical moral lesson.">📜 Proverbs (1,029)</button>
+          <button class="chip" data-prompt="Present an authentic Ormuri idiom about courage and steadfastness from the Ormuri Idioms collection, with word gloss and idiomatic meaning.">💡 Idioms (1,491)</button>
           <button class="chip" data-prompt="Write a natural conversational dialogue between two Ormuri speakers meeting in the morning, greeting each other, asking about health, family, and sheep grazing.">🗣️ Daily Greetings</button>
           <button class="chip" data-prompt="Translate and linguistically explain: 'Asima took Asim to the mountain, but the boy gave the bread to his mother' (verify past transitive object agreement vs agentive clitic al).">⚡ Ergativity Test</button>
         </div>
@@ -86,7 +95,7 @@
           <textarea 
             id="promptInput" 
             placeholder="Type your prompt in English, Urdu, or Ormuri...&#10;E.g., 'Describe the snowfall on Baar Pit mountain and the warmth of traditional hearths in Kaniguram.'"
-            rows="8"
+            rows="6"
           ></textarea>
         </div>
 
@@ -110,7 +119,7 @@
       </section>
 
       <!-- Right Panel: Output & Scratchpad Inspector -->
-      <section class="panel output-panel">
+      <section class="panel output-panel" id="outputPanel">
         <div class="panel-header">
           <div class="panel-title">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
@@ -145,13 +154,50 @@
           <!-- State 2: Loading State -->
           <div id="outputLoading" class="output-state loading-state hidden">
             <div class="spinner-large"></div>
-            <h3>Generating Ormuri Generation...</h3>
-            <p class="loading-subtext">Grounding prompt against 53K-token knowledge base and verifying split-ergativity alignment...</p>
+            <h3>Generating Authentic Ormuri...</h3>
+            <p class="loading-subtext">Grounding prompt against 866,060 token unabridged corpus (Prechaak 311pp, Luke 1-24, 1,491 Idioms, 1,029 Proverbs, UDHR, Poetry, 500+ Verbs) with Split Ergativity verification...</p>
             <div class="timer-display">Elapsed: <span id="timerText">0.0s</span></div>
           </div>
 
+          <!-- State 2.5: API Quota / Limit Hit Support State (Replaces Placeholder/Output) -->
+          <div id="outputQuotaError" class="output-state quota-state hidden">
+            <div class="quota-icon">🏛️</div>
+            <h3>API Quota Exceeded / حد مکمل / حد پوره شو</h3>
+            <p class="quota-subtext">Due to recurring cloud infrastructure costs, the API limit has been reached. Please support this noble language preservation mission to restore continuous generation.</p>
+            
+            <div class="quota-lang-snippets">
+              <div class="quota-snippet" dir="rtl">
+                <strong>اردو:</strong> کلاؤڈ اور اے پی آئی اخراجات کی وجہ سے روزانہ کی حد عارضی طور پر مکمل ہو چکی ہے۔ ارموڑی (بارګِسته) نایاب قومی زبان کے تحفظ اور اس علمی منصوبے کو جاری رکھنے کے لیے مالی تعاون فرمائیں۔
+              </div>
+              <div class="quota-snippet" dir="rtl">
+                <strong>پښتو:</strong> د کلاوډ او سرور لګښتونو له امله د اے پي آئی حد د لنډ وخت لپاره بشپړ شوی دی. د تاریخي ارموړي ژبې د ژغورنې او دې AI نظام د دوام لپاره له موږ سره په خپلو مرستو ملاتړ وکړئ.
+              </div>
+            </div>
+
+            <div class="bank-details-card">
+              <div class="bank-card-title">Official Contribution Account (Askari Bank / ASCM)</div>
+              <div class="bank-row">
+                <span class="bank-label">Account Title (نوم / نام):</span>
+                <strong class="bank-val">ALI SHER KHAN BURKI</strong>
+              </div>
+              <div class="bank-row">
+                <span class="bank-label">Account / IBAN Number:</span>
+                <strong class="bank-val iban-val">PK62ASCM0001143230003241</strong>
+              </div>
+              <div class="bank-actions">
+                <button class="btn btn-primary" onclick="copySupportAccount()">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  <span>Copy Account Details</span>
+                </button>
+                <button class="btn btn-secondary" onclick="resetToPlaceholder()">
+                  Back to Prompt
+                </button>
+              </div>
+            </div>
+          </div>
+
           <!-- State 3: Rendered Content Tab -->
-          <div id="tabRendered" class="tab-content active hidden">
+          <div id="tabRendered" class="tab-content hidden">
             
             <!-- Ormuri Text Card -->
             <div class="card ormuri-card">
@@ -203,13 +249,37 @@
 
     </main>
 
+    <!-- Concise & Persuasive Main Page Footer Banner -->
+    <footer class="app-footer">
+      <div class="footer-inner">
+        <div class="footer-mission">
+          <span class="footer-badge">🏛️ Preservation Mission</span>
+          <span class="footer-txt-en">Ormuri is critically endangered. Support cloud & API costs to keep this heritage AI engine active.</span>
+          <span class="footer-dot">•</span>
+          <span class="footer-txt-ur" dir="rtl">ارموڑی زبان کے تحفظ کے لیے کلاؤڈ اخراجات میں مالی تعاون فرمائیں۔</span>
+          <span class="footer-dot">•</span>
+          <span class="footer-txt-ps" dir="rtl">د تاریخي بارګِسته ژبې د ژغورنې لپاره مرسته وکړئ.</span>
+        </div>
+        <div class="footer-bank">
+          <div class="footer-bank-info">
+            <span class="footer-acc-title">ALI SHER KHAN BURKI</span>
+            <code class="footer-iban">PK62ASCM0001143230003241</code>
+          </div>
+          <button class="btn-copy-footer" onclick="copySupportAccount()" title="Copy Askari Bank Account Details">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            <span>Copy Account</span>
+          </button>
+        </div>
+      </div>
+    </footer>
+
     <!-- Slide-over Drawer: Lexicon Explorer -->
     <aside id="lexiconDrawer" class="drawer">
       <div class="drawer-header">
         <div class="drawer-title">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
           <h3>Ormuri Lexicon Explorer</h3>
-          <span class="count-pill" id="lexiconTotalPill">6,930 Words</span>
+          <span class="count-pill" id="lexiconTotalPill">6,657 Words</span>
         </div>
         <button id="btnCloseLexicon" class="btn-close">&times;</button>
       </div>
@@ -303,12 +373,97 @@
             </table>
           </div>
 
+          <div class="grammar-section">
+            <h4>4. Unabridged 11-Work Primary Corpus Archive (866,060 Tokens / 2,001,849 Chars)</h4>
+            <table class="cheat-table">
+              <thead>
+                <tr>
+                  <th>Primary Source Work</th>
+                  <th>Coverage & Completeness</th>
+                  <th>Key Focus</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>Novel Prechaak</strong></td><td>All 311 pages complete (100% unabridged)</td><td>Historical Kaniguram narrative, dialect prose</td></tr>
+                <tr><td><strong>Gospel of Luke in Bargista</strong></td><td>Chapters 1–24 (all 869 paragraphs)</td><td>Classical complex syntax & narrative register</td></tr>
+                <tr><td><strong>Universal Declaration of Human Rights</strong></td><td>All 30 Articles complete</td><td>Modern civic, legal & human rights vocabulary</td></tr>
+                <tr><td><strong>Ormuri Idioms Collection</strong></td><td>All 1,491 paragraphs</td><td>Metaphors, idiomatic phrases & cultural speech</td></tr>
+                <tr><td><strong>Ormuri Proverbs Collection</strong></td><td>All 1,029 paragraphs</td><td>Traditional tribal wisdom, ethics & oral lore</td></tr>
+                <tr><td><strong>Traditional Folk Stories & Lore</strong></td><td>Complete folk narratives</td><td>Mythology, Kaniguram iron-smithing history</td></tr>
+                <tr><td><strong>Ormuri Poetry Archive</strong></td><td>All 52 pages of authentic verse</td><td>Poetic meter, rhymes, emotional expression</td></tr>
+                <tr><td><strong>500+ Inflected Ormuri Verbs</strong></td><td>All 47 pages of paradigms</td><td>Transitive/intransitive, past stems, agreement</td></tr>
+                <tr><td><strong>Ormuri Primer & Reader</strong></td><td>All 109 pages complete</td><td>Orthography, phonology & foundational lessons</td></tr>
+                <tr><td><strong>Grammar Tables & Abbreviations</strong></td><td>All linguistic formulas</td><td>Split ergativity, clitic hosting, case declensions</td></tr>
+                <tr><td><strong>Comprehensive Lexicon</strong></td><td>6,657 headwords with IPA & POS</td><td>Full verified lexical coverage</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Support & Donation Dialog -->
+    <div id="supportModal" class="modal-overlay hidden">
+      <div class="modal-content modal-support">
+        <div class="modal-header">
+          <div class="support-modal-title">
+            <span class="support-icon">🏛️</span>
+            <h3>Support Ormuri (Bargista) AI Preservation</h3>
+          </div>
+          <button id="btnCloseSupport" class="btn-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="support-lang-cards">
+            <!-- English -->
+            <div class="support-lang-card">
+              <div class="lang-label">English</div>
+              <p>Ormuri (Bargista) is a critically endangered Eastern Iranian heritage language native to Kaniguram, South Waziristan, with only a few thousand fluent speakers remaining worldwide. This AI generative engine was developed to document, preserve, and revitalize this ancient linguistic heritage for future generations.</p>
+              <p>Operating high-memory GPU cloud hosting, context caching (866,060 tokens), and foundation model APIs requires recurring infrastructure expenses. If you wish to support this noble cultural mission, contributions are deeply appreciated and directly sustain server uptime.</p>
+            </div>
+
+            <!-- Urdu -->
+            <div class="support-lang-card" dir="rtl">
+              <div class="lang-label">اردو (قومی ورثے کا تحفظ)</div>
+              <p>ارموڑی (بارګِسته) جنوبی وزیرستان کے تاریخی علاقے کانیگرم کی ایک انتہائی نایاب، قدیم اور معدوم ہوتی ہوئی زبان ہے جس کے بولنے والے اب محدود تعداد میں رہ گئے ہیں۔ یہ خودکار مصنوعی ذہانت (AI) کا نظام اس عظیم تاریخی زبان کو ہمیشہ کے لیے محفوظ اور زندہ رکھنے کے لیے تیار کیا گیا ہے۔</p>
+              <p>کلاؤڈ سرور اور جدید اے پی آئی کے ماہانہ اخراجات پورے کرنے کے لیے آپ کے مالی تعاون کی اشد ضرورت ہے۔ اس علمی اور قومی خدمت میں حصہ ڈال کر اپنی مادری زبان کی بقاء کے ضامن بنیں۔</p>
+            </div>
+
+            <!-- Pashto -->
+            <div class="support-lang-card" dir="rtl">
+              <div class="lang-label">پښتو (د تاریخي بارګِسته ژبې ژغورنه)</div>
+              <p>ارموړي (بارګِسته) زموږ د کانیګرم او وزیرستان یوه بې سارې لرغونې او تاریخي ژبه ده چې د ورکېدو له جدي ګواښ سره مخ ده. دا مفت AI نظام په ځانګړي ډول د دې لپاره جوړ شوی چې زموږ تاریخي کلتور او ادبي شتمني د تل لپاره خوندي وساتي.</p>
+              <p>د سرور او اے پي آئی لګښتونو پوره کولو لپاره ستاسو مالي مرسته د دې ژبې د بقا ضامنه ده. د دې مبارکې او تاریخي هڅې د دوام لپاره له موږ سره په خپلو مرستو ملاتړ وکړئ.</p>
+            </div>
+          </div>
+
+          <!-- Official Bank Details Card -->
+          <div class="bank-details-box">
+            <div class="bank-details-header">
+              <span class="bank-badge">Official Contribution Account</span>
+              <span class="bank-name">Askari Bank Limited (ASCM)</span>
+            </div>
+            <div class="bank-grid">
+              <div class="bank-field">
+                <span class="field-label">Account Title (نوم / نام):</span>
+                <strong class="field-value">ALI SHER KHAN BURKI</strong>
+              </div>
+              <div class="bank-field">
+                <span class="field-label">Account / IBAN Number:</span>
+                <strong class="field-value iban-value">PK62ASCM0001143230003241</strong>
+              </div>
+            </div>
+            <button class="btn btn-primary btn-copy-full" onclick="copySupportAccount()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Copy Account Details (IBAN)</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
 
   </div>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=3.0"></script>
 </body>
 </html>
