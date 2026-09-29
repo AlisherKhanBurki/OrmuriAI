@@ -13,22 +13,27 @@ import urllib.parse
 from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
 from typing import Dict, Any
 
-# Force UTF-8 on Windows
-if sys.stdout.encoding != 'utf-8':
-    sys.stdout.reconfigure(encoding='utf-8')
+# Force UTF-8 and immediate line buffering on Windows
+try:
+    sys.stdout.reconfigure(encoding='utf-8', line_buffering=True)
+    sys.stderr.reconfigure(encoding='utf-8', line_buffering=True)
+except Exception:
+    pass
 
 from generate_ormuri import (
     load_knowledge_base,
     get_or_create_cache,
     generate_ormuri,
     DEFAULT_API_KEY,
-    MODEL_NAME
+    MODEL_NAME,
+    KEY_POOL
 )
 from google import genai
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 FRONTEND_DIR = os.path.join(BASE_DIR, "frontend")
-KB_PATH = os.path.join(BASE_DIR, "ormuri_knowledge_base.md")
+CORE_KB_PATH = os.path.join(BASE_DIR, "ormuri_core_kb.md")
+KB_PATH = CORE_KB_PATH if os.path.exists(CORE_KB_PATH) else os.path.join(BASE_DIR, "ormuri_knowledge_base.md")
 LEXICON_PATH = os.path.join(BASE_DIR, "lexicon.json")
 
 PORT = int(os.environ.get("PORT", 8080))
@@ -44,8 +49,9 @@ if os.path.exists(LEXICON_PATH):
         LEXICON_DATA = json.load(f)
 print(f"[OK] Loaded {len(LEXICON_DATA)} lexicon entries.")
 
-# Initialize GenAI Client
-CLIENT = genai.Client(api_key=DEFAULT_API_KEY)
+# Initialize GenAI Client using Key Pool
+CLIENT, ACTIVE_KEY, KEY_IDX = KEY_POOL.get_client()
+print(f"[*] Initialized GenAI Client with Key #{KEY_IDX + 1} of {len(KEY_POOL.keys)}.")
 CACHE_NAME = get_or_create_cache(CLIENT, KB_CONTENT, model_name=MODEL_NAME)
 
 
@@ -131,46 +137,64 @@ class PlaygroundHandler(SimpleHTTPRequestHandler):
                 "cached": bool(CACHE_NAME),
                 "cache_name": CACHE_NAME or "Direct In-Context Learning",
                 "kb_characters": len(KB_CONTENT),
-                "kb_tokens": 866060,
-                "lexicon_entries": len(LEXICON_DATA)
+                "kb_tokens": int(len(KB_CONTENT.split()) * 1.3),
+                "lexicon_entries": len(LEXICON_DATA),
+                "active_key_count": len(KEY_POOL.keys)
             })
             return
 
         elif path == "/api/lexicon":
             search_query = query.get("q", [""])[0].strip().lower()
             pos_filter = query.get("pos", [""])[0].strip().lower()
-            limit = int(query.get("limit", [50])[0])
+            try:
+                offset = max(0, int(query.get("offset", [0])[0]))
+            except (ValueError, TypeError):
+                offset = 0
+            try:
+                limit = int(query.get("limit", [100])[0])
+            except (ValueError, TypeError):
+                limit = 100
 
-            results = []
+            matched = []
             for item in LEXICON_DATA:
-                match = True
                 hw = item.get("headword", item.get("word", ""))
                 ipa = item.get("ipa", "")
                 meaning = item.get("meaning", item.get("gloss", ""))
+                
+                # Filter by search query across headword, IPA, and meaning
                 if search_query:
                     text_corpus = f"{hw} {ipa} {meaning}".lower()
                     if search_query not in text_corpus:
-                        match = False
-                if pos_filter and match:
+                        continue
+                
+                # Filter by Part of Speech
+                if pos_filter:
                     if pos_filter not in item.get("pos", "").lower():
-                        match = False
-                if match:
-                    # Provide uniform keys for frontend
-                    results.append({
-                        "word": hw,
-                        "headword": hw,
-                        "ipa": ipa,
-                        "pos": item.get("pos", ""),
-                        "gloss": meaning,
-                        "meaning": meaning
-                    })
-                    if len(results) >= limit:
-                        break
+                        continue
+                
+                matched.append({
+                    "word": hw,
+                    "headword": hw,
+                    "ipa": ipa,
+                    "pos": item.get("pos", ""),
+                    "gloss": meaning,
+                    "meaning": meaning
+                })
+
+            total_matches = len(matched)
+            if limit > 0:
+                paged = matched[offset:offset + limit]
+            else:
+                paged = matched[offset:]
 
             self.send_json({
                 "query": search_query,
-                "total_matches": len(results),
-                "results": results
+                "pos": pos_filter,
+                "total_matches": total_matches,
+                "offset": offset,
+                "limit": limit,
+                "has_more": (offset + len(paged)) < total_matches,
+                "results": paged
             })
             return
 

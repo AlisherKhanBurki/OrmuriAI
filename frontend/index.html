@@ -1,475 +1,1158 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ormuri AI Playground — Generative Linguistics & In-Context Testing</title>
-  <meta name="description" content="Interactive testing playground for Ormuri (Bargista / اُرموړی) language generation, split ergativity validation, and morphological inspection.">
-  
-  <!-- Modern Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&family=Noto+Nastaliq+Urdu:wght@400;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
-  <!-- Browser Tab Favicon / Logo -->
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-  <link rel="shortcut icon" href="favicon.ico">
-  <link rel="apple-touch-icon" href="favicon-apple.png">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover"
+    />
+    <title>Ormuri AI (بارګِسته) — Generative Linguistics & Endangered Language Model</title>
+    <meta
+      name="description"
+      content="Ormuri AI is the world's first generative linguistic engine for the endangered Ormuri (Bargista / اُرموړی) language of Kaniguram, Waziristan. Features 48-letter virtual keyboard, complete lexicon explorer, and morphological grammar validation."
+    />
+    <meta
+      name="keywords"
+      content="Ormuri AI, Ormuri language, Bargista, اُرموړی, بارګِسته, Kaniguram, Waziristan, Ormuri lexicon, endangered language AI, Pashto, Urdu, generative linguistics, split ergativity, Rozi Khan Burki, Ormuri dictionary, Barki language"
+    />
+    <meta name="author" content="Alisher Khan Burki / Ormuri AI Initiative" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="theme-color" content="#0F172A" />
+    
+    <!-- Canonical Link (Update to match your live Render or custom domain) -->
+    <link rel="canonical" href="https://ormuri-ai.onrender.com/" />
 
-  <link rel="stylesheet" href="style.css?v=3.0">
-</head>
-<body>
-  <div class="app-container">
-    <!-- Top Navigation Bar -->
-    <header class="navbar">
-      <div class="brand">
-        <div class="brand-icon">
-          <span>اُ</span>
-        </div>
-        <div class="brand-text">
-          <h1>Ormuri AI <span class="badge-lang">بارګِسته</span></h1>
-          <p class="subtitle">Endangered Language Generative Engine & Linguistic Playground</p>
-        </div>
-      </div>
+    <!-- Google Site Verification (Paste your verification code here after registering on Google Search Console) -->
+    <!-- <meta name="google-site-verification" content="YOUR_GOOGLE_SEARCH_CONSOLE_CODE" /> -->
 
-      <div class="header-badges">
-        <div class="badge badge-model" title="Underlying foundational model">
-          <span class="dot pulse"></span>
-          <span id="badgeModel">Gemini 3.8 Flash (Cached)</span>
-        </div>
-        <div class="badge badge-kb" title="Loaded unabridged knowledge base size">
-          <span id="badgeKb">📚 866,060 Tokens (2.0M Chars)</span>
-        </div>
-        <div class="badge badge-erg" title="Split ergativity guardrail active">
-          <span>⚡ Split Ergativity Active</span>
-        </div>
-        <div class="badge badge-corpus" title="Unabridged 11-work primary archive">
-          <span>📖 11 Primary Works (Unabridged)</span>
-        </div>
-      </div>
+    <!-- Open Graph / Facebook / WhatsApp / LinkedIn Preview Tags -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Ormuri AI (بارګِسته)" />
+    <meta property="og:url" content="https://ormuri-ai.onrender.com/" />
+    <meta property="og:title" content="Ormuri AI (بارګِسته) — Generative AI for Endangered Languages" />
+    <meta property="og:description" content="Preserving the endangered Ormuri (Bargista) language of South Waziristan with AI: 48-letter authentic virtual keyboard, 1,000+ words lexicon explorer, and split-ergativity grammar verification." />
+    <meta property="og:image" content="https://ormuri-ai.onrender.com/favicon.svg" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="ur_PK" />
+    <meta property="og:locale:alternate" content="ps_AF" />
 
-      <div class="header-actions">
-        <button id="btnOpenLexicon" class="btn btn-secondary" title="Search 6,657+ verified Ormuri words">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          <span id="lexiconBtnText">Lexicon (6,657 Words)</span>
-        </button>
-        <button id="btnOpenGrammar" class="btn btn-secondary" title="View Ergativity & Clitic Grammar Tables">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-          Grammar & Corpus
-        </button>
-        <button id="btnOpenSupport" class="btn btn-secondary btn-support" title="Support Ormuri AI Language Preservation">
-          <span class="btn-support-icon">🏛️</span>
-          <span>Support Cause</span>
-        </button>
-      </div>
-    </header>
+    <!-- Twitter Card Preview Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Ormuri AI (بارګِسته) — Generative Linguistics Playground" />
+    <meta name="twitter:description" content="First-of-its-kind AI generative engine for Ormuri (Bargista / اُرموړی) with complete lexicon lookup and multi-language support (English, Urdu, Pashto)." />
+    <meta name="twitter:image" content="https://ormuri-ai.onrender.com/favicon.svg" />
 
-    <!-- Main Playground Workspace -->
-    <main class="workbench-layout">
-      
-      <!-- Left Panel: Prompt Formulation -->
-      <section class="panel prompt-panel">
-        <div class="panel-header">
-          <div class="panel-title">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
-            <h2>Prompt Formulation</h2>
+    <!-- Schema.org JSON-LD Structured Data for Search Engine Rich Snippets -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Ormuri AI (بارګِسته)",
+      "url": "https://ormuri-ai.onrender.com/",
+      "description": "Generative AI playground and linguistic preservation engine for the endangered Ormuri (Bargista) language of Kaniguram, South Waziristan.",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "All",
+      "inLanguage": ["oru", "ur", "ps", "en"],
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Interactive Ormuri AI generative playground",
+        "48-letter Ormuri (Rozi Khan Burki orthography), Pashto, and Urdu virtual keyboard",
+        "Complete Ormuri Lexicon Explorer with IPA pronunciation and search",
+        "Morphological scratchpad and split ergativity algebraic grammar verification",
+        "Trilingual interface (English, Urdu, Pashto)"
+      ],
+      "creator": {
+        "@type": "Person",
+        "name": "Alisher Khan Burki"
+      }
+    }
+    </script>
+
+    <!-- Modern Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&family=Noto+Nastaliq+Urdu:wght@400;700&family=Outfit:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Browser Tab Favicon / Logo -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="apple-touch-icon" href="favicon-apple.png" />
+
+    <link rel="stylesheet" href="style.css?v=3.5" />
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- Top Navigation Bar -->
+      <header class="navbar">
+        <div class="brand">
+          <div class="brand-icon">
+            <span>اُ</span>
           </div>
-          <div class="mode-selector" id="modeSelector">
-            <button class="mode-btn active" data-mode="free">Free Prompt</button>
-            <button class="mode-btn" data-mode="story">Folk Story</button>
-            <button class="mode-btn" data-mode="proverb">Proverb</button>
-            <button class="mode-btn" data-mode="dialogue">Dialogue</button>
-            <button class="mode-btn" data-mode="grammar_check">Ergativity Test</button>
-          </div>
-        </div>
-
-        <!-- Quick Launch Scenario Chips -->
-        <div class="quick-chips">
-          <span class="chips-label">Quick Scenarios:</span>
-          <button class="chip" data-prompt="Translate and explain in authentic Ormuri using vocabulary from the novel Prechaak: 'In the cold winter of Kaniguram, the tribal elders gathered in the council house to resolve the blood dispute.'">📖 Novel Prechaak</button>
-          <button class="chip" data-prompt="Narrate a traditional Ormuri folk story about the ancient iron-smiths (اوستاکار) of Kaniguram and the heritage of Baar Pit mountain.">🏔️ Folk Stories</button>
-          <button class="chip" data-prompt="Translate into formal civic Ormuri (following the Charter of Human Rights): 'All human beings are born free and equal in dignity and rights.'">🕊️ Human Rights (UDHR)</button>
-          <button class="chip" data-prompt="Present an authentic Ormuri proverb about hospitality (مېلمۀ) and honor (ننګ), with literal word breakdown, cultural meaning, and practical moral lesson.">📜 Proverbs (1,029)</button>
-          <button class="chip" data-prompt="Present an authentic Ormuri idiom about courage and steadfastness from the Ormuri Idioms collection, with word gloss and idiomatic meaning.">💡 Idioms (1,491)</button>
-          <button class="chip" data-prompt="Write a natural conversational dialogue between two Ormuri speakers meeting in the morning, greeting each other, asking about health, family, and sheep grazing.">🗣️ Daily Greetings</button>
-          <button class="chip" data-prompt="Translate and linguistically explain: 'Asima took Asim to the mountain, but the boy gave the bread to his mother' (verify past transitive object agreement vs agentive clitic al).">⚡ Ergativity Test</button>
-        </div>
-
-        <!-- Textarea input -->
-        <div class="input-container">
-          <textarea 
-            id="promptInput" 
-            placeholder="Type your prompt in English, Urdu, or Ormuri...&#10;E.g., 'Describe the snowfall on Baar Pit mountain and the warmth of traditional hearths in Kaniguram.'"
-            rows="6"
-          ></textarea>
-        </div>
-
-        <!-- Controls Bar -->
-        <div class="controls-bar">
-          <div class="slider-group">
-            <label for="tempSlider">Creativity / Temp: <span id="tempValue">0.2</span></label>
-            <input type="range" id="tempSlider" min="0.0" max="1.0" step="0.05" value="0.2">
-          </div>
-          
-          <div class="action-buttons">
-            <button id="btnClear" class="btn btn-ghost" title="Clear input">Clear</button>
-            <button id="btnGenerate" class="btn btn-primary">
-              <span class="btn-spinner" id="btnSpinner"></span>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-              <span>Generate Ormuri</span>
-              <kbd>Ctrl+↵</kbd>
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Right Panel: Output & Scratchpad Inspector -->
-      <section class="panel output-panel" id="outputPanel">
-        <div class="panel-header">
-          <div class="panel-title">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
-            <h2>Linguistic Output & Inspector</h2>
-          </div>
-
-          <div class="output-tabs" id="outputTabs">
-            <button class="tab-btn active" data-tab="rendered">Polished Output</button>
-            <button class="tab-btn" data-tab="scratchpad">
-              Morphological Scratchpad
-              <span class="badge-mini" id="scratchpadBadge">Verified</span>
-            </button>
-            <button class="tab-btn" data-tab="raw">Raw Markdown</button>
-          </div>
-
-          <div class="output-actions">
-            <button id="btnCopyText" class="btn btn-icon" title="Copy Ormuri Text">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-            </button>
+          <div class="brand-text">
+            <h1>Ormuri AI <span class="badge-lang">بارګِسته</span></h1>
+            <p class="subtitle" data-i18n="brand_subtitle">
+              Endangered Language Generative Engine & Linguistic Playground
+            </p>
           </div>
         </div>
 
-        <div class="output-content-wrapper">
-          
-          <!-- State 1: Placeholder -->
-          <div id="outputPlaceholder" class="output-state placeholder-state">
-            <div class="empty-illustration">✨</div>
-            <h3>Ready to Generate</h3>
-            <p>Select a scenario chip on the left or write a custom prompt to test Ormuri generation with anti-hallucination verification.</p>
+        <div class="header-badges">
+          <div class="badge badge-model" title="Underlying foundational model">
+            <span class="dot pulse"></span>
+            <span id="badgeModel" data-i18n="badge_model">Gemini 3.8 Flash (Cached)</span>
           </div>
-
-          <!-- State 2: Loading State -->
-          <div id="outputLoading" class="output-state loading-state hidden">
-            <div class="spinner-large"></div>
-            <h3>Generating Authentic Ormuri...</h3>
-            <p class="loading-subtext">Grounding prompt against 866,060 token unabridged corpus (Prechaak 311pp, Luke 1-24, 1,491 Idioms, 1,029 Proverbs, UDHR, Poetry, 500+ Verbs) with Split Ergativity verification...</p>
-            <div class="timer-display">Elapsed: <span id="timerText">0.0s</span></div>
+          <div
+            class="badge badge-kb"
+            title="Loaded unabridged knowledge base size"
+          >
+            <span id="badgeKb" data-i18n="badge_kb">📚 866,060 Tokens (2.0M Chars)</span>
           </div>
-
-          <!-- State 2.5: API Quota / Limit Hit Support State (Replaces Placeholder/Output) -->
-          <div id="outputQuotaError" class="output-state quota-state hidden">
-            <div class="quota-icon">🏛️</div>
-            <h3>API Quota Exceeded / حد مکمل / حد پوره شو</h3>
-            <p class="quota-subtext">Due to recurring cloud infrastructure costs, the API limit has been reached. Please support this noble language preservation mission to restore continuous generation.</p>
-            
-            <div class="quota-lang-snippets">
-              <div class="quota-snippet" dir="rtl">
-                <strong>اردو:</strong> کلاؤڈ اور اے پی آئی اخراجات کی وجہ سے روزانہ کی حد عارضی طور پر مکمل ہو چکی ہے۔ ارموڑی (بارګِسته) نایاب قومی زبان کے تحفظ اور اس علمی منصوبے کو جاری رکھنے کے لیے مالی تعاون فرمائیں۔
-              </div>
-              <div class="quota-snippet" dir="rtl">
-                <strong>پښتو:</strong> د کلاوډ او سرور لګښتونو له امله د اے پي آئی حد د لنډ وخت لپاره بشپړ شوی دی. د تاریخي ارموړي ژبې د ژغورنې او دې AI نظام د دوام لپاره له موږ سره په خپلو مرستو ملاتړ وکړئ.
-              </div>
-            </div>
-
-            <div class="bank-details-card">
-              <div class="bank-card-title">Official Contribution Account (Askari Bank / ASCM)</div>
-              <div class="bank-row">
-                <span class="bank-label">Account Title (نوم / نام):</span>
-                <strong class="bank-val">ALI SHER KHAN BURKI</strong>
-              </div>
-              <div class="bank-row">
-                <span class="bank-label">Account / IBAN Number:</span>
-                <strong class="bank-val iban-val">PK62ASCM0001143230003241</strong>
-              </div>
-              <div class="bank-actions">
-                <button class="btn btn-primary" onclick="copySupportAccount()">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                  <span>Copy Account Details</span>
-                </button>
-                <button class="btn btn-secondary" onclick="resetToPlaceholder()">
-                  Back to Prompt
-                </button>
-              </div>
-            </div>
+          <div
+            class="badge badge-erg"
+            title="Split ergativity guardrail active"
+          >
+            <span data-i18n="badge_erg">⚡ Split Ergativity Active</span>
           </div>
-
-          <!-- State 3: Rendered Content Tab -->
-          <div id="tabRendered" class="tab-content hidden">
-            
-            <!-- Ormuri Text Card -->
-            <div class="card ormuri-card">
-              <div class="card-header">
-                <span class="card-tag tag-ormuri">اُرموړی رسم الخط (Bargista Script)</span>
-                <button class="btn-copy-card" onclick="copyCard('ormuriText')">Copy</button>
-              </div>
-              <div id="ormuriText" class="ormuri-prose" dir="rtl"></div>
-            </div>
-
-            <!-- Phonetic Romanization Card -->
-            <div class="card phonetic-card" id="cardRomanization">
-              <div class="card-header">
-                <span class="card-tag tag-phonetic">Phonetic Romanization (IPA Guide)</span>
-                <button class="btn-copy-card" onclick="copyCard('romanText')">Copy</button>
-              </div>
-              <div id="romanText" class="phonetic-prose"></div>
-            </div>
-
-            <!-- English Translation Card -->
-            <div class="card translation-card" id="cardTranslation">
-              <div class="card-header">
-                <span class="card-tag tag-trans">English Translation</span>
-                <button class="btn-copy-card" onclick="copyCard('transText')">Copy</button>
-              </div>
-              <div id="transText" class="translation-prose"></div>
-            </div>
+          <div
+            class="badge badge-corpus"
+            title="Unabridged 11-work primary archive"
+          >
+            <span data-i18n="badge_corpus">📖 11 Primary Works (Unabridged)</span>
           </div>
-
-          <!-- State 4: Scratchpad Tab -->
-          <div id="tabScratchpad" class="tab-content hidden">
-            <div class="scratchpad-banner">
-              <div class="banner-icon">🛡️</div>
-              <div class="banner-text">
-                <strong>Anti-Hallucination Guardrail Active</strong>
-                <span>Every sentence below was linguistically decomposed to verify TAM alignment, Wackernagel clitic hosting, and object-verb agreement before surface generation.</span>
-              </div>
-            </div>
-            <div id="scratchpadContent" class="scratchpad-inspector"></div>
-          </div>
-
-          <!-- State 5: Raw Output Tab -->
-          <div id="tabRaw" class="tab-content hidden">
-            <pre id="rawContent" class="raw-pre"></pre>
-          </div>
-
         </div>
-      </section>
 
-    </main>
+        <div class="header-actions">
+          <button
+            id="btnOpenLexicon"
+            class="btn btn-secondary"
+            title="Search 6,657+ verified Ormuri words"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <span id="lexiconBtnText"
+              ><span class="btn-label" data-i18n="btn_lexicon">Lexicon</span>
+              <span class="btn-count" data-i18n="btn_lexicon_count">(6,657 Ormuri Words)</span></span
+            >
+          </button>
+          <button
+            id="btnOpenGrammar"
+            class="btn btn-secondary"
+            title="View Ergativity & Clitic Grammar Tables"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+              <path
+                d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"
+              ></path>
+            </svg>
+            <span class="btn-label" data-i18n="btn_grammar">Grammar & Corpus</span>
+          </button>
+          <button
+            id="btnOpenSupport"
+            class="btn btn-secondary btn-support"
+            title="Support Ormuri AI Language Preservation"
+          >
+            <span class="btn-support-icon">🏛️</span>
+            <span class="btn-label" data-i18n="btn_support">Support</span
+            ><span class="btn-extra" data-i18n="btn_support_extra"> Cause</span>
+          </button>
 
-    <!-- Concise & Persuasive Main Page Footer Banner -->
-    <footer class="app-footer">
-      <div class="footer-inner">
-        <div class="footer-mission">
-          <span class="footer-badge">🏛️ Preservation Mission</span>
-          <span class="footer-txt-en">Ormuri is critically endangered. Support cloud & API costs to keep this heritage AI engine active.</span>
-          <span class="footer-dot">•</span>
-          <span class="footer-txt-ur" dir="rtl">ارموڑی زبان کے تحفظ کے لیے کلاؤڈ اخراجات میں مالی تعاون فرمائیں۔</span>
-          <span class="footer-dot">•</span>
-          <span class="footer-txt-ps" dir="rtl">د تاریخي بارګِسته ژبې د ژغورنې لپاره مرسته وکړئ.</span>
-        </div>
-        <div class="footer-bank">
-          <div class="footer-bank-info">
-            <span class="footer-acc-title">ALI SHER KHAN BURKI</span>
-            <code class="footer-iban">PK62ASCM0001143230003241</code>
-          </div>
-          <button class="btn-copy-footer" onclick="copySupportAccount()" title="Copy Askari Bank Account Details">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-            <span>Copy Account</span>
+          <!-- Language Selector Button -->
+          <button
+            id="btnOpenLang"
+            class="btn btn-secondary btn-lang-selector"
+            title="Choose Language / اپنی زبان منتخب کریں / خپله ژبه غوره کړئ"
+          >
+            <span class="lang-flag-current" id="navLangFlag">🌐</span>
+            <span class="btn-label" id="navLangName">Language</span>
           </button>
         </div>
-      </div>
-    </footer>
+      </header>
 
-    <!-- Slide-over Drawer: Lexicon Explorer -->
-    <aside id="lexiconDrawer" class="drawer">
-      <div class="drawer-header">
-        <div class="drawer-title">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          <h3>Ormuri Lexicon Explorer</h3>
-          <span class="count-pill" id="lexiconTotalPill">6,657 Words</span>
-        </div>
-        <button id="btnCloseLexicon" class="btn-close">&times;</button>
-      </div>
+      <!-- Main Playground Workspace -->
+      <main class="workbench-layout">
+        <!-- Left Panel: Prompt Formulation -->
+        <section class="panel prompt-panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M12 20h9"></path>
+                <path
+                  d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"
+                ></path>
+              </svg>
+              <h2 data-i18n="prompt_title">Prompt Formulation</h2>
+            </div>
+            <div class="mode-selector" id="modeSelector">
+              <button class="mode-btn active" data-mode="free" data-i18n="mode_free">
+                Free Prompt
+              </button>
+              <button class="mode-btn" data-mode="story" data-i18n="mode_story">Folk Story</button>
+              <button class="mode-btn" data-mode="proverb" data-i18n="mode_proverb">Proverb</button>
+              <button class="mode-btn" data-mode="dialogue" data-i18n="mode_dialogue">Dialogue</button>
+              <button class="mode-btn" data-mode="grammar_check" data-i18n="mode_ergativity">
+                Ergativity Test
+              </button>
+            </div>
+          </div>
 
-      <div class="drawer-controls">
-        <input type="text" id="lexiconSearchInput" placeholder="Search by Ormuri, English, Urdu, or IPA...">
-        <div class="pos-filters" id="posFilters">
-          <button class="pos-chip active" data-pos="">All</button>
-          <button class="pos-chip" data-pos="N">Nouns</button>
-          <button class="pos-chip" data-pos="V">Verbs</button>
-          <button class="pos-chip" data-pos="Adj">Adjectives</button>
-          <button class="pos-chip" data-pos="Adv">Adverbs</button>
-          <button class="pos-chip" data-pos="Prn">Pronouns/Clitics</button>
-        </div>
-      </div>
+          <!-- Quick Launch Scenario Chips -->
+          <div class="quick-chips">
+            <span class="chips-label" data-i18n="chips_label">Quick Scenarios:</span>
+            <button
+              class="chip"
+              data-chip="prechaak"
+              data-prompt="Translate and explain in authentic Ormuri using vocabulary from the novel Prechaak: 'In the cold winter of Kaniguram, the tribal elders gathered in the council house to resolve the blood dispute.'"
+            >
+              📖 Novel Prechaak
+            </button>
+            <button
+              class="chip"
+              data-chip="folk"
+              data-prompt="Narrate a traditional Ormuri folk story about the ancient iron-smiths (اوستاکار) of Kaniguram and the heritage of Baar Pit mountain."
+            >
+              🏔️ Folk Stories
+            </button>
+            <button
+              class="chip"
+              data-chip="udhr"
+              data-prompt="Translate into formal civic Ormuri (following the Charter of Human Rights): 'All human beings are born free and equal in dignity and rights.'"
+            >
+              🕊️ Human Rights (UDHR)
+            </button>
+            <button
+              class="chip"
+              data-chip="proverb"
+              data-prompt="Present an authentic Ormuri proverb about hospitality (مېلمۀ) and honor (ننګ), with literal word breakdown, cultural meaning, and practical moral lesson."
+            >
+              📜 Proverbs (1,029)
+            </button>
+            <button
+              class="chip"
+              data-chip="idiom"
+              data-prompt="Present an authentic Ormuri idiom about courage and steadfastness from the Ormuri Idioms collection, with word gloss and idiomatic meaning."
+            >
+              💡 Idioms (1,491)
+            </button>
+            <button
+              class="chip"
+              data-chip="dialogue"
+              data-prompt="Write a natural conversational dialogue between two Ormuri speakers meeting in the morning, greeting each other, asking about health, family, and sheep grazing."
+            >
+              🗣️ Daily Greetings
+            </button>
+            <button
+              class="chip"
+              data-chip="ergativity"
+              data-prompt="Translate and linguistically explain: 'Asima took Asim to the mountain, but the boy gave the bread to his mother' (verify past transitive object agreement vs agentive clitic al)."
+            >
+              ⚡ Ergativity Test
+            </button>
+          </div>
 
-      <div class="lexicon-results" id="lexiconResults">
-        <!-- Result cards injected via JS -->
-      </div>
-    </aside>
+          <!-- Textarea input -->
+          <div class="input-container">
+            <textarea
+              id="promptInput"
+              data-i18n-ph="prompt_placeholder"
+              placeholder="Type your prompt in English, Urdu, or Ormuri...&#10;E.g., 'Describe the snowfall on Baar Pit mountain and the warmth of traditional hearths in Kaniguram.'"
+              rows="6"
+            ></textarea>
+          </div>
 
-    <!-- Modal: Grammar Formula & Cheat Sheet -->
-    <div id="grammarModal" class="modal-overlay hidden">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3>📐 Ormuri Generative Grammar Cheat Sheet</h3>
-          <button id="btnCloseGrammar" class="btn-close">&times;</button>
-        </div>
-        <div class="modal-body">
-          
-          <div class="grammar-section">
-            <h4>1. Split Ergativity Sentence Formula</h4>
-            <div class="formula-box">
-              <div class="formula-line">
-                <span class="formula-tag pres">Present / Future</span>
-                <code>Subject[DIR] + Object + VerbStem[Pres]-Agr[Subj] + {بُو / سُو}</code>
+          <!-- Virtual Keyboard & Special Characters Toolbar -->
+          <div class="keyboard-toolbar">
+            <button
+              type="button"
+              id="btnToggleKeyboard"
+              class="btn-kb-toggle"
+              title="Toggle Virtual Keyboard / کیبورڈ کھولیں یا بند کریں"
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect>
+                <line x1="6" y1="8" x2="6" y2="8"></line>
+                <line x1="10" y1="8" x2="10" y2="8"></line>
+                <line x1="14" y1="8" x2="14" y2="8"></line>
+                <line x1="18" y1="8" x2="18" y2="8"></line>
+                <line x1="6" y1="12" x2="6" y2="12"></line>
+                <line x1="10" y1="12" x2="10" y2="12"></line>
+                <line x1="14" y1="12" x2="14" y2="12"></line>
+                <line x1="18" y1="12" x2="18" y2="12"></line>
+                <line x1="7" y1="16" x2="17" y2="16"></line>
+              </svg>
+              <span id="kbToggleText" data-i18n="btn_keyboard">⌨️ Virtual Keyboard</span>
+            </button>
+
+            <!-- Quick Special Characters Strip (Instant Insertion) -->
+            <div class="quick-chars-strip" id="quickCharsStrip">
+              <span class="quick-chars-hint">Special:</span>
+              <!-- Ormuri Rare Phonemes -->
+              <button type="button" class="q-char q-oru" data-char="ڒ" title="Ormuri retroflex 'ř' (U+0692)">ڒ</button>
+              <button type="button" class="q-char q-oru" data-char="ݫ" title="Ormuri alveolo-palatal 'ʑ' (U+076B)">ݫ</button>
+              <button type="button" class="q-char q-oru" data-char="ݭ" title="Ormuri alveolo-palatal 'ɕ' (U+076D)">ݭ</button>
+              <button type="button" class="q-char q-oru" data-char="یٛ" title="Ormuri modified ye">یٛ</button>
+              <!-- Pashto / Regional Letters -->
+              <button type="button" class="q-char q-ps" data-char="څ" title="ts">څ</button>
+              <button type="button" class="q-char q-ps" data-char="ځ" title="dz">ځ</button>
+              <button type="button" class="q-char q-ps" data-char="ښ" title="ṣ̌">ښ</button>
+              <button type="button" class="q-char q-ps" data-char="ږ" title="ẓ̌">ږ</button>
+              <button type="button" class="q-char q-ps" data-char="ڼ" title="ṇ">ڼ</button>
+              <button type="button" class="q-char q-ps" data-char="ګ" title="g">ګ</button>
+              <button type="button" class="q-char q-ps" data-char="ې" title="e (Pashto/Ormuri)">ې</button>
+              <button type="button" class="q-char q-ps" data-char="ۍ" title="feminine ay">ۍ</button>
+              <button type="button" class="q-char q-ps" data-char="ي" title="i">ي</button>
+              <!-- Urdu Specific Letters -->
+              <button type="button" class="q-char q-ur" data-char="ٹ" title="Urdu ṭ">ٹ</button>
+              <button type="button" class="q-char q-ur" data-char="ڈ" title="Urdu ḍ">ڈ</button>
+              <button type="button" class="q-char q-ur" data-char="ڑ" title="Urdu ṛ">ڑ</button>
+              <button type="button" class="q-char q-ur" data-char="ں" title="Noon Ghunna">ں</button>
+              <button type="button" class="q-char q-ur" data-char="ے" title="Bari Ye">ے</button>
+            </div>
+          </div>
+
+          <!-- Expandable Virtual Keyboard Panel -->
+          <div id="virtualKeyboardPanel" class="virtual-keyboard-panel hidden">
+            <div class="vk-header">
+              <div class="vk-tabs" id="vkTabs">
+                <button type="button" class="vk-tab-btn active" data-vk-lang="oru">
+                  <span>🏔️ بارګِسته (Ormuri)</span>
+                </button>
+                <button type="button" class="vk-tab-btn" data-vk-lang="ps">
+                  <span>☀️ پښتو (Pashto)</span>
+                </button>
+                <button type="button" class="vk-tab-btn" data-vk-lang="ur">
+                  <span>🇵🇰 اردو (Urdu)</span>
+                </button>
               </div>
-              <div class="formula-desc">Verb agrees with the SUBJECT in person and number. Particle <code>بُو</code> for present/habitual, <code>سُو</code> for future.</div>
-              
-              <div class="formula-line mt-3">
-                <span class="formula-tag past">Past Transitive</span>
-                <code>Agent-Clitic + Object[ABS] + VerbStem[Past]-Agr[Obj(Gender, Number)]</code>
+              <button type="button" id="btnCloseKeyboard" class="vk-btn-close" title="Close Keyboard">&times;</button>
+            </div>
+
+            <!-- Keys Grid Container (Dynamically rendered based on active vk-tab) -->
+            <div class="vk-keys-container" id="vkKeysContainer" dir="rtl">
+              <!-- Dynamically populated via JS -->
+            </div>
+
+            <!-- Action Controls Row -->
+            <div class="vk-bottom-bar" dir="rtl">
+              <button type="button" class="vk-action-key vk-space" data-action="space" title="Space / فاصله">
+                <span>⎵ فاصلہ (Space)</span>
+              </button>
+              <button type="button" class="vk-action-key vk-backspace" data-action="backspace" title="Backspace / ړنګول">
+                <span>⌫ ړنګول (Backspace)</span>
+              </button>
+              <button type="button" class="vk-action-key vk-enter" data-action="enter" title="Newline / نوې کرښه">
+                <span>↵ نوی سطر (Enter)</span>
+              </button>
+              <button type="button" class="vk-action-key vk-clear" data-action="clear" title="Clear input / پاکول">
+                <span>صاف کریں</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Controls Bar -->
+          <div class="controls-bar">
+            <div class="slider-group">
+              <label for="tempSlider"
+                ><span data-i18n="temp_label">Creativity / Temp:</span> <span id="tempValue">0.2</span></label
+              >
+              <input
+                type="range"
+                id="tempSlider"
+                min="0.0"
+                max="1.0"
+                step="0.05"
+                value="0.2"
+              />
+            </div>
+
+            <div class="action-buttons">
+              <button id="btnClear" class="btn btn-ghost" title="Clear input" data-i18n="btn_clear">
+                Clear
+              </button>
+              <button id="btnGenerate" class="btn btn-primary">
+                <span class="btn-spinner" id="btnSpinner"></span>
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+                <span data-i18n="btn_generate">Generate Ormuri</span>
+                <kbd>Ctrl+↵</kbd>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Right Panel: Output & Scratchpad Inspector -->
+        <section class="panel output-panel" id="outputPanel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <polyline points="4 17 10 11 4 5"></polyline>
+                <line x1="12" y1="19" x2="20" y2="19"></line>
+              </svg>
+              <h2 data-i18n="output_title">Linguistic Output & Inspector</h2>
+            </div>
+
+            <div class="output-tabs" id="outputTabs">
+              <button class="tab-btn active" data-tab="rendered" data-i18n="tab_rendered">
+                Polished Output
+              </button>
+              <button class="tab-btn" data-tab="scratchpad">
+                <span data-i18n="tab_scratchpad"><span class="tab-long">Morphological </span>Scratchpad</span>
+                <span class="badge-mini" id="scratchpadBadge" data-i18n="tab_scratchpad_badge">Verified</span>
+              </button>
+              <button class="tab-btn" data-tab="raw" data-i18n="tab_raw">Raw Markdown</button>
+            </div>
+
+            <div class="output-actions">
+              <button
+                id="btnCopyText"
+                class="btn btn-icon"
+                title="Copy Ormuri Text"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path
+                    d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="output-content-wrapper">
+            <!-- State 1: Placeholder -->
+            <div id="outputPlaceholder" class="output-state placeholder-state">
+              <div class="empty-illustration">✨</div>
+              <h3 data-i18n="placeholder_title">Ready to Generate</h3>
+              <p data-i18n="placeholder_text">
+                Select a scenario chip on the left or write a custom prompt to
+                test Ormuri generation with anti-hallucination verification.
+              </p>
+            </div>
+
+            <!-- State 2: Loading State -->
+            <div id="outputLoading" class="output-state loading-state hidden">
+              <div class="spinner-large"></div>
+              <h3 data-i18n="loading_title">Generating Authentic Ormuri...</h3>
+              <p class="loading-subtext" data-i18n="loading_text">
+                Grounding prompt against 866,060 token unabridged corpus
+                (Prechaak 311pp, 1,491 Idioms, 1,029 Proverbs, UDHR, Poetry,
+                500+ Verbs) with Split Ergativity verification...
+              </p>
+              <div class="timer-display">
+                <span data-i18n="elapsed_label">Elapsed:</span> <span id="timerText">0.0s</span>
               </div>
-              <div class="formula-desc">Verb agrees with the OBJECT in gender and number. Agent is marked by an enclitic hosted on the first constituent or <code>ال</code> (al).</div>
-            </div>
-          </div>
-
-          <div class="grammar-section">
-            <h4>2. Wackernagel (2P) Pronominal Enclitics Matrix</h4>
-            <table class="cheat-table">
-              <thead>
-                <tr>
-                  <th>Person</th>
-                  <th>Enclitic</th>
-                  <th>Past Agentive ("by...")</th>
-                  <th>Possessive ("my/your...")</th>
-                  <th>Object/Dative</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td>1st Sg</td><td><code>-m</code></td><td><code>داک-م</code> (done by me)</td><td><code>نام-م</code> (my name)</td><td><code>آر</code> (to me)</td></tr>
-                <tr><td>2nd Sg</td><td><code>-t</code></td><td><code>داک-ت</code> (done by you)</td><td><code>نام-ت</code> (your name)</td><td><code>آت</code> (to you)</td></tr>
-                <tr><td>3rd Sg</td><td><code>-wə / -l</code></td><td><code>دوک-وه</code> (done by him)</td><td><code>نام-وې</code> (his/her name)</td><td><code>آل</code> (to him/her)</td></tr>
-                <tr><td>1st Pl</td><td><code>-nyē / -n</code></td><td><code>داک-ن</code> (done by us)</td><td><code>نام-نيې</code> (our name)</td><td><code>ماخ کی</code> (to us)</td></tr>
-                <tr><td>2nd Pl</td><td><code>-dəl / -n</code></td><td><code>داک-ن</code> (done by you)</td><td><code>نام-نيې</code> (your name)</td><td><code>دل</code> (to you pl)</td></tr>
-                <tr><td>3rd Pl</td><td><code>-n</code></td><td><code>داک-ن</code> (done by them)</td><td><code>نام-نيې</code> (their name)</td><td><code>کُورئ کی</code> (to them)</td></tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div class="grammar-section">
-            <h4>3. Core Suppletive Verb Roots</h4>
-            <table class="cheat-table">
-              <thead>
-                <tr>
-                  <th>Verb</th>
-                  <th>Infinitive</th>
-                  <th>Pres Stem</th>
-                  <th>Past Masc</th>
-                  <th>Past Fem</th>
-                  <th>Verbal Noun</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td>to be</td><td><code>بیوک</code></td><td><code>هـ-</code> (h-)</td><td><code>بیوک</code></td><td><code>بُک</code></td><td><code>بېڅن</code></td></tr>
-                <tr><td>to do</td><td><code>کېک</code></td><td><code>کې-</code> (kē-)</td><td><code>دوک</code></td><td><code>داک</code></td><td><code>کېڅن</code></td></tr>
-                <tr><td>to give</td><td><code>ڒیوک</code></td><td><code>ڒ-</code> (ř-)</td><td><code>ڒُوک</code></td><td><code>ڒُوک</code></td><td><code>ڒیوڅن</code></td></tr>
-                <tr><td>to go</td><td><code>څېک</code></td><td><code>څ-</code> (ts-)</td><td><code>څېک</code></td><td><code>څلک</code></td><td><code>څېڅن</code></td></tr>
-                <tr><td>to come</td><td><code>زوک</code></td><td><code>ز-</code> (z-)</td><td><code>زوک</code></td><td><code>زوک</code></td><td><code>زېڅن</code></td></tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div class="grammar-section">
-            <h4>4. Unabridged 11-Work Primary Corpus Archive (866,060 Tokens / 2,001,849 Chars)</h4>
-            <table class="cheat-table">
-              <thead>
-                <tr>
-                  <th>Primary Source Work</th>
-                  <th>Coverage & Completeness</th>
-                  <th>Key Focus</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td><strong>Novel Prechaak</strong></td><td>All 311 pages complete (100% unabridged)</td><td>Historical Kaniguram narrative, dialect prose</td></tr>
-                <tr><td><strong>Gospel of Luke in Bargista</strong></td><td>Chapters 1–24 (all 869 paragraphs)</td><td>Classical complex syntax & narrative register</td></tr>
-                <tr><td><strong>Universal Declaration of Human Rights</strong></td><td>All 30 Articles complete</td><td>Modern civic, legal & human rights vocabulary</td></tr>
-                <tr><td><strong>Ormuri Idioms Collection</strong></td><td>All 1,491 paragraphs</td><td>Metaphors, idiomatic phrases & cultural speech</td></tr>
-                <tr><td><strong>Ormuri Proverbs Collection</strong></td><td>All 1,029 paragraphs</td><td>Traditional tribal wisdom, ethics & oral lore</td></tr>
-                <tr><td><strong>Traditional Folk Stories & Lore</strong></td><td>Complete folk narratives</td><td>Mythology, Kaniguram iron-smithing history</td></tr>
-                <tr><td><strong>Ormuri Poetry Archive</strong></td><td>All 52 pages of authentic verse</td><td>Poetic meter, rhymes, emotional expression</td></tr>
-                <tr><td><strong>500+ Inflected Ormuri Verbs</strong></td><td>All 47 pages of paradigms</td><td>Transitive/intransitive, past stems, agreement</td></tr>
-                <tr><td><strong>Ormuri Primer & Reader</strong></td><td>All 109 pages complete</td><td>Orthography, phonology & foundational lessons</td></tr>
-                <tr><td><strong>Grammar Tables & Abbreviations</strong></td><td>All linguistic formulas</td><td>Split ergativity, clitic hosting, case declensions</td></tr>
-                <tr><td><strong>Comprehensive Lexicon</strong></td><td>6,657 headwords with IPA & POS</td><td>Full verified lexical coverage</td></tr>
-              </tbody>
-            </table>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal: Support & Donation Dialog -->
-    <div id="supportModal" class="modal-overlay hidden">
-      <div class="modal-content modal-support">
-        <div class="modal-header">
-          <div class="support-modal-title">
-            <span class="support-icon">🏛️</span>
-            <h3>Support Ormuri (Bargista) AI Preservation</h3>
-          </div>
-          <button id="btnCloseSupport" class="btn-close">&times;</button>
-        </div>
-        <div class="modal-body">
-          <div class="support-lang-cards">
-            <!-- English -->
-            <div class="support-lang-card">
-              <div class="lang-label">English</div>
-              <p>Ormuri (Bargista) is a critically endangered Eastern Iranian heritage language native to Kaniguram, South Waziristan, with only a few thousand fluent speakers remaining worldwide. This AI generative engine was developed to document, preserve, and revitalize this ancient linguistic heritage for future generations.</p>
-              <p>Operating high-memory GPU cloud hosting, context caching (866,060 tokens), and foundation model APIs requires recurring infrastructure expenses. If you wish to support this noble cultural mission, contributions are deeply appreciated and directly sustain server uptime.</p>
             </div>
 
-            <!-- Urdu -->
-            <div class="support-lang-card" dir="rtl">
-              <div class="lang-label">اردو (قومی ورثے کا تحفظ)</div>
-              <p>ارموڑی (بارګِسته) جنوبی وزیرستان کے تاریخی علاقے کانیگرم کی ایک انتہائی نایاب، قدیم اور معدوم ہوتی ہوئی زبان ہے جس کے بولنے والے اب محدود تعداد میں رہ گئے ہیں۔ یہ خودکار مصنوعی ذہانت (AI) کا نظام اس عظیم تاریخی زبان کو ہمیشہ کے لیے محفوظ اور زندہ رکھنے کے لیے تیار کیا گیا ہے۔</p>
-              <p>کلاؤڈ سرور اور جدید اے پی آئی کے ماہانہ اخراجات پورے کرنے کے لیے آپ کے مالی تعاون کی اشد ضرورت ہے۔ اس علمی اور قومی خدمت میں حصہ ڈال کر اپنی مادری زبان کی بقاء کے ضامن بنیں۔</p>
-            </div>
+            <!-- State 2.5: API Quota / Limit Hit Support State (Replaces Placeholder/Output) -->
+            <div id="outputQuotaError" class="output-state quota-state hidden">
+              <div class="quota-icon">🏛️</div>
+              <h3>API Quota Exceeded / حد مکمل / حد پوره شو</h3>
+              <p class="quota-subtext">
+                Due to recurring cloud infrastructure costs, the API limit has
+                been reached. Please support this noble language preservation
+                mission to restore continuous generation.
+              </p>
 
-            <!-- Pashto -->
-            <div class="support-lang-card" dir="rtl">
-              <div class="lang-label">پښتو (د تاریخي بارګِسته ژبې ژغورنه)</div>
-              <p>ارموړي (بارګِسته) زموږ د کانیګرم او وزیرستان یوه بې سارې لرغونې او تاریخي ژبه ده چې د ورکېدو له جدي ګواښ سره مخ ده. دا مفت AI نظام په ځانګړي ډول د دې لپاره جوړ شوی چې زموږ تاریخي کلتور او ادبي شتمني د تل لپاره خوندي وساتي.</p>
-              <p>د سرور او اے پي آئی لګښتونو پوره کولو لپاره ستاسو مالي مرسته د دې ژبې د بقا ضامنه ده. د دې مبارکې او تاریخي هڅې د دوام لپاره له موږ سره په خپلو مرستو ملاتړ وکړئ.</p>
-            </div>
-          </div>
-
-          <!-- Official Bank Details Card -->
-          <div class="bank-details-box">
-            <div class="bank-details-header">
-              <span class="bank-badge">Official Contribution Account</span>
-              <span class="bank-name">Askari Bank Limited (ASCM)</span>
-            </div>
-            <div class="bank-grid">
-              <div class="bank-field">
-                <span class="field-label">Account Title (نوم / نام):</span>
-                <strong class="field-value">ALI SHER KHAN BURKI</strong>
+              <div class="quota-lang-snippets">
+                <div class="quota-snippet" dir="rtl">
+                  <strong>اردو:</strong> کلاؤڈ اور اے پی آئی اخراجات کی وجہ سے
+                  روزانہ کی حد عارضی طور پر مکمل ہو چکی ہے۔ ارموڑی (بارګِسته)
+                  نایاب قومی زبان کے تحفظ اور اس علمی منصوبے کو جاری رکھنے کے
+                  لیے مالی تعاون فرمائیں۔
+                </div>
+                <div class="quota-snippet" dir="rtl">
+                  <strong>پښتو:</strong> د کلاوډ او سرور لګښتونو له امله د اے پي
+                  آئی حد د لنډ وخت لپاره بشپړ شوی دی. د تاریخي ارموړي ژبې د
+                  ژغورنې او دې AI نظام د دوام لپاره له موږ سره په خپلو مرستو
+                  ملاتړ وکړئ.
+                </div>
               </div>
-              <div class="bank-field">
-                <span class="field-label">Account / IBAN Number:</span>
-                <strong class="field-value iban-value">PK62ASCM0001143230003241</strong>
+
+              <div class="bank-details-card">
+                <div class="bank-card-title">
+                  Official Contribution Account (Askari Bank / ASCM)
+                </div>
+                <div class="bank-row">
+                  <span class="bank-label">Account Title (نوم / نام):</span>
+                  <strong class="bank-val">ALI SHER KHAN BURKI</strong>
+                </div>
+                <div class="bank-row">
+                  <span class="bank-label">Account / IBAN Number:</span>
+                  <strong class="bank-val iban-val"
+                    >PK62ASCM0001143230003241</strong
+                  >
+                </div>
+                <div class="bank-actions">
+                  <button
+                    class="btn btn-primary"
+                    onclick="copySupportAccount()"
+                  >
+                    <svg
+                      width="15"
+                      height="15"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <rect
+                        x="9"
+                        y="9"
+                        width="13"
+                        height="13"
+                        rx="2"
+                        ry="2"
+                      ></rect>
+                      <path
+                        d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+                      ></path>
+                    </svg>
+                    <span>Copy Account Details</span>
+                  </button>
+                  <button
+                    class="btn btn-secondary"
+                    onclick="resetToPlaceholder()"
+                  >
+                    Back to Prompt
+                  </button>
+                </div>
               </div>
             </div>
-            <button class="btn btn-primary btn-copy-full" onclick="copySupportAccount()">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              <span>Copy Account Details (IBAN)</span>
+
+            <!-- State 3: Rendered Content Tab -->
+            <div id="tabRendered" class="tab-content hidden">
+              <!-- Ormuri Text Card -->
+              <div class="card ormuri-card">
+                <div class="card-header">
+                  <span class="card-tag tag-ormuri" data-i18n="card_ormuri_tag"
+                    >اُرموړی رسم الخط (Bargista Script)</span
+                  >
+                  <button
+                    class="btn-copy-card"
+                    onclick="copyCard('ormuriText')"
+                    data-i18n="btn_copy"
+                  >
+                    Copy
+                  </button>
+                </div>
+                <div id="ormuriText" class="ormuri-prose" dir="rtl"></div>
+              </div>
+
+              <!-- Phonetic Romanization Card -->
+              <div class="card phonetic-card" id="cardRomanization">
+                <div class="card-header">
+                  <span class="card-tag tag-phonetic" data-i18n="card_phonetic_tag"
+                    >Phonetic Romanization (IPA Guide)</span
+                  >
+                  <button class="btn-copy-card" onclick="copyCard('romanText')" data-i18n="btn_copy">
+                    Copy
+                  </button>
+                </div>
+                <div id="romanText" class="phonetic-prose"></div>
+              </div>
+
+              <!-- English Translation Card -->
+              <div class="card translation-card" id="cardTranslation">
+                <div class="card-header">
+                  <span class="card-tag tag-trans" id="cardTransTag" data-i18n="card_trans_tag">English Translation</span>
+                  <button class="btn-copy-card" onclick="copyCard('transText')" data-i18n="btn_copy">
+                    Copy
+                  </button>
+                </div>
+                <div id="transText" class="translation-prose"></div>
+              </div>
+            </div>
+
+            <!-- State 4: Scratchpad Tab -->
+            <div id="tabScratchpad" class="tab-content hidden">
+              <div class="scratchpad-banner">
+                <div class="banner-icon">🛡️</div>
+                <div class="banner-text">
+                  <strong data-i18n="scratchpad_banner_title">Anti-Hallucination Guardrail Active</strong>
+                  <span data-i18n="scratchpad_banner_text"
+                    >Every sentence below was linguistically decomposed to
+                    verify TAM alignment, Wackernagel clitic hosting, and
+                    object-verb agreement before surface generation.</span
+                  >
+                </div>
+              </div>
+              <div id="scratchpadContent" class="scratchpad-inspector"></div>
+            </div>
+
+            <!-- State 5: Raw Output Tab -->
+            <div id="tabRaw" class="tab-content hidden">
+              <pre id="rawContent" class="raw-pre"></pre>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Concise & Persuasive Main Page Footer Banner -->
+      <footer class="app-footer">
+        <div class="footer-inner">
+          <div class="footer-mission">
+            <span class="footer-badge" data-i18n="footer_mission_title">🏛️ Preservation Mission</span>
+            <span class="footer-txt-en" id="footerMissionTxt" data-i18n="footer_mission_text"
+              >Ormuri is critically endangered. Support cloud & API costs to
+              keep this heritage AI engine active.</span
+            >
+            <span class="footer-dot">•</span>
+            <span class="footer-txt-ur" dir="rtl"
+              >ارموڑی زبان کے تحفظ کے لیے کلاؤڈ اخراجات میں مالی تعاون
+              فرمائیں۔</span
+            >
+            <span class="footer-dot">•</span>
+            <span class="footer-txt-ps" dir="rtl"
+              >د تاریخي بارګِسته ژبې د ژغورنې لپاره مرسته وکړئ.</span
+            >
+          </div>
+          <div class="footer-bank">
+            <div class="footer-bank-info">
+              <span class="footer-acc-title">ALI SHER KHAN BURKI</span>
+              <code class="footer-iban">PK62ASCM0001143230003241</code>
+            </div>
+            <button
+              class="btn-copy-footer"
+              onclick="copySupportAccount()"
+              title="Copy Askari Bank Account Details"
+            >
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path
+                  d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+                ></path>
+              </svg>
+              <span data-i18n="footer_btn_copy">Copy Account</span>
             </button>
           </div>
         </div>
+      </footer>
+
+      <!-- Slide-over Drawer: Lexicon Explorer -->
+      <aside id="lexiconDrawer" class="drawer">
+        <div class="drawer-header">
+          <div class="drawer-title">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <h3 data-i18n="drawer_title">Ormuri Lexicon Explorer</h3>
+            <span class="count-pill" id="lexiconTotalPill">6,657 Words</span>
+          </div>
+          <button id="btnCloseLexicon" class="btn-close">&times;</button>
+        </div>
+
+        <div class="drawer-controls">
+          <input
+            type="text"
+            id="lexiconSearchInput"
+            data-i18n-ph="search_placeholder"
+            placeholder="Search by Ormuri, English, Urdu, or IPA..."
+          />
+          <div class="pos-filters" id="posFilters">
+            <button class="pos-chip active" data-pos="" data-i18n="pos_all">All</button>
+            <button class="pos-chip" data-pos="N" data-i18n="pos_n">Nouns</button>
+            <button class="pos-chip" data-pos="V" data-i18n="pos_v">Verbs</button>
+            <button class="pos-chip" data-pos="Adj" data-i18n="pos_adj">Adjectives</button>
+            <button class="pos-chip" data-pos="Adv" data-i18n="pos_adv">Adverbs</button>
+            <button class="pos-chip" data-pos="Prn" data-i18n="pos_prn">Pronouns/Clitics</button>
+          </div>
+          <div class="lex-status-bar" id="lexStatusBar">
+            <span class="lex-status-text" id="lexStatusText"
+              >Loading words...</span
+            >
+            <button
+              id="btnLoadAllLexicon"
+              class="btn-load-all-sm hidden"
+              data-i18n="btn_load_all"
+              title="Load all remaining words immediately"
+            >
+              Load All Words
+            </button>
+          </div>
+        </div>
+
+        <div class="lexicon-results" id="lexiconResults">
+          <!-- Result cards injected via JS -->
+        </div>
+      </aside>
+
+      <!-- Modal: Grammar Formula & Cheat Sheet -->
+      <div id="grammarModal" class="modal-overlay hidden">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 data-i18n="grammar_title">📐 Ormuri Generative Grammar Cheat Sheet</h3>
+            <button id="btnCloseGrammar" class="btn-close">&times;</button>
+          </div>
+          <div class="modal-body">
+            <div class="grammar-section">
+              <h4>1. Split Ergativity Sentence Formula</h4>
+              <div class="formula-box">
+                <div class="formula-line">
+                  <span class="formula-tag pres">Present / Future</span>
+                  <code
+                    >Subject[DIR] + Object + VerbStem[Pres]-Agr[Subj] + {بُو /
+                    سُو}</code
+                  >
+                </div>
+                <div class="formula-desc">
+                  Verb agrees with the SUBJECT in person and number. Particle
+                  <code>بُو</code> for present/habitual, <code>سُو</code> for
+                  future.
+                </div>
+
+                <div class="formula-line mt-3">
+                  <span class="formula-tag past">Past Transitive</span>
+                  <code
+                    >Agent-Clitic + Object[ABS] + VerbStem[Past]-Agr[Obj(Gender,
+                    Number)]</code
+                  >
+                </div>
+                <div class="formula-desc">
+                  Verb agrees with the OBJECT in gender and number. Agent is
+                  marked by an enclitic hosted on the first constituent or
+                  <code>ال</code> (al).
+                </div>
+              </div>
+            </div>
+
+            <div class="grammar-section">
+              <h4>2. Wackernagel (2P) Pronominal Enclitics Matrix</h4>
+              <table class="cheat-table">
+                <thead>
+                  <tr>
+                    <th>Person</th>
+                    <th>Enclitic</th>
+                    <th>Past Agentive ("by...")</th>
+                    <th>Possessive ("my/your...")</th>
+                    <th>Object/Dative</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1st Sg</td>
+                    <td><code>-m</code></td>
+                    <td><code>داک-م</code> (done by me)</td>
+                    <td><code>نام-م</code> (my name)</td>
+                    <td><code>آر</code> (to me)</td>
+                  </tr>
+                  <tr>
+                    <td>2nd Sg</td>
+                    <td><code>-t</code></td>
+                    <td><code>داک-ت</code> (done by you)</td>
+                    <td><code>نام-ت</code> (your name)</td>
+                    <td><code>آت</code> (to you)</td>
+                  </tr>
+                  <tr>
+                    <td>3rd Sg</td>
+                    <td><code>-wə / -l</code></td>
+                    <td><code>دوک-وه</code> (done by him)</td>
+                    <td><code>نام-وې</code> (his/her name)</td>
+                    <td><code>آل</code> (to him/her)</td>
+                  </tr>
+                  <tr>
+                    <td>1st Pl</td>
+                    <td><code>-nyē / -n</code></td>
+                    <td><code>داک-ن</code> (done by us)</td>
+                    <td><code>نام-نيې</code> (our name)</td>
+                    <td><code>ماخ کی</code> (to us)</td>
+                  </tr>
+                  <tr>
+                    <td>2nd Pl</td>
+                    <td><code>-dəl / -n</code></td>
+                    <td><code>داک-ن</code> (done by you)</td>
+                    <td><code>نام-نيې</code> (your name)</td>
+                    <td><code>دل</code> (to you pl)</td>
+                  </tr>
+                  <tr>
+                    <td>3rd Pl</td>
+                    <td><code>-n</code></td>
+                    <td><code>داک-ن</code> (done by them)</td>
+                    <td><code>نام-نيې</code> (their name)</td>
+                    <td><code>کُورئ کی</code> (to them)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="grammar-section">
+              <h4>3. Core Suppletive Verb Roots</h4>
+              <table class="cheat-table">
+                <thead>
+                  <tr>
+                    <th>Verb</th>
+                    <th>Infinitive</th>
+                    <th>Pres Stem</th>
+                    <th>Past Masc</th>
+                    <th>Past Fem</th>
+                    <th>Verbal Noun</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>to be</td>
+                    <td><code>بیوک</code></td>
+                    <td><code>هـ-</code> (h-)</td>
+                    <td><code>بیوک</code></td>
+                    <td><code>بُک</code></td>
+                    <td><code>بېڅن</code></td>
+                  </tr>
+                  <tr>
+                    <td>to do</td>
+                    <td><code>کېک</code></td>
+                    <td><code>کې-</code> (kē-)</td>
+                    <td><code>دوک</code></td>
+                    <td><code>داک</code></td>
+                    <td><code>کېڅن</code></td>
+                  </tr>
+                  <tr>
+                    <td>to give</td>
+                    <td><code>ڒیوک</code></td>
+                    <td><code>ڒ-</code> (ř-)</td>
+                    <td><code>ڒُوک</code></td>
+                    <td><code>ڒُوک</code></td>
+                    <td><code>ڒیوڅن</code></td>
+                  </tr>
+                  <tr>
+                    <td>to go</td>
+                    <td><code>څېک</code></td>
+                    <td><code>څ-</code> (ts-)</td>
+                    <td><code>څېک</code></td>
+                    <td><code>څلک</code></td>
+                    <td><code>څېڅن</code></td>
+                  </tr>
+                  <tr>
+                    <td>to come</td>
+                    <td><code>زوک</code></td>
+                    <td><code>ز-</code> (z-)</td>
+                    <td><code>زوک</code></td>
+                    <td><code>زوک</code></td>
+                    <td><code>زېڅن</code></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="grammar-section">
+              <h4>
+                4. Unabridged 11-Work Primary Corpus Archive (866,060 Tokens /
+                2,001,849 Chars)
+              </h4>
+              <table class="cheat-table">
+                <thead>
+                  <tr>
+                    <th>Primary Source Work</th>
+                    <th>Coverage & Completeness</th>
+                    <th>Key Focus</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Novel Prechaak</strong></td>
+                    <td>All 311 pages complete (100% unabridged)</td>
+                    <td>Historical Kaniguram narrative, dialect prose</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Gospel of Luke in Bargista</strong></td>
+                    <td>Chapters 1–24 (all 869 paragraphs)</td>
+                    <td>Classical complex syntax & narrative register</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <strong>Universal Declaration of Human Rights</strong>
+                    </td>
+                    <td>All 30 Articles complete</td>
+                    <td>Modern civic, legal & human rights vocabulary</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Ormuri Idioms Collection</strong></td>
+                    <td>All 1,491 paragraphs</td>
+                    <td>Metaphors, idiomatic phrases & cultural speech</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Ormuri Proverbs Collection</strong></td>
+                    <td>All 1,029 paragraphs</td>
+                    <td>Traditional tribal wisdom, ethics & oral lore</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Traditional Folk Stories & Lore</strong></td>
+                    <td>Complete folk narratives</td>
+                    <td>Mythology, Kaniguram iron-smithing history</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Ormuri Poetry Archive</strong></td>
+                    <td>All 52 pages of authentic verse</td>
+                    <td>Poetic meter, rhymes, emotional expression</td>
+                  </tr>
+                  <tr>
+                    <td><strong>500+ Inflected Ormuri Verbs</strong></td>
+                    <td>All 47 pages of paradigms</td>
+                    <td>Transitive/intransitive, past stems, agreement</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Ormuri Primer & Reader</strong></td>
+                    <td>All 109 pages complete</td>
+                    <td>Orthography, phonology & foundational lessons</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Grammar Tables & Abbreviations</strong></td>
+                    <td>All linguistic formulas</td>
+                    <td>Split ergativity, clitic hosting, case declensions</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Comprehensive Lexicon</strong></td>
+                    <td>6,657 headwords with IPA & POS</td>
+                    <td>Full verified lexical coverage</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal: Support & Donation Dialog -->
+      <div id="supportModal" class="modal-overlay hidden">
+        <div class="modal-content modal-support">
+          <div class="modal-header">
+            <div class="support-modal-title">
+              <span class="support-icon">🏛️</span>
+              <h3 data-i18n="support_title">Support Ormuri (Bargista) AI Preservation</h3>
+            </div>
+            <button id="btnCloseSupport" class="btn-close">&times;</button>
+          </div>
+          <div class="modal-body">
+            <div class="support-lang-cards">
+              <!-- English -->
+              <div class="support-lang-card">
+                <div class="lang-label">English</div>
+                <p>
+                  Ormuri (Bargista) is a critically endangered Eastern Iranian
+                  heritage language native to Kaniguram, South Waziristan, with
+                  only a few thousand fluent speakers remaining worldwide. This
+                  AI generative engine was developed to document, preserve, and
+                  revitalize this ancient linguistic heritage for future
+                  generations.
+                </p>
+                <p>
+                  Operating high-memory GPU cloud hosting, context caching
+                  (866,060 tokens), and foundation model APIs requires recurring
+                  infrastructure expenses. If you wish to support this noble
+                  cultural mission, contributions are deeply appreciated and
+                  directly sustain server uptime.
+                </p>
+              </div>
+
+              <!-- Urdu -->
+              <div class="support-lang-card" dir="rtl">
+                <div class="lang-label">اردو (قومی ورثے کا تحفظ)</div>
+                <p>
+                  ارموڑی (بارګِسته) جنوبی وزیرستان کے تاریخی علاقے کانیگرم کی
+                  ایک انتہائی نایاب، قدیم اور معدوم ہوتی ہوئی زبان ہے جس کے
+                  بولنے والے اب محدود تعداد میں رہ گئے ہیں۔ یہ خودکار مصنوعی
+                  ذہانت (AI) کا نظام اس عظیم تاریخی زبان کو ہمیشہ کے لیے محفوظ
+                  اور زندہ رکھنے کے لیے تیار کیا گیا ہے۔
+                </p>
+                <p>
+                  کلاؤڈ سرور اور جدید اے پی آئی کے ماہانہ اخراجات پورے کرنے کے
+                  لیے آپ کے مالی تعاون کی اشد ضرورت ہے۔ اس علمی اور قومی خدمت
+                  میں حصہ ڈال کر اپنی مادری زبان کی بقاء کے ضامن بنیں۔
+                </p>
+              </div>
+
+              <!-- Pashto -->
+              <div class="support-lang-card" dir="rtl">
+                <div class="lang-label">
+                  پښتو (د تاریخي بارګِسته ژبې ژغورنه)
+                </div>
+                <p>
+                  ارموړي (بارګِسته) زموږ د کانیګرم او وزیرستان یوه بې سارې
+                  لرغونې او تاریخي ژبه ده چې د ورکېدو له جدي ګواښ سره مخ ده. دا
+                  مفت AI نظام په ځانګړي ډول د دې لپاره جوړ شوی چې زموږ تاریخي
+                  کلتور او ادبي شتمني د تل لپاره خوندي وساتي.
+                </p>
+                <p>
+                  د سرور او اے پي آئی لګښتونو پوره کولو لپاره ستاسو مالي مرسته د
+                  دې ژبې د بقا ضامنه ده. د دې مبارکې او تاریخي هڅې د دوام لپاره
+                  له موږ سره په خپلو مرستو ملاتړ وکړئ.
+                </p>
+              </div>
+            </div>
+
+            <!-- Official Bank Details Card -->
+            <div class="bank-details-box">
+              <div class="bank-details-header">
+                <span class="bank-badge">Official Contribution Account</span>
+                <span class="bank-name">Askari Bank Limited (ASCM)</span>
+              </div>
+              <div class="bank-grid">
+                <div class="bank-field">
+                  <span class="field-label">Account Title (نوم / نام):</span>
+                  <strong class="field-value">ALI SHER KHAN BURKI</strong>
+                </div>
+                <div class="bank-field">
+                  <span class="field-label">Account / IBAN Number:</span>
+                  <strong class="field-value iban-value"
+                    >PK62ASCM0001143230003241</strong
+                  >
+                </div>
+              </div>
+              <button
+                class="btn btn-primary btn-copy-full"
+                onclick="copySupportAccount()"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path
+                    d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+                  ></path>
+                </svg>
+                <span>Copy Account Details (IBAN)</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Language Selection Modal (Child-Friendly & 3 Languages) -->
+      <div id="langModal" class="modal-overlay hidden">
+        <div class="modal-content modal-language animate-scale-up">
+          <div class="lang-modal-header">
+            <div class="lang-welcome-badge">
+              <span class="pulse-emoji">🌍</span>
+              <span class="welcome-text">Language Selection / خپله ژبه / اپنی زبان</span>
+            </div>
+            <h2 class="lang-modal-title">
+              Choose Your Language
+            </h2>
+            <p class="lang-modal-subtitle">
+              Click your language to continue • اپنی زبان منتخب کریں • خپله ژبه غوره کړئ
+            </p>
+            <button id="btnCloseLang" class="btn-close" aria-label="Close Language Modal">&times;</button>
+          </div>
+
+          <div class="lang-selection-grid">
+            <!-- English -->
+            <button type="button" class="lang-card lang-card-en" data-lang="en">
+              <div class="lang-card-flag">🇬🇧</div>
+              <div class="lang-card-body">
+                <div class="lang-card-name">English</div>
+                <div class="lang-card-native">International</div>
+                <div class="lang-card-tagline">Start in English &rarr;</div>
+              </div>
+              <div class="lang-card-select-btn">
+                <span>Select English</span>
+              </div>
+            </button>
+
+            <!-- Urdu -->
+            <button type="button" class="lang-card lang-card-ur" data-lang="ur">
+              <div class="lang-card-flag">🇵🇰</div>
+              <div class="lang-card-body">
+                <div class="lang-card-name">اردو</div>
+                <div class="lang-card-native">قومی زبان (پاکستان)</div>
+                <div class="lang-card-tagline">اردو میں شروع کریں &larr;</div>
+              </div>
+              <div class="lang-card-select-btn">
+                <span>اردو منتخب کریں</span>
+              </div>
+            </button>
+
+            <!-- Pashto -->
+            <button type="button" class="lang-card lang-card-ps" data-lang="ps">
+              <div class="lang-card-flag">☀️</div>
+              <div class="lang-card-body">
+                <div class="lang-card-name">پښتو</div>
+                <div class="lang-card-native">سیمه ییزه او قومي ژبه</div>
+                <div class="lang-card-tagline">په پښتو کې پیل کړئ &larr;</div>
+              </div>
+              <div class="lang-card-select-btn">
+                <span>پښتو وټاکئ</span>
+              </div>
+            </button>
+          </div>
+
+          <div class="lang-modal-footer">
+            <span class="lang-footer-hint">💡 You can change your language anytime from the top menu (🌐 button).</span>
+          </div>
+        </div>
       </div>
     </div>
 
-  </div>
-
-  <script src="app.js?v=3.0"></script>
-</body>
+    <script src="app.js?v=3.5"></script>
+  </body>
 </html>

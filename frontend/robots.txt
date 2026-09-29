@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Prevent search engine crawlers from triggering costly AI generation calls
+Disallow: /api/generate
+
+# Sitemap reference (Update the domain to match your live Render or custom domain)
+Sitemap: https://ormuri-ai.onrender.com/sitemap.xml

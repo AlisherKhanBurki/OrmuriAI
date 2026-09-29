@@ -10,13 +10,20 @@ import argparse
 import time
 from typing import Optional
 
-# Ensure UTF-8 stdout on Windows
-if sys.stdout.encoding != 'utf-8':
-    sys.stdout.reconfigure(encoding='utf-8')
+# Ensure UTF-8 stdout and line buffering on Windows
+try:
+    sys.stdout.reconfigure(encoding='utf-8', line_buffering=True)
+    sys.stderr.reconfigure(encoding='utf-8', line_buffering=True)
+except Exception:
+    pass
 
 from google import genai
 from google.genai import types
 from google.genai.errors import APIError, ClientError
+
+import hashlib
+import json
+import threading
 
 # Load .env file if present
 _env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
@@ -29,8 +36,71 @@ if os.path.exists(_env_path):
                 os.environ.setdefault(_k.strip(), _v.strip())
 
 DEFAULT_API_KEY = os.environ.get("GEMINI_API_KEY", "")
+_keys_str = os.environ.get("GEMINI_API_KEYS", "") or DEFAULT_API_KEY
+ALL_API_KEYS = [k.strip() for k in _keys_str.split(",") if k.strip()]
+if not ALL_API_KEYS and DEFAULT_API_KEY:
+    ALL_API_KEYS = [DEFAULT_API_KEY]
+
 MODEL_NAME = "gemini-3.8-flash"
 CACHE_TTL = "86400s"  # 24-hour TTL
+
+# Local response caching to avoid consuming API tokens for repeated queries
+RESPONSE_CACHE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "response_cache.json")
+
+def get_cached_response(prompt: str) -> Optional[str]:
+    """Retrieve pre-generated response from local cache if identical prompt exists."""
+    try:
+        if os.path.exists(RESPONSE_CACHE_FILE):
+            with open(RESPONSE_CACHE_FILE, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                key_hash = hashlib.md5(prompt.strip().encode("utf-8")).hexdigest()
+                if key_hash in data:
+                    print(f"[CACHE] Serving from local response cache (0 API tokens consumed)!")
+                    return data[key_hash]
+    except Exception as e:
+        print(f"[CACHE-WARN] Failed to read response cache: {e}")
+    return None
+
+def set_cached_response(prompt: str, response_text: str):
+    """Save newly generated response to local cache."""
+    try:
+        data = {}
+        if os.path.exists(RESPONSE_CACHE_FILE):
+            with open(RESPONSE_CACHE_FILE, "r", encoding="utf-8") as f:
+                data = json.load(f)
+        key_hash = hashlib.md5(prompt.strip().encode("utf-8")).hexdigest()
+        data[key_hash] = response_text
+        with open(RESPONSE_CACHE_FILE, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        print(f"[CACHE-WARN] Failed to write response cache: {e}")
+
+class ApiKeyPool:
+    """Manages pool of free/paid Gemini API keys with automatic rotation on rate limits."""
+    def __init__(self, keys: list[str]):
+        self.keys = keys if keys else [""]
+        self.current_idx = 0
+        self._lock = threading.Lock()
+        self.clients = {}
+
+    def get_client(self) -> tuple[genai.Client, str, int]:
+        with self._lock:
+            key = self.keys[self.current_idx]
+            if key not in self.clients:
+                self.clients[key] = genai.Client(api_key=key)
+            return self.clients[key], key, self.current_idx
+
+    def rotate(self, reason: str = "") -> tuple[genai.Client, str, int]:
+        with self._lock:
+            old_idx = self.current_idx
+            self.current_idx = (self.current_idx + 1) % len(self.keys)
+            new_key = self.keys[self.current_idx]
+            if new_key not in self.clients:
+                self.clients[new_key] = genai.Client(api_key=new_key)
+            print(f"[KEY-ROTATION] Key #{old_idx + 1} ({reason}) -> Switched to Key #{self.current_idx + 1} of {len(self.keys)}")
+            return self.clients[new_key], new_key, self.current_idx
+
+KEY_POOL = ApiKeyPool(ALL_API_KEYS)
 
 SYSTEM_GUARDRAIL_PROMPT = """You are the world's foremost computational linguist and native speaker specialist for Ormuri (Bargista / اُرموړی), an endangered Western Iranian language spoken in Kaniguram, South Waziristan.
 
@@ -69,12 +139,12 @@ CRITICAL GENERATIVE CONSTRAINTS (ZERO TOLERANCE FOR DEVIATION):
 """
 
 def load_knowledge_base(kb_path: str) -> str:
-    """Load the compiled ormuri_knowledge_base.md document."""
+    """Load the compiled ormuri_knowledge_base.md or ormuri_core_kb.md document."""
     if not os.path.exists(kb_path):
         raise FileNotFoundError(f"Knowledge base file not found at: {kb_path}")
     with open(kb_path, "r", encoding="utf-8") as f:
         content = f.read()
-    print(f"[OK] Loaded Knowledge Base ({len(content)} characters, ~{len(content.split())} words)")
+    print(f"[OK] Loaded Knowledge Base ({len(content)} characters, ~{len(content.split())} words from {os.path.basename(kb_path)})")
     return content
 
 def get_or_create_cache(client: genai.Client, kb_content: str, model_name: str = MODEL_NAME) -> Optional[str]:
@@ -105,7 +175,7 @@ def get_or_create_cache(client: genai.Client, kb_content: str, model_name: str =
     except ClientError as e:
         if "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e):
             print(f"[INFO] Free tier active: Persistent server-side cache storage has limit=0 tokens.")
-            print(f"       Proceeding with direct In-Context Learning (ICL) inside {model_name}'s 1M-token window.")
+            print(f"       Proceeding with direct In-Context Learning (ICL) inside {model_name}'s window.")
             return None
         print(f"[WARNING] Cache creation encountered ClientError: {e}")
         return None
@@ -114,61 +184,84 @@ def get_or_create_cache(client: genai.Client, kb_content: str, model_name: str =
         return None
 
 def generate_ormuri(
-    client: genai.Client,
-    prompt: str,
+    client: Optional[genai.Client] = None,
+    prompt: str = "",
     cache_name: Optional[str] = None,
     kb_content: Optional[str] = None,
     model_name: str = MODEL_NAME,
     temperature: float = 0.2
 ) -> str:
-    """Execute generation with anti-hallucination scratchpad verification and robust retry."""
+    """Execute generation with local cache lookup, anti-hallucination scratchpad, and seamless key rotation."""
+    # 1. Check local response cache (0 API tokens used)
+    cached = get_cached_response(prompt)
+    if cached:
+        return cached
+
     print(f"\n[*] Generating Ormuri response with {model_name} (temperature={temperature})...")
     
     models_to_try = [model_name]
     if "3.8" in model_name:
-        models_to_try.append("gemini-3.7-flash")
-    
+        models_to_try.extend(["gemini-3.5-flash", "gemini-flash-latest"])
+
     last_error = None
-    for current_model in models_to_try:
-        for attempt in range(1, 4):
-            try:
-                if cache_name and current_model == model_name:
-                    response = client.models.generate_content(
-                        model=current_model,
-                        contents=prompt,
-                        config=types.GenerateContentConfig(
-                            cached_content=cache_name,
-                            temperature=temperature,
+    max_key_rotations = max(1, len(KEY_POOL.keys))
+
+    for key_turn in range(max_key_rotations):
+        active_client, active_key, key_idx = KEY_POOL.get_client()
+
+        for current_model in models_to_try:
+            for attempt in range(1, 3):
+                try:
+                    if cache_name and current_model == model_name:
+                        response = active_client.models.generate_content(
+                            model=current_model,
+                            contents=prompt,
+                            config=types.GenerateContentConfig(
+                                cached_content=cache_name,
+                                temperature=temperature,
+                            )
                         )
-                    )
-                else:
-                    # In-Context Learning: Provide prompt alongside the knowledge base
-                    full_prompt = (
-                        f"{SYSTEM_GUARDRAIL_PROMPT}\n\n"
-                        f"# ORMURI REFERENCE KNOWLEDGE BASE\n\n{kb_content}\n\n"
-                        f"---\n\n"
-                        f"USER GENERATION TASK:\n{prompt}"
-                    )
-                    response = client.models.generate_content(
-                        model=current_model,
-                        contents=[
-                            types.Content(role="user", parts=[types.Part.from_text(text=full_prompt)])
-                        ],
-                        config=types.GenerateContentConfig(
-                            temperature=temperature,
+                    else:
+                        # In-Context Learning: Provide prompt alongside the knowledge base
+                        full_prompt = (
+                            f"{SYSTEM_GUARDRAIL_PROMPT}\n\n"
+                            f"# ORMURI REFERENCE KNOWLEDGE BASE\n\n{kb_content}\n\n"
+                            f"---\n\n"
+                            f"USER GENERATION TASK:\n{prompt}"
                         )
-                    )
-                return response.text
-            except (ClientError, APIError) as e:
-                last_error = e
-                print(f"[RETRY] Model {current_model} attempt {attempt}/3 returned error: {e}")
-                time.sleep(3 * attempt)
-            except Exception as e:
-                last_error = e
-                print(f"[RETRY] Unexpected error on {current_model}: {e}")
-                time.sleep(3 * attempt)
-    
-    raise RuntimeError(f"Failed to generate after retrying models {models_to_try}: {last_error}")
+                        response = active_client.models.generate_content(
+                            model=current_model,
+                            contents=[
+                                types.Content(role="user", parts=[types.Part.from_text(text=full_prompt)])
+                            ],
+                            config=types.GenerateContentConfig(
+                                temperature=temperature,
+                            )
+                        )
+                    
+                    res_text = response.text
+                    # Save to local response cache for future instant free retrieval
+                    set_cached_response(prompt, res_text)
+                    return res_text
+
+                except (ClientError, APIError) as e:
+                    last_error = e
+                    err_lower = str(e).lower()
+                    is_quota = any(w in err_lower for w in ["429", "resource_exhausted", "quota", "rate limit"])
+                    is_unavailable = any(w in err_lower for w in ["503", "unavailable", "high demand", "overloaded"])
+                    if (is_quota or is_unavailable) and len(KEY_POOL.keys) > 1:
+                        KEY_POOL.rotate(reason="429/503 Service Limit")
+                        break  # Break inner model attempts to try next key or fallback
+                    print(f"[RETRY] Key #{key_idx + 1} Model {current_model} attempt {attempt}/2 returned error: {e}")
+                    time.sleep(1.0 * attempt)
+                except Exception as e:
+                    last_error = e
+                    print(f"[RETRY] Key #{key_idx + 1} Unexpected error on {current_model}: {e}")
+                    time.sleep(1.0 * attempt)
+
+
+    raise RuntimeError(f"Failed to generate after trying {max_key_rotations} API keys: {last_error}")
+
 
 def main():
     parser = argparse.ArgumentParser(description="Ormuri AI Generative Linguistics Engine")

@@ -1,6 +1,323 @@
 /**
- * Ormuri AI Playground — Client Application Logic (v3.0)
+ * Ormuri AI Playground — Client Application Logic (v3.2)
+ * Full 4-Language Multilingual System: English, Urdu, Pashto, Ormuri (Bargista)
  */
+
+const LANG_META = {
+  en: { name: 'English', native: 'English', flag: '🇬🇧', dir: 'ltr' },
+  ur: { name: 'اردو', native: 'اردو', flag: '🇵🇰', dir: 'rtl' },
+  ps: { name: 'پښتو', native: 'پښتو', flag: '☀️', dir: 'rtl' }
+};
+
+const TRANSLATIONS = {
+  en: {
+    brand_subtitle: 'Endangered Language Generative Engine & Linguistic Playground',
+    badge_model: 'Gemini 3.8 Flash (Cached)',
+    badge_kb: '📚 866,060 Tokens (2.0M Chars)',
+    badge_erg: '⚡ Split Ergativity Active',
+    badge_corpus: '📖 11 Primary Works (Unabridged)',
+    btn_lexicon: 'Lexicon',
+    btn_lexicon_count: '(6,657 Ormuri Words)',
+    btn_grammar: 'Grammar & Corpus',
+    btn_support: 'Support',
+    btn_support_extra: ' Cause',
+    prompt_title: 'Prompt Formulation',
+    mode_free: 'Free Prompt',
+    mode_story: 'Folk Story',
+    mode_proverb: 'Proverb',
+    mode_dialogue: 'Dialogue',
+    mode_ergativity: 'Ergativity Test',
+    chips_label: 'Quick Scenarios:',
+    prompt_placeholder: "Type your prompt in English, Urdu, or Ormuri...\nE.g., 'Describe the snowfall on Baar Pit mountain and the warmth of traditional hearths in Kaniguram.'",
+    temp_label: 'Creativity / Temp:',
+    btn_clear: 'Clear',
+    btn_generate: 'Generate Ormuri',
+    output_title: 'Linguistic Output & Inspector',
+    tab_rendered: 'Polished Output',
+    tab_scratchpad: 'Morphological Scratchpad',
+    tab_scratchpad_badge: 'Verified',
+    tab_raw: 'Raw Markdown',
+    placeholder_title: 'Ready to Generate',
+    placeholder_text: 'Select a scenario chip on the left or write a custom prompt to test Ormuri generation with anti-hallucination verification.',
+    loading_title: 'Generating Authentic Ormuri...',
+    loading_text: 'Grounding prompt against 866,060 token unabridged corpus (Prechaak 311pp, 1,491 Idioms, 1,029 Proverbs, UDHR, Poetry, 500+ Verbs) with Split Ergativity verification...',
+    elapsed_label: 'Elapsed:',
+    card_ormuri_tag: 'اُرموړی رسم الخط (Bargista Script)',
+    card_phonetic_tag: 'Phonetic Romanization (IPA Guide)',
+    card_trans_tag: 'Translation (اردو / English)',
+    btn_copy: 'Copy',
+    scratchpad_banner_title: 'Anti-Hallucination Guardrail Active',
+    scratchpad_banner_text: 'Every sentence below was linguistically decomposed to verify TAM alignment, Wackernagel clitic hosting, and object-verb agreement before surface generation.',
+    footer_mission_title: '🏛️ Preservation Mission',
+    footer_mission_text: 'Ormuri is critically endangered. Support cloud & API costs to keep this heritage AI engine active.',
+    footer_btn_copy: 'Copy Account',
+    drawer_title: 'Ormuri Lexicon Explorer',
+    search_placeholder: 'Search by Ormuri, English, Urdu, or IPA...',
+    pos_all: 'All',
+    pos_n: 'Nouns',
+    pos_v: 'Verbs',
+    pos_adj: 'Adjectives',
+    pos_adv: 'Adverbs',
+    pos_prn: 'Pronouns/Clitics',
+    btn_load_all: 'Load All Words',
+    grammar_title: '📐 Ormuri Generative Grammar Cheat Sheet',
+    support_title: 'Support Ormuri (Bargista) AI Preservation',
+    alert_no_prompt: 'Please type or select a prompt first.',
+    copied_toast: 'Copied to clipboard! ✓',
+    ormuri_copied_toast: 'Ormuri text copied! ✓',
+    account_copied_toast: 'Account details copied: PK62ASCM0001143230003241 (ALI SHER KHAN BURKI) ✓',
+    word_inserted: 'Inserted into prompt!',
+    btn_keyboard: '⌨️ Virtual Keyboard'
+  },
+  ur: {
+    brand_subtitle: 'نایاب تاریخی زبان کا جنریٹو انجن اور لسانی تجربہ گاہ',
+    badge_model: 'جیمینائی 3.8 فلیش (کیشڈ)',
+    badge_kb: '📚 866,060 ٹوکن (2.0M حروف)',
+    badge_erg: '⚡ ارګیٹیویٹی گارڈریل فعال',
+    badge_corpus: '📖 11 بنیادی کتب و متون',
+    btn_lexicon: 'جامع لغت',
+    btn_lexicon_count: '(6,657 ارموڑی الفاظ)',
+    btn_grammar: 'قواعد و متون',
+    btn_support: 'مالی تعاون',
+    btn_support_extra: ' کریں',
+    prompt_title: 'پرامپٹ اور ہدایات',
+    mode_free: 'آزاد پرامپٹ',
+    mode_story: 'لوک داستان',
+    mode_proverb: 'کہاوت / ضرب المثل',
+    mode_dialogue: 'روزمرہ مکالمہ',
+    mode_ergativity: 'ارګیٹیویٹی ٹیسٹ',
+    chips_label: 'فوری نمونہ جات:',
+    prompt_placeholder: "اپنا پرامپٹ اردو، انگریزی یا ارموڑی میں لکھیں...\nمثال: 'بار پیٹ پہاڑ پر برفباری اور کانیگرم کے روایتی گھرانوں کے احوال بیان کریں۔'",
+    temp_label: 'تخلیقی صلاحیت / ٹمپریچر:',
+    btn_clear: 'صاف کریں',
+    btn_generate: 'ارموڑی متن بنائیں',
+    output_title: 'لسانی آؤٹ پٹ اور تجزیہ',
+    tab_rendered: 'تیار شدہ متن',
+    tab_scratchpad: 'صرفی و نحوی تجزیہ',
+    tab_scratchpad_badge: 'تصدیق شدہ',
+    tab_raw: 'خام مارک ڈاؤن',
+    placeholder_title: 'متن بنانے کے لیے تیار',
+    placeholder_text: 'بائیں جانب سے کوئی نمونہ منتخب کریں یا اپنا پرامپٹ لکھ کر ارموڑی زبان کی تصدیق شدہ تخلیق دیکھیں۔',
+    loading_title: 'مستند ارموڑی متن تیار ہو رہا ہے...',
+    loading_text: '866,060 ٹوکنز پر مشتمل ذخیرہ (ناول پریچاک، 1,491 محاورے، 1,029 کہاوتیں، انسانی حقوق، شاعری اور افعال) سے تصدیق جاری ہے...',
+    elapsed_label: 'صرف شدہ وقت:',
+    card_ormuri_tag: 'اُرموړی رسم الخط (بارګِسته)',
+    card_phonetic_tag: 'تلفظ اور رومن رسم الخط (IPA)',
+    card_trans_tag: 'ترجمہ (اردو / انگریزی)',
+    btn_copy: 'کاپی کریں',
+    scratchpad_banner_title: 'تحفظِ صحتِ لسانی (گارڈریل) فعال',
+    scratchpad_banner_text: 'ہر جملے کو قواعد، فاعلی کلاٹکس (واکرنیگل) اور مفعولی مطابقت کے اصولوں کے تحت جانچا گیا ہے۔',
+    footer_mission_title: '🏛️ تحفظِ ورثہ مشن',
+    footer_mission_text: 'ارموڑی ایک معدوم ہوتی نایاب زبان ہے۔ کلاؤڈ اور اے پی آئی اخراجات کے لیے تعاون فرمائیں۔',
+    footer_btn_copy: 'اکاؤنٹ کاپی کریں',
+    drawer_title: 'ارموڑی جامع لغت (Lexicon)',
+    search_placeholder: 'ارموڑی، اردو، انگریزی یا تلفظ سے تلاش کریں...',
+    pos_all: 'سبھی',
+    pos_n: 'اسم (Nouns)',
+    pos_v: 'فعل (Verbs)',
+    pos_adj: 'صفت (Adjectives)',
+    pos_adv: 'متعلق فعل (Adverbs)',
+    pos_prn: 'ضمیر / کلاٹک',
+    btn_load_all: 'تمام الفاظ لوڈ کریں',
+    grammar_title: '📐 ارموڑی قواعد و نحوی رہنمائی',
+    support_title: 'ارموڑی (بارګِسته) اے آئی تحفظ کے لیے تعاون',
+    alert_no_prompt: 'براہ کرم پہلے پرامپٹ لکھیں یا منتخب کریں۔',
+    copied_toast: 'کاپی ہو گیا! ✓',
+    ormuri_copied_toast: 'ارموڑی متن کاپی ہو گیا! ✓',
+    account_copied_toast: 'اکاؤنٹ تفصیلات کاپی ہو گئیں: PK62ASCM0001143230003241 (علی شیر خان برکی) ✓',
+    word_inserted: 'لفظ پرامپٹ میں شامل کر دیا گیا!',
+    btn_keyboard: '⌨️ ورچوئل کیبورڈ'
+  },
+  ps: {
+    brand_subtitle: 'د نایابه ژبې د تولید ماشین او د ژبپوهنې ډګر',
+    badge_model: 'جیمیناي 3.8 فلیش (کیش شوی)',
+    badge_kb: '📚 866,060 ټوکنه (2.0M توري)',
+    badge_erg: '⚡ ارګیټیوټي ګارډرییل فعال',
+    badge_corpus: '📖 11 اصلي کتابونه او لیکنې',
+    btn_lexicon: 'د لغتونو قاموس',
+    btn_lexicon_count: '(6,657 ارموړي کلمې)',
+    btn_grammar: 'ګرامر او متون',
+    btn_support: 'ملاتړ وکړئ',
+    btn_support_extra: ' (مرسته)',
+    prompt_title: 'د پوښتنې / پرامپټ جوړول',
+    mode_free: 'ازاد پرامپټ',
+    mode_story: 'ولسي کیسه',
+    mode_proverb: 'متل',
+    mode_dialogue: 'ورځنۍ خبرې',
+    mode_ergativity: 'د ارګیټیوټي آزموینه',
+    chips_label: 'سمدستي بېلګې:',
+    prompt_placeholder: "خپله پوښتنه په پښتو، اردو، انګلیسي یا ارموړي ولیکئ...\nد بېلګې په توګه: 'د بار پېټ پر غره د واورې اورېدو او د کانیګرم د ولسي حجرو تودوخه بیان کړئ.'",
+    temp_label: 'تخلیقي کچه / ټمپریچر:',
+    btn_clear: 'پاک کړئ',
+    btn_generate: 'ارموړي متن جوړ کړئ',
+    output_title: 'ژبنیزې لاسته راوړنې او څېړنه',
+    tab_rendered: 'بشپړ متن',
+    tab_scratchpad: 'صرفي او نحوي شننه',
+    tab_scratchpad_badge: 'تایید شوی',
+    tab_raw: 'خام مارک ډاون',
+    placeholder_title: 'د تولید لپاره چمتو دی',
+    placeholder_text: 'له کیڼ اړخ څخه یوه بېلګه وټاکئ یا خپله پوښتنه ولیکئ ترڅو د ارموړي ژبې باوري تولید وګورئ.',
+    loading_title: 'اصلي او کره ارموړي متن جوړېږي...',
+    loading_text: 'د 866,060 ټوکن لرونکي ذخیرې (ناول پریچاک، 1,491 اصطلاحات، 1,029 متلونه، د بشري حقونو منشور او افعال) څخه تصدیق روان دی...',
+    elapsed_label: 'تېر شوی وخت:',
+    card_ormuri_tag: 'اُرموړی رسم الخط (بارګِسته)',
+    card_phonetic_tag: 'تلفظ او رومن لیکدود (IPA)',
+    card_trans_tag: 'ژباړه (پښتو / انګلیسي / اردو)',
+    btn_copy: 'کاپي کړئ',
+    scratchpad_banner_title: 'د ژبني سموالي ساتونکی فعال دی',
+    scratchpad_banner_text: 'هر تېر شوی جمله د صرفي اصولو، فاعلي کلاټکسونو او د مفعول او فعل د سمون له مخې څېړل شوې ده.',
+    footer_mission_title: '🏛️ د ژبې ژغورنې ماموریت',
+    footer_mission_text: 'ارموړي یوه نایابه او تاریخي ژبه ده. د کلاوډ او سرور لګښتونو کې مرسته وکړئ.',
+    footer_btn_copy: 'اکاونټ کاپي کړئ',
+    drawer_title: 'د ارموړي ژبې قاموس',
+    search_placeholder: 'په ارموړي، پښتو، اردو، انګلیسي یا فونټیک وپلټئ...',
+    pos_all: 'ټول',
+    pos_n: 'نومونه (Nouns)',
+    pos_v: 'فعلونه (Verbs)',
+    pos_adj: 'صفتونه (Adjectives)',
+    pos_adv: 'قیدونه (Adverbs)',
+    pos_prn: 'ضمائر / کلاټیک',
+    btn_load_all: 'ټول کلمات راولئ',
+    grammar_title: '📐 د ارموړي ژبې ګرامر او جدولونه',
+    support_title: 'د ارموړي (بارګِسته) ژبې له ساتنې سره مرسته',
+    alert_no_prompt: 'مهرباني وکړئ لومړی پوښتنه یا پرامپټ ولیکئ.',
+    copied_toast: 'کاپي شوه! ✓',
+    ormuri_copied_toast: 'ارموړي متن کاپي شو! ✓',
+    account_copied_toast: 'د بانکي حساب شمېره کاپي شوه: PK62ASCM0001143230003241 (علي شیر خان برکي) ✓',
+    word_inserted: 'کلمه پرامپټ ته واستول شوه!',
+    btn_keyboard: '⌨️ مجازی کیبورډ'
+  }
+};
+
+const CHIP_PROMPTS = {
+  en: {
+    prechaak: {
+      label: '📖 Novel Prechaak',
+      prompt: "Translate and explain in authentic Ormuri using vocabulary from the novel Prechaak: 'In the cold winter of Kaniguram, the tribal elders gathered in the council house to resolve the blood dispute.'"
+    },
+    folk: {
+      label: '🏔️ Folk Stories',
+      prompt: "Narrate a traditional Ormuri folk story about the ancient iron-smiths (اوستاکار) of Kaniguram and the heritage of Baar Pit mountain."
+    },
+    udhr: {
+      label: '🕊️ Human Rights (UDHR)',
+      prompt: "Translate into formal civic Ormuri (following the Charter of Human Rights): 'All human beings are born free and equal in dignity and rights.'"
+    },
+    proverb: {
+      label: '📜 Proverbs (1,029)',
+      prompt: "Present an authentic Ormuri proverb about hospitality (مېلمۀ) and honor (ننګ), with literal word breakdown, cultural meaning, and practical moral lesson."
+    },
+    idiom: {
+      label: '💡 Idioms (1,491)',
+      prompt: "Present an authentic Ormuri idiom about courage and steadfastness from the Ormuri Idioms collection, with word gloss and idiomatic meaning."
+    },
+    dialogue: {
+      label: '🗣️ Daily Greetings',
+      prompt: "Write a natural conversational dialogue between two Ormuri speakers meeting in the morning, greeting each other, asking about health, family, and sheep grazing."
+    },
+    ergativity: {
+      label: '⚡ Ergativity Test',
+      prompt: "Translate and linguistically explain: 'Asima took Asim to the mountain, but the boy gave the bread to his mother' (verify past transitive object agreement vs agentive clitic al)."
+    }
+  },
+  ur: {
+    prechaak: {
+      label: '📖 ناول پریچاک',
+      prompt: "ناول پریچاک کے مستند ذخیرہ الفاظ کے ساتھ ارموڑی میں ترجمہ کریں: 'کانیگرم کے سرد موسم سرما میں قبائلی عمائدین خون کے جھگڑے کو سلجھانے کے لیے بیٹھک میں جمع ہوئے۔'"
+    },
+    folk: {
+      label: '🏔️ لوک کہانیاں',
+      prompt: "کانیگرم کے قدیم لوہاروں (اوستاکار) اور بار پیٹ پہاڑ کی روایت پر ایک روایتی ارموڑی لوک کہانی بیان کریں۔"
+    },
+    udhr: {
+      label: '🕊️ انسانی حقوق (UDHR)',
+      prompt: "انسانی حقوق کے عالمی منشور کے مطابق ارموڑی میں ترجمہ کریں: 'تمام انسان پیدائشی طور پر آزاد اور وقار و حقوق میں برابر ہیں۔'"
+    },
+    proverb: {
+      label: '📜 ضرب الامثال (1,029)',
+      prompt: "مہمان نوازی (مېلمۀ) اور ننگ و ناموس پر ایک مستند ارموڑی کہاوت پیش کریں جس میں لفظ بہ لفظ تجزیہ اور اخلاقی درس شامل ہو۔"
+    },
+    idiom: {
+      label: '💡 محاورات (1,491)',
+      prompt: "ارموڑی محاورات کے ذخیرے سے بہادری اور ثابت قدمی پر ایک مستند محاورہ پیش کریں بمع مفہوم و لغوی تشریح۔"
+    },
+    dialogue: {
+      label: '🗣️ روزمرہ مکالمہ',
+      prompt: "صبح کے وقت ملنے والے دو ارموڑی بولنے والوں کے درمیان فطری گفتگو لکھیں جس میں خیریت، اہل خانہ اور بھیڑ بکریاں چرانے کا احوال ہو۔"
+    },
+    ergativity: {
+      label: '⚡ ارګیٹیویٹی ٹیسٹ',
+      prompt: "ارموڑی میں ترجمہ اور لسانی تصدیق کریں: 'عاصمہ عاصم کو پہاڑ لے گئی، مگر لڑکے نے روٹی اپنی ماں کو دی۔' (ماضی متعدی مفعولی مطابقت اور فاعلی کلاٹک 'ال' کی تصدیق کریں)"
+    }
+  },
+  ps: {
+    prechaak: {
+      label: '📖 ناول پریچاک',
+      prompt: "د پریچاک ناول له مستندې ذخیرې څخه په ګټې اخیستنې په ارموړي ژباړه وکړئ: 'د کانیګرم په یخ ژمي کې قومي مشران په حجره کې د وینې د شخړې د هواري لپاره راټول شول.'"
+    },
+    folk: {
+      label: '🏔️ ولسي کیسې',
+      prompt: "د کانیګرم د پخوانیو اوسپنو جوړوونکو (اوستاکار) او د بار پېټ د غره په اړه یوه دودیزه ارموړي ولسي کیسه بیان کړئ."
+    },
+    udhr: {
+      label: '🕊️ بشري حقونه (UDHR)',
+      prompt: "د بشري حقونو د نړیوال منشور پر بنسټ رسمي ارموړي ته وژباړئ: 'ټول انسانان ازاد پیدا شوي او په حقوقو او کرامت کې سره مساوي دي.'"
+    },
+    proverb: {
+      label: '📜 متلونه (1,029)',
+      prompt: "د مېلمستیا (مېلمۀ) او ننګ په اړه یو مستند ارموړی متل د ټکي په ټکي مانا او اخلاقي درس سره وړاندې کړئ."
+    },
+    idiom: {
+      label: '💡 اصطلاحات (1,491)',
+      prompt: "د ارموړي اصطلاحاتو له ټولګې څخه د مېړانې او زړورتیا په هکله یوه مستنده اصطلاح له تشریح سره ولیکئ."
+    },
+    dialogue: {
+      label: '🗣️ ورځنۍ خبرې اترې',
+      prompt: "د دوو ارموړي ژبو ترمنځ چې سهار وختي یو بل سره ویني، د روغتیا، کورنۍ او رمو پوښتنه کوي، یوه روانه مکالمه ولیکئ."
+    },
+    ergativity: {
+      label: '⚡ د ارګیټیوټي آزموینه',
+      prompt: "په ارموړي کې ژباړه او صرفي تحلیل وکړئ: 'عاصمې عاصم غره ته بوته، خو هلک خپله ډوډۍ مور ته ورکړه.' (په تېر مهال کې د مفعولي مطابقت او فاعلي کلاټک ال تصدیق)"
+    }
+  }
+};
+
+/**
+ * On-Screen Virtual Keyboard Layouts
+ * Includes authentic 48-letter Ormuri (Rozi Khan Burki orthography), Pashto, and Urdu layouts
+ */
+const KEYBOARD_LAYOUTS = {
+  oru: {
+    name: 'بارګِسته (Ormuri)',
+    rows: [
+      ['۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹', '۰', 'َ', 'ِ', 'ُ', 'ّ', 'ْ', 'ً'],
+      ['ض', 'ص', 'ث', 'ق', 'ف', 'غ', 'ع', 'ه', 'خ', 'ح', 'ج', 'چ', 'څ', 'ځ'],
+      ['ش', 'ݭ', 'س', 'ی', 'ي', 'ې', 'ۍ', 'ئ', 'یٛ', 'ب', 'پ', 'ل', 'ا', 'آ', 'ت', 'ټ', 'ن', 'ڼ', 'م', 'ک', 'ګ'],
+      ['ظ', 'ط', 'ز', 'ݫ', 'ژ', 'ږ', 'ر', 'ڒ', 'ړ', 'ذ', 'د', 'ډ', 'و', 'ں', 'ے', 'ء']
+    ],
+    specials: ['ڒ', 'ݫ', 'ݭ', 'یٛ', 'څ', 'ځ', 'ټ', 'ډ', 'ړ', 'ګ', 'ڼ', 'ې', 'ۍ', 'ي']
+  },
+  ps: {
+    name: 'پښتو (Pashto)',
+    rows: [
+      ['۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹', '۰', 'َ', 'ِ', 'ُ', 'ً', 'ّ', 'ْ'],
+      ['ض', 'ص', 'ث', 'ق', 'ف', 'غ', 'ع', 'ه', 'خ', 'ح', 'ج', 'چ', 'څ', 'ځ'],
+      ['ش', 'ښ', 'س', 'ی', 'ي', 'ې', 'ۍ', 'ئ', 'ب', 'پ', 'ل', 'ا', 'آ', 'ت', 'ټ', 'ن', 'ڼ', 'م', 'ک', 'ګ'],
+      ['ظ', 'ط', 'ز', 'ژ', 'ږ', 'ر', 'ړ', 'ذ', 'د', 'ډ', 'و', 'ۀ', 'ء']
+    ],
+    specials: ['ښ', 'ږ', 'څ', 'ځ', 'ڼ', 'ګ', 'ې', 'ۍ', 'ي', 'ئ', 'ۀ', 'ټ', 'ډ', 'ړ']
+  },
+  ur: {
+    name: 'اردو (Urdu)',
+    rows: [
+      ['۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹', '۰', 'َ', 'ِ', 'ُ', 'ً', 'ٍ', 'ٌ', 'ّ', 'ْ'],
+      ['ض', 'ص', 'ث', 'ق', 'ف', 'غ', 'ع', 'ہ', 'ھ', 'خ', 'ح', 'ج', 'چ'],
+      ['ش', 'س', 'ی', 'ب', 'پ', 'ل', 'ا', 'آ', 'ت', 'ٹ', 'ن', 'ں', 'م', 'ک', 'گ'],
+      ['ظ', 'ط', 'ز', 'ژ', 'ر', 'ڑ', 'ذ', 'د', 'ڈ', 'و', 'ے', 'ء', 'ئ', 'ؤ', 'ۂ']
+    ],
+    specials: ['ٹ', 'ڈ', 'ڑ', 'ں', 'ے', 'ھ', 'ہ', 'گ', 'پ', 'چ', 'ژ', 'ۂ']
+  }
+};
 
 document.addEventListener('DOMContentLoaded', () => {
   // DOM Elements - Prompt & Inputs
@@ -41,6 +358,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const posFilters = document.getElementById('posFilters');
   const lexiconResults = document.getElementById('lexiconResults');
   const lexiconTotalPill = document.getElementById('lexiconTotalPill');
+  const btnLoadAllLexicon = document.getElementById('btnLoadAllLexicon');
+  const lexStatusText = document.getElementById('lexStatusText');
 
   // Grammar Modal Elements
   const btnOpenGrammar = document.getElementById('btnOpenGrammar');
@@ -52,12 +371,259 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnCloseSupport = document.getElementById('btnCloseSupport');
   const supportModal = document.getElementById('supportModal');
 
+  // Language Modal & Switcher Elements
+  const langModal = document.getElementById('langModal');
+  const btnOpenLang = document.getElementById('btnOpenLang');
+  const btnCloseLang = document.getElementById('btnCloseLang');
+  const navLangFlag = document.getElementById('navLangFlag');
+  const navLangName = document.getElementById('navLangName');
+  const langCards = document.querySelectorAll('.lang-card');
+
+  // Virtual Keyboard Elements
+  const btnToggleKeyboard = document.getElementById('btnToggleKeyboard');
+  const btnCloseKeyboard = document.getElementById('btnCloseKeyboard');
+  const virtualKeyboardPanel = document.getElementById('virtualKeyboardPanel');
+  const vkTabs = document.getElementById('vkTabs');
+  const vkKeysContainer = document.getElementById('vkKeysContainer');
+  let activeVkLang = 'oru';
+
+  let currentLanguage = 'en';
   let currentMode = 'free';
   let currentTab = 'rendered';
   let hasGenerated = false;
   let timerInterval = null;
   let lexiconDebounce = null;
   let activePosFilter = '';
+
+  /**
+   * Child-Friendly Language Switcher & Application Localization
+   */
+  function openLanguageModal() {
+    if (langModal) {
+      langCards.forEach(c => {
+        c.classList.toggle('active', c.getAttribute('data-lang') === currentLanguage);
+      });
+      langModal.classList.remove('hidden');
+    }
+  }
+
+  function closeLanguageModal() {
+    if (langModal) {
+      langModal.classList.add('hidden');
+    }
+  }
+
+  function applyLanguage(lang, showNotification = true) {
+    if (!TRANSLATIONS[lang]) lang = 'en';
+    currentLanguage = lang;
+    localStorage.setItem('ormuri_app_lang', lang);
+
+    const meta = LANG_META[lang];
+    document.documentElement.dir = meta.dir;
+    document.documentElement.lang = lang;
+
+    // Update navbar button
+    if (navLangFlag) navLangFlag.textContent = meta.flag;
+    if (navLangName) navLangName.textContent = meta.name;
+
+    // Update all text nodes with data-i18n
+    const dict = TRANSLATIONS[lang];
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (dict[key] !== undefined) {
+        el.textContent = dict[key];
+      }
+    });
+
+    // Update all input placeholders with data-i18n-ph
+    document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+      const key = el.getAttribute('data-i18n-ph');
+      if (dict[key] !== undefined) {
+        el.setAttribute('placeholder', dict[key]);
+      }
+    });
+
+    // Update quick launch scenario chips
+    if (CHIP_PROMPTS[lang]) {
+      Object.keys(CHIP_PROMPTS[lang]).forEach(chipKey => {
+        const btn = document.querySelector(`.chip[data-chip="${chipKey}"]`);
+        if (btn) {
+          const info = CHIP_PROMPTS[lang][chipKey];
+          btn.textContent = info.label;
+          btn.setAttribute('data-prompt', info.prompt);
+          btn.dataset.prompt = info.prompt;
+        }
+      });
+    }
+
+    // Highlight active card in modal
+    langCards.forEach(card => {
+      const cLang = card.getAttribute('data-lang');
+      card.classList.toggle('active', cLang === lang);
+    });
+
+    // Sync default keyboard layout with language
+    if (lang === 'ps') {
+      activeVkLang = 'ps';
+    } else if (lang === 'ur') {
+      activeVkLang = 'ur';
+    } else {
+      activeVkLang = 'oru';
+    }
+    if (virtualKeyboardPanel && !virtualKeyboardPanel.classList.contains('hidden')) {
+      renderVirtualKeyboard(activeVkLang);
+    }
+
+    if (showNotification) {
+      const switchMessages = {
+        en: 'Switched to English 🇬🇧',
+        ur: 'اردو زبان منتخب ہو گئی 🇵🇰',
+        ps: 'پښتو ژبه وټاکل شوه ☀️'
+      };
+      showToast(switchMessages[lang] || `Language set to ${meta.name}`);
+    }
+  }
+
+  /**
+   * Virtual Keyboard Typing & Layout Engine (Pashto, Ormuri, Urdu)
+   */
+  function insertTextAtCursor(inputEl, text) {
+    if (!inputEl) return;
+    const startPos = inputEl.selectionStart !== undefined ? inputEl.selectionStart : inputEl.value.length;
+    const endPos = inputEl.selectionEnd !== undefined ? inputEl.selectionEnd : inputEl.value.length;
+    const textBefore = inputEl.value.substring(0, startPos);
+    const textAfter = inputEl.value.substring(endPos);
+    inputEl.value = textBefore + text + textAfter;
+    const newPos = startPos + text.length;
+    inputEl.selectionStart = inputEl.selectionEnd = newPos;
+    inputEl.focus();
+    inputEl.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+
+  function backspaceAtCursor(inputEl) {
+    if (!inputEl) return;
+    const startPos = inputEl.selectionStart;
+    const endPos = inputEl.selectionEnd;
+    if (startPos !== endPos) {
+      const textBefore = inputEl.value.substring(0, startPos);
+      const textAfter = inputEl.value.substring(endPos);
+      inputEl.value = textBefore + textAfter;
+      inputEl.selectionStart = inputEl.selectionEnd = startPos;
+    } else if (startPos > 0) {
+      const textBefore = inputEl.value.substring(0, startPos - 1);
+      const textAfter = inputEl.value.substring(endPos);
+      inputEl.value = textBefore + textAfter;
+      inputEl.selectionStart = inputEl.selectionEnd = startPos - 1;
+    }
+    inputEl.focus();
+    inputEl.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+
+  function renderVirtualKeyboard(langKey) {
+    if (!KEYBOARD_LAYOUTS[langKey]) langKey = 'oru';
+    activeVkLang = langKey;
+
+    if (vkTabs) {
+      vkTabs.querySelectorAll('.vk-tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-vk-lang') === langKey);
+      });
+    }
+
+    if (!vkKeysContainer) return;
+    vkKeysContainer.innerHTML = '';
+
+    const layout = KEYBOARD_LAYOUTS[langKey];
+    const isSpecialClass = `vk-special-${langKey}`;
+
+    layout.rows.forEach(rowKeys => {
+      const rowDiv = document.createElement('div');
+      rowDiv.className = 'vk-row';
+      rowKeys.forEach(char => {
+        const keyBtn = document.createElement('button');
+        keyBtn.type = 'button';
+        keyBtn.className = 'vk-key';
+        keyBtn.textContent = char;
+        keyBtn.setAttribute('data-char', char);
+
+        if (layout.specials && layout.specials.includes(char)) {
+          keyBtn.classList.add(isSpecialClass);
+        } else if (['َ', 'ِ', 'ُ', 'ً', 'ٍ', 'ٌ', 'ّ', 'ْ', 'ۂ'].includes(char)) {
+          keyBtn.classList.add('vk-diacritic');
+        }
+
+        keyBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          insertTextAtCursor(promptInput, char);
+        });
+        rowDiv.appendChild(keyBtn);
+      });
+      vkKeysContainer.appendChild(rowDiv);
+    });
+  }
+
+  function toggleVirtualKeyboard() {
+    if (!virtualKeyboardPanel) return;
+    const isHidden = virtualKeyboardPanel.classList.toggle('hidden');
+    if (btnToggleKeyboard) {
+      btnToggleKeyboard.classList.toggle('active', !isHidden);
+    }
+    if (!isHidden) {
+      renderVirtualKeyboard(activeVkLang);
+      promptInput.focus();
+    }
+  }
+
+  // Quick characters strip (one-tap instant insertion)
+  document.querySelectorAll('.q-char').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const char = btn.getAttribute('data-char');
+      if (char) {
+        insertTextAtCursor(promptInput, char);
+      }
+    });
+  });
+
+  // Action keys (space, backspace, enter, clear)
+  document.querySelectorAll('.vk-action-key').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const action = btn.getAttribute('data-action');
+      if (action === 'space') {
+        insertTextAtCursor(promptInput, ' ');
+      } else if (action === 'backspace') {
+        backspaceAtCursor(promptInput);
+      } else if (action === 'enter') {
+        insertTextAtCursor(promptInput, '\n');
+      } else if (action === 'clear') {
+        promptInput.value = '';
+        promptInput.focus();
+        promptInput.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+    });
+  });
+
+  if (btnToggleKeyboard) {
+    btnToggleKeyboard.addEventListener('click', toggleVirtualKeyboard);
+  }
+  if (btnCloseKeyboard) {
+    btnCloseKeyboard.addEventListener('click', () => {
+      if (virtualKeyboardPanel) {
+        virtualKeyboardPanel.classList.add('hidden');
+        if (btnToggleKeyboard) btnToggleKeyboard.classList.remove('active');
+      }
+    });
+  }
+
+  if (vkTabs) {
+    vkTabs.addEventListener('click', (e) => {
+      const tabBtn = e.target.closest('.vk-tab-btn');
+      if (tabBtn) {
+        const lang = tabBtn.getAttribute('data-vk-lang');
+        if (lang) renderVirtualKeyboard(lang);
+      }
+    });
+  }
 
   /**
    * Universal State Switcher for Output View
@@ -155,7 +721,8 @@ document.addEventListener('DOMContentLoaded', () => {
   async function triggerGeneration() {
     const prompt = promptInput.value.trim();
     if (!prompt) {
-      alert('Please type or select a prompt first.');
+      const dict = TRANSLATIONS[currentLanguage] || TRANSLATIONS.en;
+      showToast(dict.alert_no_prompt || 'Please type or select a prompt first.');
       promptInput.focus();
       return;
     }
@@ -294,7 +861,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!el) return;
     const textToCopy = el.innerText;
     navigator.clipboard.writeText(textToCopy).then(() => {
-      showToast('Copied to clipboard! ✓');
+      const dict = TRANSLATIONS[currentLanguage] || TRANSLATIONS.en;
+      showToast(dict.copied_toast || 'Copied to clipboard! ✓');
     }).catch(err => {
       console.error('Copy failed:', err);
     });
@@ -304,7 +872,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const activeText = ormuriText.innerText;
     if (activeText) {
       navigator.clipboard.writeText(activeText).then(() => {
-        showToast('Ormuri text copied! ✓');
+        const dict = TRANSLATIONS[currentLanguage] || TRANSLATIONS.en;
+        showToast(dict.ormuri_copied_toast || 'Ormuri text copied! ✓');
       });
     }
   });
@@ -313,7 +882,8 @@ document.addEventListener('DOMContentLoaded', () => {
   window.copySupportAccount = () => {
     const iban = "PK62ASCM0001143230003241";
     navigator.clipboard.writeText(iban).then(() => {
-      showToast('Account details copied: PK62ASCM0001143230003241 (ALI SHER KHAN BURKI) ✓');
+      const dict = TRANSLATIONS[currentLanguage] || TRANSLATIONS.en;
+      showToast(dict.account_copied_toast || 'Account details copied: PK62ASCM0001143230003241 (ALI SHER KHAN BURKI) ✓');
     }).catch(() => {
       prompt("Copy Account Number / IBAN:", iban);
     });
@@ -329,32 +899,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const toast = document.createElement('div');
     toast.className = 'toast-notification';
     toast.textContent = message;
-    toast.style.cssText = `
-      position: fixed;
-      bottom: 4rem;
-      right: 2rem;
-      background: #10B981;
-      color: #03201c;
-      font-weight: 600;
-      padding: 0.75rem 1.4rem;
-      border-radius: 8px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-      z-index: 9999;
-      font-size: 0.88rem;
-      transition: opacity 0.3s;
-    `;
     document.body.appendChild(toast);
     setTimeout(() => {
-      toast.style.opacity = '0';
+      toast.classList.add('toast-fadeout');
       setTimeout(() => toast.remove(), 300);
     }, 2500);
   }
 
   // 9. Lexicon Explorer Drawer
+  // 9. Lexicon Explorer Drawer (Full 6,657-Word Database with Infinite Scroll & Instant Search)
+  let lexiconOffset = 0;
+  const lexiconLimit = 100;
+  let lexiconTotal = 0;
+  let lexiconHasMore = false;
+  let lexiconLoading = false;
+  let currentLexiconQuery = '';
+  let loadedCount = 0;
+
   btnOpenLexicon.addEventListener('click', () => {
     lexiconDrawer.classList.add('open');
-    if (!lexiconResults.children.length) {
-      fetchLexicon('');
+    if (!loadedCount) {
+      fetchLexicon('', true);
     }
     lexiconSearchInput.focus();
   });
@@ -366,8 +931,8 @@ document.addEventListener('DOMContentLoaded', () => {
   lexiconSearchInput.addEventListener('input', (e) => {
     clearTimeout(lexiconDebounce);
     lexiconDebounce = setTimeout(() => {
-      fetchLexicon(e.target.value.trim());
-    }, 200);
+      fetchLexicon(e.target.value.trim(), true);
+    }, 250);
   });
 
   posFilters.addEventListener('click', (e) => {
@@ -375,43 +940,183 @@ document.addEventListener('DOMContentLoaded', () => {
       posFilters.querySelectorAll('.pos-chip').forEach(c => c.classList.remove('active'));
       e.target.classList.add('active');
       activePosFilter = e.target.dataset.pos;
-      fetchLexicon(lexiconSearchInput.value.trim());
+      fetchLexicon(lexiconSearchInput.value.trim(), true);
     }
   });
 
-  async function fetchLexicon(query) {
-    lexiconResults.innerHTML = '<div style="color: #64748B; padding: 1rem; text-align: center;">Searching lexicon...</div>';
+  if (btnLoadAllLexicon) {
+    btnLoadAllLexicon.addEventListener('click', () => {
+      loadAllRemainingLexicon();
+    });
+  }
+
+  // Infinite Scroll on Lexicon Drawer
+  lexiconResults.addEventListener('scroll', () => {
+    if (lexiconLoading || !lexiconHasMore) return;
+    const threshold = 350;
+    if (lexiconResults.scrollTop + lexiconResults.clientHeight >= lexiconResults.scrollHeight - threshold) {
+      fetchLexicon(currentLexiconQuery, false);
+    }
+  });
+
+  window.loadMoreLexicon = () => {
+    fetchLexicon(currentLexiconQuery, false);
+  };
+
+  async function fetchLexicon(query, reset = false) {
+    if (lexiconLoading) return;
+    lexiconLoading = true;
+
+    if (reset) {
+      lexiconOffset = 0;
+      loadedCount = 0;
+      currentLexiconQuery = query;
+      lexiconResults.innerHTML = '<div style="color: #64748B; padding: 2rem; text-align: center;"><div class="lex-spinner-sm" style="margin: 0 auto 0.75rem;"></div>Searching full database (6,657 words)...</div>';
+      lexiconResults.scrollTop = 0;
+      if (lexStatusText) lexStatusText.textContent = 'Searching full dictionary...';
+      if (btnLoadAllLexicon) btnLoadAllLexicon.classList.add('hidden');
+    } else {
+      updateSentinel(true);
+    }
+
     try {
-      const url = `/api/lexicon?q=${encodeURIComponent(query)}&pos=${encodeURIComponent(activePosFilter)}&limit=60`;
+      const url = `/api/lexicon?q=${encodeURIComponent(query)}&pos=${encodeURIComponent(activePosFilter)}&offset=${lexiconOffset}&limit=${lexiconLimit}`;
       const res = await fetch(url);
       const data = await res.json();
-      renderLexiconResults(data.results || []);
+
+      lexiconTotal = data.total_matches || 0;
+      lexiconHasMore = Boolean(data.has_more);
+      const results = data.results || [];
+      lexiconOffset += results.length;
+      loadedCount += results.length;
+
+      if (reset) {
+        lexiconResults.innerHTML = '';
+      }
+
+      renderLexiconChunk(results, reset);
+
+      // Update Status Bar
+      if (lexStatusText) {
+        if (lexiconTotal === 0) {
+          lexStatusText.innerHTML = `No words found matching <strong>"${escapeHtml(query)}"</strong>`;
+        } else if (lexiconTotal <= loadedCount) {
+          lexStatusText.innerHTML = `Showing all <strong>${lexiconTotal.toLocaleString()}</strong> words`;
+        } else {
+          lexStatusText.innerHTML = `Showing <strong>${loadedCount.toLocaleString()}</strong> of <strong>${lexiconTotal.toLocaleString()}</strong> words`;
+        }
+      }
+
+      if (btnLoadAllLexicon) {
+        if (lexiconHasMore && (lexiconTotal - loadedCount) <= 2500) {
+          btnLoadAllLexicon.textContent = `Load All (${(lexiconTotal - loadedCount).toLocaleString()} more)`;
+          btnLoadAllLexicon.classList.remove('hidden');
+        } else {
+          btnLoadAllLexicon.classList.add('hidden');
+        }
+      }
+
+      updateSentinel(false);
+
     } catch (e) {
-      lexiconResults.innerHTML = `<div style="color: #EF4444; padding: 1rem;">Failed to load words: ${e.message}</div>`;
+      if (reset) {
+        lexiconResults.innerHTML = `<div style="color: #EF4444; padding: 1.5rem; text-align: center;">Failed to load words: ${e.message}</div>`;
+      }
+      updateSentinel(false);
+    } finally {
+      lexiconLoading = false;
     }
   }
 
-  function renderLexiconResults(items) {
+  function renderLexiconChunk(items, isReset) {
     if (!items.length) {
-      lexiconResults.innerHTML = '<div style="color: #64748B; padding: 1rem; text-align: center;">No words match your search.</div>';
+      if (isReset) {
+        lexiconResults.innerHTML = '<div style="color: #64748B; padding: 2.5rem 1rem; text-align: center;"><div style="font-size: 2rem; margin-bottom: 0.5rem;">🔍</div>No words match your search or filter.</div>';
+      }
       return;
     }
 
-    lexiconResults.innerHTML = items.map(item => `
+    const html = items.map(item => `
       <div class="lexicon-item" onclick="insertWordToPrompt('${escapeHtml(item.word)}')">
         <div class="lex-top">
           <span class="lex-word">${item.word}</span>
           <span class="lex-ipa">[${item.ipa || ''}]</span>
           <span class="lex-pos">${item.pos || 'N/A'}</span>
         </div>
-        <div class="lex-gloss">${escapeHtml(item.gloss || '')}</div>
+        <div class="lex-gloss">${escapeHtml(item.gloss || item.meaning || '')}</div>
       </div>
     `).join('');
+
+    lexiconResults.insertAdjacentHTML('beforeend', html);
+  }
+
+  function updateSentinel(isLoading) {
+    let sentinel = document.getElementById('lexSentinel');
+    if (!sentinel) {
+      sentinel = document.createElement('div');
+      sentinel.id = 'lexSentinel';
+      sentinel.className = 'lex-bottom-sentinel';
+      lexiconResults.appendChild(sentinel);
+    }
+
+    if (isLoading) {
+      sentinel.innerHTML = '<div class="lex-spinner-sm"></div><span>Loading more words...</span>';
+      sentinel.style.display = 'flex';
+    } else if (lexiconHasMore) {
+      sentinel.innerHTML = `
+        <button class="btn-load-more" onclick="window.loadMoreLexicon()">
+          Load More Words (${loadedCount} of ${lexiconTotal.toLocaleString()})
+        </button>
+      `;
+      sentinel.style.display = 'flex';
+    } else {
+      if (loadedCount > 0) {
+        sentinel.innerHTML = `<span>✓ All ${lexiconTotal.toLocaleString()} words loaded</span>`;
+        sentinel.style.display = 'flex';
+      } else {
+        sentinel.style.display = 'none';
+      }
+    }
+  }
+
+  async function loadAllRemainingLexicon() {
+    if (lexiconLoading || !lexiconHasMore) return;
+    lexiconLoading = true;
+    updateSentinel(true);
+
+    try {
+      const remainingLimit = lexiconTotal - loadedCount + 50;
+      const url = `/api/lexicon?q=${encodeURIComponent(currentLexiconQuery)}&pos=${encodeURIComponent(activePosFilter)}&offset=${lexiconOffset}&limit=${remainingLimit}`;
+      const res = await fetch(url);
+      const data = await res.json();
+
+      const results = data.results || [];
+      lexiconOffset += results.length;
+      loadedCount += results.length;
+      lexiconHasMore = false;
+
+      renderLexiconChunk(results, false);
+
+      if (lexStatusText) {
+        lexStatusText.innerHTML = `Showing all <strong>${loadedCount.toLocaleString()}</strong> words`;
+      }
+      if (btnLoadAllLexicon) {
+        btnLoadAllLexicon.classList.add('hidden');
+      }
+
+      updateSentinel(false);
+    } catch (e) {
+      showToast(`Error loading remaining words: ${e.message}`);
+      updateSentinel(false);
+    } finally {
+      lexiconLoading = false;
+    }
   }
 
   window.insertWordToPrompt = (word) => {
     promptInput.value += ` ${word} `;
-    showToast(`Inserted "${word}" into prompt!`);
+    const dict = TRANSLATIONS[currentLanguage] || TRANSLATIONS.en;
+    showToast(`"${word}" ${dict.word_inserted || 'inserted into prompt!'}`);
     promptInput.focus();
   };
 
@@ -449,7 +1154,31 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 12. Dynamic System Status Sync
+  // 12. Language Selection Modal Listeners
+  if (btnOpenLang) {
+    btnOpenLang.addEventListener('click', openLanguageModal);
+  }
+  if (btnCloseLang) {
+    btnCloseLang.addEventListener('click', closeLanguageModal);
+  }
+  if (langModal) {
+    langModal.addEventListener('click', (e) => {
+      if (e.target === langModal) closeLanguageModal();
+    });
+  }
+
+  langCards.forEach(card => {
+    card.addEventListener('click', () => {
+      const selectedLang = card.getAttribute('data-lang');
+      if (selectedLang) {
+        applyLanguage(selectedLang, true);
+        sessionStorage.setItem('ormuri_lang_chosen_session', '1');
+        closeLanguageModal();
+      }
+    });
+  });
+
+  // 13. Dynamic System Status Sync
   async function fetchSystemStatus() {
     try {
       const res = await fetch('/api/status');
@@ -471,13 +1200,16 @@ document.addEventListener('DOMContentLoaded', () => {
       const lexiconBtnText = document.getElementById('lexiconBtnText');
       if (lexiconBtnText && data.lexicon_entries) {
         const countFmt = Number(data.lexicon_entries).toLocaleString();
-        lexiconBtnText.textContent = `Lexicon (${countFmt} Words)`;
+        const dict = TRANSLATIONS[currentLanguage] || TRANSLATIONS.en;
+        const wordLabel = currentLanguage === 'ps' ? 'کلمې' : (currentLanguage === 'ur' ? 'الفاظ' : 'Words');
+        lexiconBtnText.innerHTML = `<span class="btn-label" data-i18n="btn_lexicon">${dict.btn_lexicon}</span> <span class="btn-count">(${countFmt} ${wordLabel})</span>`;
       }
 
       const lexiconTotalPill = document.getElementById('lexiconTotalPill');
       if (lexiconTotalPill && data.lexicon_entries) {
         const countFmt = Number(data.lexicon_entries).toLocaleString();
-        lexiconTotalPill.textContent = `${countFmt} Words`;
+        const wordLabel = currentLanguage === 'ps' ? 'کلمې' : (currentLanguage === 'ur' ? 'الفاظ' : 'Words');
+        lexiconTotalPill.textContent = `${countFmt} ${wordLabel}`;
       }
     } catch (err) {
       console.warn('Could not sync status:', err);
@@ -486,6 +1218,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initial State Setup
   showOutputState('placeholder');
+
+  // Language Setup & First-time Auto-Open Modal
+  const savedLang = localStorage.getItem('ormuri_app_lang');
+  const sessionChosen = sessionStorage.getItem('ormuri_lang_chosen_session');
+
+  if (savedLang && TRANSLATIONS[savedLang]) {
+    applyLanguage(savedLang, false);
+  } else {
+    applyLanguage('en', false);
+  }
+
   fetchSystemStatus();
+
+  // Child-friendly auto-open modal whenever opening the application
+  if (!sessionChosen) {
+    setTimeout(() => {
+      openLanguageModal();
+    }, 200);
+  }
 
 });

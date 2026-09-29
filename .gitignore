@@ -39,5 +39,6 @@ ENV/
 .DS_Store
 Thumbs.db
 
-# Logs
+# Logs & Cache
 *.log
+response_cache.json
