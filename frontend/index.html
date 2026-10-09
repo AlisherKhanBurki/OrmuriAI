@@ -76,7 +76,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&family=Noto+Nastaliq+Urdu:wght@400;700&family=Outfit:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&family=Noto+Nastaliq+Urdu:wght@400;700&family=Noto+Sans+Arabic:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Tajawal:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
 
@@ -86,7 +86,7 @@
     <link rel="shortcut icon" href="favicon.ico" />
     <link rel="apple-touch-icon" href="favicon-apple.png" />
 
-    <link rel="stylesheet" href="style.css?v=3.5" />
+    <link rel="stylesheet" href="style.css?v=4.3" />
   </head>
   <body>
     <div class="app-container">
@@ -104,36 +104,12 @@
           </div>
         </div>
 
-        <div class="header-badges">
-          <div class="badge badge-model" title="Underlying foundational model">
-            <span class="dot pulse"></span>
-            <span id="badgeModel" data-i18n="badge_model">Gemini 3.8 Flash (Cached)</span>
-          </div>
-          <div
-            class="badge badge-kb"
-            title="Loaded unabridged knowledge base size"
-          >
-            <span id="badgeKb" data-i18n="badge_kb">📚 866,060 Tokens (2.0M Chars)</span>
-          </div>
-          <div
-            class="badge badge-erg"
-            title="Split ergativity guardrail active"
-          >
-            <span data-i18n="badge_erg">⚡ Split Ergativity Active</span>
-          </div>
-          <div
-            class="badge badge-corpus"
-            title="Unabridged 11-work primary archive"
-          >
-            <span data-i18n="badge_corpus">📖 11 Primary Works (Unabridged)</span>
-          </div>
-        </div>
 
         <div class="header-actions">
           <button
             id="btnOpenLexicon"
             class="btn btn-secondary"
-            title="Search 6,657+ verified Ormuri words"
+            title="Search 6,657+ verified Ormuri words in Dictionary"
           >
             <svg
               width="16"
@@ -147,14 +123,14 @@
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
             <span id="lexiconBtnText"
-              ><span class="btn-label" data-i18n="btn_lexicon">Lexicon</span>
-              <span class="btn-count" data-i18n="btn_lexicon_count">(6,657 Ormuri Words)</span></span
+              ><span class="btn-label" data-i18n="btn_lexicon">Dictionary</span>
+              <span class="btn-count" data-i18n="btn_lexicon_count">(6,657 Words)</span></span
             >
           </button>
           <button
-            id="btnOpenGrammar"
-            class="btn btn-secondary"
-            title="View Ergativity & Clitic Grammar Tables"
+            id="btnOpenCorpusNav"
+            class="btn btn-secondary btn-corpus-nav"
+            title="Explore Unabridged 10-Work Primary Corpus Archive"
           >
             <svg
               width="16"
@@ -169,7 +145,27 @@
                 d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"
               ></path>
             </svg>
-            <span class="btn-label" data-i18n="btn_grammar">Grammar & Corpus</span>
+            <span class="btn-label" data-i18n="btn_corpus">Corpus Archive</span>
+            <span class="btn-count">(10 Works)</span>
+          </button>
+          <button
+            id="btnOpenGrammar"
+            class="btn btn-secondary"
+            title="View Ergativity & Clitic Grammar Tables"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+              <polyline points="2 17 12 22 22 17"></polyline>
+              <polyline points="2 12 12 17 22 12"></polyline>
+            </svg>
+            <span class="btn-label" data-i18n="btn_grammar">Grammar Cheat Sheet</span>
           </button>
           <button
             id="btnOpenSupport"
@@ -332,12 +328,6 @@
               <button type="button" class="q-char q-ps" data-char="ې" title="e (Pashto/Ormuri)">ې</button>
               <button type="button" class="q-char q-ps" data-char="ۍ" title="feminine ay">ۍ</button>
               <button type="button" class="q-char q-ps" data-char="ي" title="i">ي</button>
-              <!-- Urdu Specific Letters -->
-              <button type="button" class="q-char q-ur" data-char="ٹ" title="Urdu ṭ">ٹ</button>
-              <button type="button" class="q-char q-ur" data-char="ڈ" title="Urdu ḍ">ڈ</button>
-              <button type="button" class="q-char q-ur" data-char="ڑ" title="Urdu ṛ">ڑ</button>
-              <button type="button" class="q-char q-ur" data-char="ں" title="Noon Ghunna">ں</button>
-              <button type="button" class="q-char q-ur" data-char="ے" title="Bari Ye">ے</button>
             </div>
           </div>
 
@@ -382,18 +372,62 @@
 
           <!-- Controls Bar -->
           <div class="controls-bar">
-            <div class="slider-group">
-              <label for="tempSlider"
-                ><span data-i18n="temp_label">Creativity / Temp:</span> <span id="tempValue">0.2</span></label
+            <div class="advanced-params-wrapper">
+              <button
+                type="button"
+                id="btnToggleAdvanced"
+                class="btn-advanced-trigger"
+                title="Model Parameters (Advanced)"
               >
-              <input
-                type="range"
-                id="tempSlider"
-                min="0.0"
-                max="1.0"
-                step="0.05"
-                value="0.2"
-              />
+                <span class="adv-icon">⚙️</span>
+                <span class="adv-label" data-i18n="btn_advanced">Advanced</span>
+                <span class="adv-val-pill" id="advTempPill">0.2</span>
+              </button>
+
+              <div id="advancedParamsPopover" class="advanced-params-popover hidden">
+                <div class="adv-popover-header">
+                  <div class="adv-popover-title-row">
+                    <span class="adv-popover-title">⚙️ Creativity / Temperature</span>
+                    <button type="button" id="btnCloseAdvanced" class="btn-adv-close" title="Close">&times;</button>
+                  </div>
+                  <p class="adv-popover-desc">
+                    Fine-tune generative randomness. Lower values (0.0–0.2) ensure strict adherence to grammar rules and lexicon.
+                  </p>
+                </div>
+                <div class="adv-popover-body">
+                  <div class="adv-input-row">
+                    <label for="tempNumberInput">Enter Number (0.0 – 1.0):</label>
+                    <div class="adv-num-box">
+                      <input
+                        type="number"
+                        id="tempNumberInput"
+                        min="0.0"
+                        max="1.0"
+                        step="0.05"
+                        value="0.2"
+                      />
+                      <input
+                        type="range"
+                        id="tempSlider"
+                        min="0.0"
+                        max="1.0"
+                        step="0.05"
+                        value="0.2"
+                        class="adv-mini-slider"
+                      />
+                    </div>
+                  </div>
+                  <div class="adv-presets-row">
+                    <span class="adv-presets-label">Quick Select:</span>
+                    <div class="adv-presets-list" id="tempPresetsList">
+                      <button type="button" class="adv-preset-chip" data-val="0.0">0.0 (Strict)</button>
+                      <button type="button" class="adv-preset-chip active" data-val="0.2">0.2 (Optimal)</button>
+                      <button type="button" class="adv-preset-chip" data-val="0.5">0.5 (Balanced)</button>
+                      <button type="button" class="adv-preset-chip" data-val="0.8">0.8 (Creative)</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div class="action-buttons">
@@ -446,6 +480,11 @@
                 <span class="badge-mini" id="scratchpadBadge" data-i18n="tab_scratchpad_badge">Verified</span>
               </button>
               <button class="tab-btn" data-tab="raw" data-i18n="tab_raw">Raw Markdown</button>
+              <button class="tab-btn tab-btn-corpus" data-tab="corpus">
+                <span class="corpus-tab-icon">📚</span>
+                <span data-i18n="tab_corpus">Primary Corpus</span>
+                <span class="badge-mini badge-corpus-count">10 Works</span>
+              </button>
             </div>
 
             <div class="output-actions">
@@ -636,6 +675,47 @@
             <div id="tabRaw" class="tab-content hidden">
               <pre id="rawContent" class="raw-pre"></pre>
             </div>
+
+            <!-- State 6: Primary Corpus Archive Tab with Sub-Tabs -->
+            <div id="tabCorpus" class="tab-content hidden corpus-tab-wrapper">
+              <div class="corpus-container">
+                <!-- Corpus Header Banner -->
+                <div class="corpus-banner">
+                  <div class="corpus-banner-info">
+                    <div class="corpus-banner-icon">📚</div>
+                    <div class="corpus-banner-text">
+                      <h3 class="corpus-banner-title" data-i18n="corpus_banner_title">Unabridged 10-Work Primary Corpus Archive</h3>
+                      <p class="corpus-banner-desc" data-i18n="corpus_banner_desc">
+                        Direct authentic linguistic texts of Kaniguram Ormuri (Bargista). Select any sub-tab below to read or search.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="corpus-search-box">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="11" cy="11" r="8"></circle>
+                      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text" id="corpusSearchInput" placeholder="Filter / search within active work..." autocomplete="off" />
+                    <button id="btnClearCorpusSearch" class="btn-clear-search hidden" title="Clear filter">&times;</button>
+                  </div>
+                </div>
+
+                <!-- Sub-Tabs Ribbon -->
+                <div class="corpus-subtabs-bar" id="corpusSubtabsBar" role="tablist" aria-label="Corpus Works">
+                  <!-- Dynamically populated sub-tabs for all 10 works -->
+                </div>
+
+                <!-- Active Work Information & Meta Bar -->
+                <div class="corpus-work-meta" id="corpusWorkMeta">
+                  <!-- Rendered dynamically -->
+                </div>
+
+                <!-- Active Work Content Stream -->
+                <div class="corpus-items-stream" id="corpusItemsStream">
+                  <!-- Item cards rendered dynamically -->
+                </div>
+              </div>
+            </div>
           </div>
         </section>
       </main>
@@ -703,7 +783,7 @@
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
-            <h3 data-i18n="drawer_title">Ormuri Lexicon Explorer</h3>
+            <h3 data-i18n="drawer_title">Ormuri Dictionary Explorer</h3>
             <span class="count-pill" id="lexiconTotalPill">6,657 Words</span>
           </div>
           <button id="btnCloseLexicon" class="btn-close">&times;</button>
@@ -902,8 +982,7 @@
 
             <div class="grammar-section">
               <h4>
-                4. Unabridged 11-Work Primary Corpus Archive (866,060 Tokens /
-                2,001,849 Chars)
+                4. Unabridged 10-Work Primary Corpus Archive
               </h4>
               <table class="cheat-table">
                 <thead>
@@ -918,11 +997,6 @@
                     <td><strong>Novel Prechaak</strong></td>
                     <td>All 311 pages complete (100% unabridged)</td>
                     <td>Historical Kaniguram narrative, dialect prose</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Gospel of Luke in Bargista</strong></td>
-                    <td>Chapters 1–24 (all 869 paragraphs)</td>
-                    <td>Classical complex syntax & narrative register</td>
                   </tr>
                   <tr>
                     <td>
@@ -967,12 +1041,17 @@
                     <td>Split ergativity, clitic hosting, case declensions</td>
                   </tr>
                   <tr>
-                    <td><strong>Comprehensive Lexicon</strong></td>
+                    <td><strong>Comprehensive Dictionary</strong></td>
                     <td>6,657 headwords with IPA & POS</td>
                     <td>Full verified lexical coverage</td>
                   </tr>
                 </tbody>
               </table>
+              <div class="mt-3 modal-corpus-cta">
+                <button id="btnOpenCorpusFromModal" class="btn btn-secondary btn-sm">
+                  📚 Open Interactive Corpus Archive (10 Works) &rarr;
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -1153,6 +1232,7 @@
       </div>
     </div>
 
-    <script src="app.js?v=3.5"></script>
+    <script src="corpus_data.js?v=4.0"></script>
+    <script src="app.js?v=4.3"></script>
   </body>
 </html>

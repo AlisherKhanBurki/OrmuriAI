@@ -6,6 +6,8 @@
 
 Sentence 1:
 - Intent: Introduce Kaniguram as an ancient, magnificent mountain settlement.
+- Example Sentence in Ormuri: کانیګرام يې ته دنیا هۀ جنت ا شور، او ته ستُر ګری منځ نر شائستۀ ځاک هۀ۔
+- Phonetic Romanization: Kānīgrām yē tə dunyā hʌ jannat a šōr, aw tə stur grī mandz nara šāyistə dzāk hʌ.
 - Alignment: Nominative Domain (Equational Copular Present).
 - Subject & Clitic Host: کانیګرام [kānīgrām] (Proper Noun, Direct Case) + focal clitic = 'کانیګرام يې' [kānīgrām yē].
 - Predicate Phrase: ته دنیا هۀ جنت ا شور [tə dunyā hʌ jannat a šōr] ("in the world is the paradise town"), coordinated with: ته ستُر ګری منځ نر شائستۀ ځاک هۀ [tə stur grī mandz nara šāyistə dzāk hʌ] ("in the midst of grand mountains it is a beautiful place").
@@ -13,6 +15,8 @@ Sentence 1:
 
 Sentence 2:
 - Intent: Describe the rushing cold mountain streams and pure snow upon the peaks.
+- Example Sentence in Ormuri: ته فۀ تاک نره څاک وک بُو څوا، او باڒ پِټ زر ݭپيېو غونڒ بُو هنشتا۔
+- Phonetic Romanization: Tə fəʰ tāk nara tsāk wəkk bu tswa, aw Bāř Piṭ zar ʂpyæv ɣō~ř bu hanštā.
 - Alignment: Nominative-Accusative (Present Progressive/Habitual).
 - Clause A:
   * Subject: څاک وک [tsāk wəkk] ("cold water", Masc.Sg Direct).
@@ -25,6 +29,8 @@ Sentence 2:
 
 Sentence 3:
 - Intent: Depict the seasonal contrasts between sweet summers and crisp winters.
+- Example Sentence in Ormuri: ته اَووړ نر هوا خواڒه هۀ، او ته ݫِمک نر څاک باد بُو چلا۔
+- Phonetic Romanization: Tə awoṛ nar hawā xwāřə hʌ, aw tə ʐimmək nar tsāk bād bu čallā.
 - Alignment: Nominative Domain (Habitual Present).
 - Clause A: ته اَووړ نر هوا خواڒه هۀ [tə awoṛ nar hawā xwāřə hʌ] ("in summer the air is pleasant/sweet").
 - Clause B: او ته ݫِمک نر څاک باد بُو چلا [aw tə ʐimmək nar tsāk bād bu čallā] ("and in winter a cold wind blows").
@@ -35,6 +41,8 @@ Sentence 3:
 
 Sentence 4:
 - Intent: The Burki ancestors forged iron knives and sharp blades using fire and mountain stone.
+- Example Sentence in Ormuri: برکي خلق ال ته روَّن او ګپ لاسته تیز کالی جوړ دوکِن۔
+- Phonetic Romanization: Barkī xalq al tə rəwwan aw gap lāsta tēz kālī ǰōṛ dōkin.
 - Alignment: Past Transitive -> ERGATIVE-ABSOLUTIVE.
 - Agent (Logical Subject): برکي خلق [Barkī xalq] ("the Burki people") + Agentive Topicalizer 'ال' (al).
 - Patient (Grammatical Object): تیز کالی [tēz kālī] ("sharp knives/daggers", Masc.Pl Absolutive).
@@ -44,6 +52,8 @@ Sentence 4:
 
 Sentence 5:
 - Intent: They constructed fortified stone houses and stout walls against blood-feud enemies.
+- Example Sentence in Ormuri: پخسی نَرّي-ن ته ګپ لاسته تاو دوکِن، او ته بدی دار مُخه نر پخسی دېولی-ن جوړ داکِن۔
+- Phonetic Romanization: Pəxsī narrī-n tə gap lāsta tāw dōkin, aw tə badīdār muxa nar pəxsī dēwlī-n ǰōṛ dākin.
 - Alignment: Past Transitive -> ERGATIVE-ABSOLUTIVE (Double Object Construction with split gender agreement).
 - Clause A:
   * First Constituent + Wackernagel Agent Clitic: پخسی نَرّي-ن [pəxsī narrī-n] (firm houses.MASC.PL + by-them.3PL).
@@ -56,6 +66,8 @@ Sentence 5:
 
 Sentence 6:
 - Intent: The community elders defended their native land with honor and perseverance.
+- Example Sentence in Ormuri: زال سړئ ال ته ننګ او پت زر خوئ بُمبه پشک۔
+- Phonetic Romanization: Zāl səṛəy al tə nang aw pat zar xwəy bumbə pəšək.
 - Alignment: Past Transitive -> ERGATIVE-ABSOLUTIVE.
 - Agent: زال سړئ ال [zāl səṛəy al] ("the elders" + agent clitic 'al').
 - Patient (Grammatical Object): خوئ بُمبه [xwəy bumbə] ("their own land", Fem.Sg Absolutive).
@@ -68,6 +80,8 @@ Sentence 6:
 
 Sentence 7:
 - Intent: Kaniguram inhabitants offer sweet bread and welcoming warmth to every traveler.
+- Example Sentence in Ormuri: هر مېلمۀ کی بُو ا خلق خواڒه نوړی او سِر اروخت ڒوین۔
+- Phonetic Romanization: Har mēlmə kī bu a xalq xwāřə nōṛī aw sir arwəxt řəwwīn.
 - Alignment: Nominative-Accusative (Habitual Present).
 - Recipient (Dative): هر مېلمۀ کی [har mēlmə kī] ("to every guest").
 - Subject: ا خلق [a xalq] ("the people", Direct Case 3Pl).
@@ -77,6 +91,8 @@ Sentence 7:
 
 Sentence 8:
 - Intent: Brothers and cousins live together within the town in unbroken unity.
+- Example Sentence in Ormuri: ارَّه مرزایٔ او تُربُری يې شور نره په امان او یووالئ بُو نِشین۔
+- Phonetic Romanization: Arra mirzāy aw turburī yē šōr nara pə amān aw yōwālay bu nišīn.
 - Alignment: Nominative Domain (Intransitive Present).
 - Subject: ارَّه مرزایٔ او تُربُری [arra mirzāy aw turburī] ("all brothers and cousins", Pl Direct).
 - Locative PP: شور نره [šōr nara] ("in the town") + په امان او یووالئ [pə amān aw yōwālay] ("in peace and solidarity").
@@ -85,11 +101,13 @@ Sentence 8:
 
 Sentence 9:
 - Intent: Solemn benediction for Kaniguram's peace and the eternal vitality of Bargista.
+- Example Sentence in Ormuri: اللّٰه يې کانیګرام شور نره تل امان کوون، او ترماخ خواڒه ورمړو زبان دې تر تَل ݫوندا ناسوُن!
+- Phonetic Romanization: Allāh yē Kānīgrām šōr nara tal amān kəwōn, aw tarmāx xwāřə Warmaṛō zbān dē tar tal ʐwandā nāsōn!
 - Alignment: Irrealis / Optative Domain.
 - Subject: اللّٰه [Allāh] + focal particle 'يې' [yē].
 - Complement 1: کانیګرام شور نره تل امان کوون [Kānīgrām šōr nara tal amān kəwōn] ("may He keep peace forever inside Kaniguram town").
-- Complement 2: او ترماخ خواڒه ورمړو دیو دې تر تَل ݫوندا ناسوُن! [aw tarmāx xwāřə Warmaṛō dīw dē tar tal ʐwandā nāsōn!] ("and may our sweet Ormuri language indeed be kept alive unto eternity!").
-- Ormuri Roots & Morphemes: اللّٰه (God), يې (focal clitic), کانیګرام (Kaniguram), شور (town), نره (in), تل (always/forever), امان (peace), کوون (optative 3sg: may He make), ترماخ (our), خواڒه (sweet), ورمړو (Ormuri / Bargista autonym), دیو (language/tongue), دې (modal discourse clitic), تر تل (unto eternity), ݫوندا (alive/living), ناسوُن (optative 3sg: may He preserve/keep).
+- Complement 2: او ترماخ خواڒه ورمړو زبان دې تر تَل ݫوندا ناسوُن! [aw tarmāx xwāřə Warmaṛō zbān dē tar tal ʐwandā nāsōn!] ("and may our sweet Ormuri language indeed be kept alive unto eternity!").
+- Ormuri Roots & Morphemes: اللّٰه (God), يې (focal clitic), کانیګرام (Kaniguram), شور (town), نره (in), تل (always/forever), امان (peace), کوون (optative 3sg: may He make), ترماخ (our), خواڒه (sweet), ورمړو (Ormuri / Bargista autonym), زبان (language/tongue), دې (modal discourse clitic), تر تل (unto eternity), ݫوندا (alive/living), ناسوُن (optative 3sg: may He preserve/keep).
 </morphological_scratchpad>
 ```
 
@@ -101,7 +119,7 @@ Sentence 9:
 
 برکي خلق ال ته روَّن او ګپ لاسته تیز کالی جوړ دوکِن۔ پخسی نَرّي-ن ته ګپ لاسته تاو دوکِن، او ته بدی دار مُخه نر پخسی دېولی-ن جوړ داکِن۔ زال سړئ ال ته ننګ او پت زر خوئ بُمبه پشک۔
 
-هر مېلمۀ کی بُو ا خلق خواڒه نوړی او سِر اروخت ڒوین۔ ارَّه مرزایٔ او تُربُری يې شور نره په امان او یووالئ بُو نِشین۔ اللّٰه يې کانیګرام شور نره تل امان کوون، او ترماخ خواڒه ورمړو دیو دې تر تَل ݫوندا ناسوُن!
+هر مېلمۀ کی بُو ا خلق خواڒه نوړی او سِر اروخت ڒوین۔ ارَّه مرزایٔ او تُربُری يې شور نره په امان او یووالئ بُو نِشین۔ اللّٰه يې کانیګرام شور نره تل امان کوون، او ترماخ خواڒه ورمړو زبان دې تر تَل ݫوندا ناسوُن!
 
 ---
 
@@ -111,7 +129,7 @@ Sentence 9:
 
 *Barkī xalq al tə rəwwan aw gap lāsta tēz kālī ǰōṛ dōkin. Pəxsī narrī-n tə gap lāsta tāw dōkin, aw tə badīdār muxa nar pəxsī dēwlī-n ǰōṛ dākin. Zāl səṛəy al tə nang aw pat zar xwəy bumbə pəšək.*
 
-*Har mēlmə kī bu a xalq xwāřə nōṛī aw sir arwəxt řəwwīn. Arra mirzāy aw turburī yē šōr nara pə amān aw yōwālay bu nišīn. Allāh yē Kānīgrām šōr nara tal amān kəwōn, aw tarmāx xwāřə Warmaṛō dīw dē tar tal ʐwandā nāsōn!*
+*Har mēlmə kī bu a xalq xwāřə nōṛī aw sir arwəxt řəwwīn. Arra mirzāy aw turburī yē šōr nara pə amān aw yōwālay bu nišīn. Allāh yē Kānīgrām šōr nara tal amān kəwōn, aw tarmāx xwāřə Warmaṛō zbān dē tar tal ʐwandā nāsōn!*
 
 ---
 

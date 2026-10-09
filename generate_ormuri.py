@@ -41,64 +41,54 @@ ALL_API_KEYS = [k.strip() for k in _keys_str.split(",") if k.strip()]
 if not ALL_API_KEYS and DEFAULT_API_KEY:
     ALL_API_KEYS = [DEFAULT_API_KEY]
 
-MODEL_NAME = "gemini-3.8-flash"
+MODEL_NAME = os.environ.get("GEMINI_MODEL", "gemini-3.5-flash")
 CACHE_TTL = "86400s"  # 24-hour TTL
 
-# Local response caching to avoid consuming API tokens for repeated queries
-RESPONSE_CACHE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "response_cache.json")
-
-def get_cached_response(prompt: str) -> Optional[str]:
-    """Retrieve pre-generated response from local cache if identical prompt exists."""
-    try:
-        if os.path.exists(RESPONSE_CACHE_FILE):
-            with open(RESPONSE_CACHE_FILE, "r", encoding="utf-8") as f:
-                data = json.load(f)
-                key_hash = hashlib.md5(prompt.strip().encode("utf-8")).hexdigest()
-                if key_hash in data:
-                    print(f"[CACHE] Serving from local response cache (0 API tokens consumed)!")
-                    return data[key_hash]
-    except Exception as e:
-        print(f"[CACHE-WARN] Failed to read response cache: {e}")
-    return None
-
-def set_cached_response(prompt: str, response_text: str):
-    """Save newly generated response to local cache."""
-    try:
-        data = {}
-        if os.path.exists(RESPONSE_CACHE_FILE):
-            with open(RESPONSE_CACHE_FILE, "r", encoding="utf-8") as f:
-                data = json.load(f)
-        key_hash = hashlib.md5(prompt.strip().encode("utf-8")).hexdigest()
-        data[key_hash] = response_text
-        with open(RESPONSE_CACHE_FILE, "w", encoding="utf-8") as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
-    except Exception as e:
-        print(f"[CACHE-WARN] Failed to write response cache: {e}")
-
 class ApiKeyPool:
-    """Manages pool of free/paid Gemini API keys with automatic rotation on rate limits."""
+    """Manages pool of free/paid Gemini API keys with automatic round-robin dispatch and rate-limit cooldowns."""
     def __init__(self, keys: list[str]):
         self.keys = keys if keys else [""]
         self.current_idx = 0
         self._lock = threading.Lock()
         self.clients = {}
+        self.cooldowns = {}  # key_idx -> timestamp until which it is on cooldown
 
-    def get_client(self) -> tuple[genai.Client, str, int]:
+    def get_client(self, round_robin: bool = True) -> tuple[genai.Client, str, int]:
+        """Dispatch next available API key using thread-safe round-robin load balancing."""
         with self._lock:
-            key = self.keys[self.current_idx]
+            now = time.time()
+            n = len(self.keys)
+            
+            # Find next non-cooled key
+            for offset in range(n):
+                idx = (self.current_idx + offset) % n
+                if self.cooldowns.get(idx, 0) <= now:
+                    if round_robin:
+                        self.current_idx = (idx + 1) % n
+                    key = self.keys[idx]
+                    if key not in self.clients:
+                        self.clients[key] = genai.Client(api_key=key)
+                    print(f"[KEY-DISPATCH] Round-Robin: Dispatched Key #{idx + 1} of {n} for request")
+                    return self.clients[key], key, idx
+            
+            # If all are in cooldown, pick the one whose cooldown expires soonest
+            soonest_idx = min(range(n), key=lambda i: self.cooldowns.get(i, 0))
+            if round_robin:
+                self.current_idx = (soonest_idx + 1) % n
+            key = self.keys[soonest_idx]
             if key not in self.clients:
                 self.clients[key] = genai.Client(api_key=key)
-            return self.clients[key], key, self.current_idx
+            print(f"[KEY-DISPATCH] All keys active; dispatched Key #{soonest_idx + 1} of {n}")
+            return self.clients[key], key, soonest_idx
+
+    def mark_rate_limited(self, idx: int, duration_sec: float = 60.0):
+        """Put a key into cooldown for 60s when a 429 quota is encountered."""
+        with self._lock:
+            self.cooldowns[idx] = time.time() + duration_sec
+            print(f"[KEY-COOLDOWN] Key #{idx + 1} put in cooldown for {duration_sec}s due to rate limit.")
 
     def rotate(self, reason: str = "") -> tuple[genai.Client, str, int]:
-        with self._lock:
-            old_idx = self.current_idx
-            self.current_idx = (self.current_idx + 1) % len(self.keys)
-            new_key = self.keys[self.current_idx]
-            if new_key not in self.clients:
-                self.clients[new_key] = genai.Client(api_key=new_key)
-            print(f"[KEY-ROTATION] Key #{old_idx + 1} ({reason}) -> Switched to Key #{self.current_idx + 1} of {len(self.keys)}")
-            return self.clients[new_key], new_key, self.current_idx
+        return self.get_client(round_robin=True)
 
 KEY_POOL = ApiKeyPool(ALL_API_KEYS)
 
@@ -127,15 +117,35 @@ CRITICAL GENERATIVE CONSTRAINTS (ZERO TOLERANCE FOR DEVIATION):
 3. STRICT CLITIC SYNTAX (WACKERNAGEL 2P POSITION):
    - Enclitics (-m, -t, -wə, -nyē, -n) and particles ('يې' yē, 'ال' al, 'دې' dē) must attach to the right edge of the first constituent.
 
-4. MANDATORY MORPHOLOGICAL SCRATCHPAD:
-   For every generated passage or sentence, you MUST first produce a `<morphological_scratchpad>` detailing:
-   - Sentence Number & Intent
-   - Alignment Type (Nominative-Accusative vs Ergative-Absolutive)
-   - Subject & Clitic Host
-   - Object & Gender/Number Verb Agreement
-   - Exact Ormuri Roots & Affixes Used
+4. MANDATORY MORPHOLOGICAL SCRATCHPAD & ORMURI EXAMPLE SENTENCE ENFORCEMENT:
+   For every generated passage, explanation, translation, or answer, you MUST first produce a `<morphological_scratchpad>`.
    
-   After the scratchpad, output the polished Ormuri text in the standard Perso-Arabic script with all authentic letters (ݫ, ݭ, ڒ, څ, ځ, ګ), followed by phonetic Romanization and an English translation.
+   CRITICAL REQUIREMENT (STRICTLY ENFORCED):
+   In BOTH the Morphological Scratchpad (inspected in the "Morphological Scratchpad Verified" tab) AND in the Raw Markdown / explanatory output:
+   Whenever an example sentence is given, referenced, or analyzed (for sentence-by-sentence decomposition, grammar demonstrations, verb conjugations, idioms, proverbs, or word usage):
+   - You MUST ALWAYS write the exact, complete example sentence in authentic Ormuri script right there:
+     `- Example Sentence in Ormuri: [اُرموړی متن - in authentic Perso-Arabic script with all letters ݫ, ݭ, ڒ, څ, ځ, ګ]`
+   - You MUST include its Phonetic Romanization:
+     `- Phonetic Romanization: [IPA/Roman transcription]`
+   - You MUST include its English Intent / Meaning:
+     `- Intent / Meaning: [English explanation]`
+   - Followed by Alignment Type, Subject & Clitic Host, Object & Verb Agreement, and Exact Roots/Affixes.
+   
+   NEVER present an example in English alone or abstract grammatical breakdown without providing the full corresponding sentence in authentic Ormuri right beside it!
+   
+   After the scratchpad, output the full structured response:
+   ### Polished Ormuri (Bargista / اُرموړی) Text
+   [Complete polished text in authentic Ormuri script with correct punctuation]
+   
+   ### Phonetic Romanization
+   [Phonetic Romanization with IPA symbols]
+   
+   ### English Translation
+   [Accurate translation and linguistic notes]
+
+5. STRICT CANONICAL VOCABULARY ENFORCEMENT:
+   - "Language" in Ormuri is strictly **زبان** [zbān] (Plural: **زبنَّی** [zbənni]) or the compound autonym **ورمړو زبان** [Warmaṛō zbān] / **ورمړو** [Warmaṛō].
+   - CRITICAL WARNING: NEVER use "دیو" (dyō) for "language"! In authentic Ormuri, "دیو" [dyō] strictly means the numeral "TWO" (2 / دو / binary pair). "Language" is ALWAYS **زبان** [zbān].
 """
 
 def load_knowledge_base(kb_path: str) -> str:
@@ -191,17 +201,13 @@ def generate_ormuri(
     model_name: str = MODEL_NAME,
     temperature: float = 0.2
 ) -> str:
-    """Execute generation with local cache lookup, anti-hallucination scratchpad, and seamless key rotation."""
-    # 1. Check local response cache (0 API tokens used)
-    cached = get_cached_response(prompt)
-    if cached:
-        return cached
-
+    """Execute generation with live anti-hallucination scratchpad and seamless key rotation."""
     print(f"\n[*] Generating Ormuri response with {model_name} (temperature={temperature})...")
     
     models_to_try = [model_name]
-    if "3.8" in model_name:
-        models_to_try.extend(["gemini-3.5-flash", "gemini-flash-latest"])
+    for alt in ["gemini-3.5-flash", "gemini-3.7-flash", "gemini-3.8-flash", "gemini-flash-latest"]:
+        if alt not in models_to_try:
+            models_to_try.append(alt)
 
     last_error = None
     max_key_rotations = max(1, len(KEY_POOL.keys))
@@ -239,26 +245,29 @@ def generate_ormuri(
                             )
                         )
                     
-                    res_text = response.text
-                    # Save to local response cache for future instant free retrieval
-                    set_cached_response(prompt, res_text)
-                    return res_text
+                    return response.text
 
                 except (ClientError, APIError) as e:
                     last_error = e
                     err_lower = str(e).lower()
                     is_quota = any(w in err_lower for w in ["429", "resource_exhausted", "quota", "rate limit"])
                     is_unavailable = any(w in err_lower for w in ["503", "unavailable", "high demand", "overloaded"])
-                    if (is_quota or is_unavailable) and len(KEY_POOL.keys) > 1:
-                        KEY_POOL.rotate(reason="429/503 Service Limit")
-                        break  # Break inner model attempts to try next key or fallback
-                    print(f"[RETRY] Key #{key_idx + 1} Model {current_model} attempt {attempt}/2 returned error: {e}")
-                    time.sleep(1.0 * attempt)
+                    
+                    if is_unavailable:
+                        print(f"[MODEL-DEMAND] Model {current_model} is experiencing high demand (503). Trying fallback model...")
+                        break  # Break inner attempt loop to try next model in models_to_try
+                    elif is_quota:
+                        print(f"[QUOTA-LIMIT] Key #{key_idx + 1} reached quota limit (429). Rotating to next API key...")
+                        KEY_POOL.mark_rate_limited(key_idx, 60.0)
+                        KEY_POOL.rotate(reason="429 Rate Limit")
+                        break  # Break to try next key
+                    else:
+                        print(f"[RETRY] Key #{key_idx + 1} Model {current_model} attempt {attempt}/2 returned error: {e}")
+                        time.sleep(1.0 * attempt)
                 except Exception as e:
                     last_error = e
                     print(f"[RETRY] Key #{key_idx + 1} Unexpected error on {current_model}: {e}")
                     time.sleep(1.0 * attempt)
-
 
     raise RuntimeError(f"Failed to generate after trying {max_key_rotations} API keys: {last_error}")
 
@@ -267,7 +276,8 @@ def main():
     parser = argparse.ArgumentParser(description="Ormuri AI Generative Linguistics Engine")
     parser.add_argument("--prompt", type=str, help="Prompt for generation")
     parser.add_argument("--interactive", action="store_true", help="Launch interactive session")
-    parser.add_argument("--kb", type=str, default="ormuri_knowledge_base.md", help="Path to knowledge base file")
+    core_kb = "ormuri_core_kb.md" if os.path.exists("ormuri_core_kb.md") else "ormuri_knowledge_base.md"
+    parser.add_argument("--kb", type=str, default=core_kb, help="Path to knowledge base file")
     parser.add_argument("--model", type=str, default=MODEL_NAME, help="Gemini Model ID")
     parser.add_argument("--temp", type=float, default=0.2, help="Sampling temperature")
     parser.add_argument("--api-key", type=str, default=DEFAULT_API_KEY, help="Google Gemini API Key")

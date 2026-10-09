@@ -4,39 +4,70 @@ An open-source digital preservation and AI generative linguistics engine for **O
 
 ![License](https://img.shields.io/badge/License-MIT-emerald.svg)
 ![Python](https://img.shields.io/badge/Python-3.11%2B-blue.svg)
-![Google Gemini](https://img.shields.io/badge/Model-Gemini%203.8%20Flash-cyan.svg)
+![Google Gemini](https://img.shields.io/badge/Model-Gemini%203.5%20Flash-cyan.svg)
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen.svg)
+![Languages](https://img.shields.io/badge/Languages-English%20%7C%20Urdu%20%7C%20Pashto%20%7C%20Ormuri-orange.svg)
 
 ---
 
 ## 🌟 Key Features
 
-1. **100% Unabridged Generative Knowledge Base (`ormuri_knowledge_base.md`)**:
-   - Synthesizes **100% of all 11 primary works** unabridged without omitting a single page or verse: **2,001,849 characters, 424,448 words, and 866,060 Gemini tokens**.
-   - **Complete Novel *Prechaak* (پرېچاک)**: All 311 pages in full by Rozi Khan Burki (416,828 characters).
-   - **Complete Gospel of Luke (لُوقا 1- 24)**: All 24 chapters in full (869 paragraphs, 132,807 characters).
-   - **Complete *Warmaṛo Muhāwari***: All 1,491 paragraphs and 1,199 idioms by Farah Naz Burki (104,969 characters).
-   - **Complete *Warmaṛo Matali***: All 1,029 paragraphs and 1,012 proverbs with cultural commentaries by Farhana Burki (102,788 characters).
-   - **Complete Ormuri Folk Stories**: All 623 paragraphs of traditional oral tales (*Shwaxay Khekany*, *Zargatay*, etc.).
-   - **Complete Ormuri Poetry Anthology**: All 52 pages of classical and contemporary verse (67,827 characters).
-   - **Complete Universal Declaration of Human Rights**: All 155 paragraphs translated into Ormuri.
-   - **Complete 10 Ormuri Infinitive Verbs**: All 47 pages containing all Category-A irregulars and all 466+ Category-B verbs.
-   - **Complete Ormuri Primer 2**: All 109 pages of pedagogical grammar, vigesimal numbers, and reading drills.
-   - **Complete Linguistic Abbreviations**: Dialectology distinctions (Kanigrami vs Logari).
-   - **Complete Illustrated Dictionary**: All 7,025 entries consolidated in [`lexicon.json`](file:///c:/Users/IMRAN/Downloads/Ormuri%20AI/Ormuri%20Data/lexicon.json).
+### 1. 100% Unabridged Generative Knowledge Base (`ormuri_core_kb.md`)
+Synthesizes **100% of all primary linguistic works** unabridged without omitting a single page or verse: **866,000+ tokens and 450,000+ characters**:
+- **Complete Novel *Prechaak* (پرېچاک)**: All 311 pages in full by Rozi Khan Burki.
+- **Complete Gospel of Luke (لُوقا 1–24)**: All 24 chapters in full (869 verses/paragraphs).
+- **Complete *Warmaṛo Muhāwari* (Idioms & Phrases)**: All authentic idioms cleanly demarcated starting from Idiom #1 with literal glosses and figurative meanings by Farah Naz Burki.
+- **Complete *Warmaṛo Matali* (Proverbs Collection)**: All authentic proverbs cleanly demarcated starting from Proverb #1 with cultural commentaries by Farhana Burki.
+- **Complete Ormuri Folk Stories (*Matalay aw Khesay*)**: Traditional oral tales (*Shwaxay Khekany*, *Zargatay*, etc.).
+- **Complete Ormuri Poetry Anthology (*Warmaṛo Shāirī*)**: Classical and contemporary verse.
+- **Universal Declaration of Human Rights (UDHR)**: Translated in full into authentic Ormuri.
+- **Infinitive Verbs System**: Comprehensive paradigms covering Category-A irregulars and all 466+ Category-B verbs.
+- **Ormuri Primer 2 (*Dweyam Kitab*)**: Pedagogical grammar, vigesimal numbers, and reading drills.
+- **Linguistic Abbreviations & Symbols**: Standardized orthographic and dialectological conventions (Kanigrami vs Logari).
+- **Consolidated Dictionary**: 6,657 structured lexical entries available in [`lexicon.json`](file:///c:/Users/IMRAN/Downloads/Ormuri%20AI/Ormuri%20Data/lexicon.json).
 
-2. **In-Context Learning & Context Caching Engine (`generate_ormuri.py`)**:
-   - Powered by the official **Google GenAI SDK** (`google-genai`) and `gemini-3.8-flash`.
-   - Explicit persistent server-side Context Caching with 24-hour TTL (`ttl="86400s"`).
-   - **Anti-Hallucination Guardrails**: Zero Pashto/Persian fallback.
-   - **Mandatory Morphological Scratchpad**: Deconstructs every clause, verifying TAM alignment, clitic hosting, and object-verb agreement.
+---
 
-3. **Interactive Testing Playground & Web UI (`server.py` & `frontend/`)**:
-   - Multithreaded local server with fast JSON API endpoints (`/api/generate`, `/api/lexicon`, `/api/status`).
-   - High-aesthetic dark mode interface with glassmorphism and Noto Nastaliq Urdu / Amiri typography.
-   - Quick scenarios: Universal Declaration of Human Rights, Kaniguram knife craftsmanship, Proverbs, and Greetings.
-   - **Live Lexicon Explorer**: Real-time searchable dictionary of 6,650+ words with POS filtering.
-   - **Grammar Formula Modal**: Visual reference for split ergativity and clitic syntax.
+### 2. In-Browser 10-Work Primary Corpus Reader (`frontend/corpus_data.js`)
+- **Direct Interactive Access**: Read all 10 authentic works directly inside the web interface under the **Primary Corpus Archive** tab.
+- **Instant Sub-Tab Navigation**: Jump smoothly between Novel, Luke, Idioms, Proverbs, Stories, Poetry, UDHR, Verbs, Primer, and Abbreviations.
+- **Full-Text Real-Time Search**: Search any Ormuri word, romanized term, Urdu gloss, or English concept across the entire archive instantly.
+- **Sequential Demarcation**: Idioms and Proverbs follow clean, intuitive consecutive numbering (#1, #2, #3...) for seamless academic reference.
+
+---
+
+### 3. Simplified & Advanced Generative Controls
+- **Lay-User Friendly**: Replaced intimidating raw statistical labels (`Creativity / Temp: 0.2`) with an elegant, unobtrusive button:
+  - English: `⚙️ Advanced [0.2]`
+  - Urdu: `⚙️ جدید ترتیبات [0.2]`
+  - Pashto: `⚙️ پرمختللي ترتیبات [0.2]`
+- **Dedicated Advanced Settings Popover**:
+  - **Quick Select Presets**: One-click chips for `0.0 (Strict)`, `0.2 (Optimal)`, `0.5 (Balanced)`, and `0.8 (Creative)`.
+  - **Direct Numeric Input Box**: Enter any exact float value (`0.0`–`1.0`) directly.
+  - **Synchronized Fine-Tuning Slider**: Bi-directionally synchronized with number input and preset chips.
+
+---
+
+### 4. Resilient Multi-Key Round-Robin Rotation Pool
+- `generate_ormuri.py` and `server.py` feature an automated key pool manager (`KeyPool`).
+- Automatically balances load across multiple Google Gemini API keys via round-robin dispatch, ensuring uninterrupted generation even during quota and rate limits.
+- Supports both single key (`GEMINI_API_KEY`) and multi-key lists (`GEMINI_API_KEYS` / comma-separated strings).
+
+---
+
+### 5. Strict Morphological Scratchpad & Anti-Hallucination Guardrails
+- **Morphological Scratchpad Protocol**: Before surface generation, the engine deconstructs every clause in `<morphological_scratchpad>` tags, enforcing:
+  - Split-ergativity in past transitive constructions.
+  - Wackernagel second-position pronominal clitics (*-am*, *-at*, *-a/yē*, *-an*, *-at-an*, *-a-wē*).
+  - Accurate vocabulary disambiguation (e.g., 'Language' = *زبان* [zbān] / *زبنَّی* [zbənni]; *دیو* [dyō] strictly means the number 'two').
+- **Dual Script Output**: Surfaces authentic Ormuri Arabic-based script (*Bargista*) alongside standardized International Phonetic Alphabet (IPA) Romanization and dual Urdu/English translations.
+
+---
+
+### 6. Trilingual Interface & On-Screen Virtual Keyboard
+- **Full Localization**: Seamless switching between English, Urdu, and Pashto with complete Right-to-Left (RTL) typography.
+- **Integrated Virtual Keyboard**: On-screen keyboard with tabs for Ormuri special characters (ݪ, ݫ, ݭ, ړ, ږ, ښ, etc.), Pashto, and Urdu.
+- **Live Lexicon Explorer**: Search 6,657 words with Part-of-Speech filtering and one-click insertion into the prompt.
 
 ---
 
@@ -46,19 +77,17 @@ An open-source digital preservation and AI generative linguistics engine for **O
 OrmuriAI/
 ├── frontend/
 │   ├── index.html                  # Responsive modern web testing UI
-│   ├── style.css                   # High-aesthetic dark design system
-│   └── app.js                      # Client application logic & lexicon explorer
-├── Ormuri Data/
-│   ├── WORD/                       # Primary manuscripts (Dictionary, Proverbs, Stories, Luke, UDHR, Idioms)
-│   └── PDF/                        # Verified verb books, primers, poetry, and novel Prechaak
-├── ormuri_knowledge_base.md        # Complete 13-module master linguistic knowledge base (215K chars)
-├── generate_ormuri.py              # GenAI SDK engine with caching & CLI
-├── extract_full_corpus.py          # Master extraction pipeline covering 100% of all 11 corpus files
-├── build_knowledge_base.py         # Secondary extraction utility
-├── server.py                       # Local API backend and static web server (:8080)
-├── lexicon.json                    # 6,652 structured lexical entries (1.3 MB)
-├── kaniguram_verification.md       # Verified 3-paragraph descriptive passage
-├── .env.example                    # Environment template for Gemini API key
+│   ├── style.css                   # High-aesthetic dark design system with RTL support
+│   ├── app.js                      # Client application logic, popover controls, & localization
+│   └── corpus_data.js              # In-browser unabridged 10-work primary corpus dataset
+├── build_corpus_data.py            # Corpus extraction and JSON/JS dataset generator
+├── extract_full_corpus.py          # Master extraction pipeline covering 100% of all corpus files
+├── generate_ormuri.py              # GenAI SDK engine with key rotation pool & CLI
+├── server.py                       # Multithreaded local server with API endpoints (:8080)
+├── lexicon.json                    # 6,657 structured lexical entries
+├── ormuri_core_kb.md               # Master unabridged linguistic knowledge base
+├── kaniguram_verification.md       # Verified descriptive passage & grammatical proofs
+├── .env.example                    # Environment template for Gemini API key(s)
 └── README.md                       # Documentation and setup guide
 ```
 
@@ -68,28 +97,31 @@ OrmuriAI/
 
 ### 1. Prerequisites
 - Python 3.11 or higher
-- A Google Gemini API Key
+- One or more Google Gemini API Keys
 
 ### 2. Installation
-Clone the repository and install required packages:
+Clone the repository and install dependencies:
 ```bash
 git clone https://github.com/AlisherKhanBurki/OrmuriAI.git
 cd OrmuriAI
 pip install google-genai pypdf
 ```
 
-### 3. Configure API Key
-Set your Gemini API key:
+### 3. Configure API Key(s)
+Set your Gemini API key in your environment or in a `.env` file:
 ```bash
 # Windows PowerShell
 $env:GEMINI_API_KEY="your_api_key_here"
+
+# For multi-key rotation pool:
+$env:GEMINI_API_KEYS="key_1,key_2,key_3"
 
 # Linux / macOS
 export GEMINI_API_KEY="your_api_key_here"
 ```
 
-### 4. Launch the Playground UI
-Start the multithreaded server:
+### 4. Launch the Web Playground
+Start the local server:
 ```bash
 python server.py
 ```
@@ -107,10 +139,10 @@ You can also run generation directly from your terminal:
 python generate_ormuri.py --interactive
 
 # Custom one-off prompt
-python generate_ormuri.py --prompt "Write an authentic Ormuri proverb about mountains and streams"
+python generate_ormuri.py --prompt "Write an authentic Ormuri proverb about hospitality and honor"
 
-# Run default Kaniguram verification
-python generate_ormuri.py
+# Custom temperature setting
+python generate_ormuri.py --prompt "Compose a greeting dialogue" --temperature 0.2
 ```
 
 ---

@@ -85,26 +85,24 @@ def parse_ormuri_output(raw_text: str) -> Dict[str, Any]:
     if sec_trans:
         translation = sec_trans.group(1).strip()
     
-    # Fallback if ormuri_text was not matched by heading
-    if not ormuri_text:
-        # 1. Try text before romanization/translation
-        before_roman = re.split(r'###?\s*(?:Phonetic|Romanization|English|Translation)', content_after, flags=re.IGNORECASE)[0].strip()
-        # Clean any remaining markdown header lines
-        cleaned_before = re.sub(r'^#+.*?\n', '', before_roman).strip()
-        if cleaned_before and len(cleaned_before) > 5:
-            ormuri_text = cleaned_before
-        else:
-            # 2. Extract any paragraphs with Arabic characters
-            arabic_blocks = []
-            for p in content_after.split('\n\n'):
-                p_clean = p.strip()
-                if not p_clean:
-                    continue
-                arabic_count = len(re.findall(r'[\u0600-\u06FF]', p_clean))
-                if arabic_count >= 5:
-                    arabic_blocks.append(p_clean)
-            if arabic_blocks:
-                ormuri_text = '\n\n'.join(arabic_blocks)
+    # Intelligent paragraph fallback if headings were omitted
+    if not (ormuri_text and romanization and translation):
+        paragraphs = [p.strip() for p in content_after.split('\n\n') if p.strip()]
+        # Strip stray markdown headings
+        paragraphs = [re.sub(r'^#+.*?\n', '', p).strip() for p in paragraphs if p.strip()]
+        
+        for p in paragraphs:
+            arb_chars = len(re.findall(r'[\u0600-\u06FF]', p))
+            lat_chars = len(re.findall(r'[A-Za-z]', p))
+            
+            if arb_chars > lat_chars and arb_chars >= 3 and not ormuri_text:
+                ormuri_text = p
+            elif lat_chars > arb_chars:
+                has_ipa = any(c in p for c in 'əʌɪʊšžřɕʑčǰāēīōūḍṭṇṛ')
+                if (has_ipa or not romanization) and not romanization:
+                    romanization = p
+                elif not translation:
+                    translation = p
 
     return {
         "scratchpad": scratchpad.replace('*', ' ').strip(),
@@ -227,6 +225,8 @@ class PlaygroundHandler(SimpleHTTPRequestHandler):
                     full_prompt = f"Write an authentic conversational dialogue between native Ormuri speakers:\n{prompt}"
                 elif mode == "grammar_check":
                     full_prompt = f"Linguistically analyze and translate this sentence into authentic Ormuri, strictly enforcing split-ergativity and clitic rules:\n{prompt}"
+
+                full_prompt += "\n\n(CRITICAL INSTRUCTIONS: 1. In both the <morphological_scratchpad> and Raw Markdown, whenever an example is given or analyzed, you MUST always provide the complete example sentence in authentic Ormuri script along with Romanization. 2. Accurate Ormuri vocabulary: 'Language' is زبان [zbān] / زبنَّی [zbənni]; 'دیو' [dyō] strictly means the number 'two'.)"
 
                 print(f"[API] Generating for prompt ({len(prompt)} chars, mode={mode})...")
                 result_text = generate_ormuri(
