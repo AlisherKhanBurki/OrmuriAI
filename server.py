@@ -68,8 +68,20 @@ else:
     print("          To enable generation, configure GEMINI_API_KEY in Render Environment Variables.", flush=True)
 
 
+def clean_section(text: str) -> str:
+    """Clean markdown artifacts, dividers, and trailing delimiters from extracted section."""
+    if not text:
+        return ""
+    # Strip leading/trailing horizontal rules (---, ___, ***)
+    text = re.sub(r'^\s*[-=_*]{3,}\s*', '', text)
+    text = re.sub(r'\s*[-=_*]{3,}\s*$', '', text)
+    # Strip any leading heading line left inside section
+    text = re.sub(r'^\s*#{1,4}\s+[^\n]+\n+', '', text)
+    return text.strip()
+
+
 def parse_ormuri_output(raw_text: str) -> Dict[str, Any]:
-    """Parse output into scratchpad, ormuri text, romanization, and translation."""
+    """Parse output into scratchpad, ormuri text, romanization, and translation with ultra-robust failsafes."""
     # Replace all '*' symbols in the model's response with a space ' '
     raw_text = raw_text.replace('*', ' ')
 
@@ -80,42 +92,79 @@ def parse_ormuri_output(raw_text: str) -> Dict[str, Any]:
     
     # Remove scratchpad from remaining text
     content_after = re.sub(r'<morphological_scratchpad>.*?</morphological_scratchpad>', '', raw_text, flags=re.DOTALL | re.IGNORECASE).strip()
+    content_after = re.sub(r'^```(?:markdown)?', '', content_after).strip()
+    content_after = re.sub(r'```$', '', content_after).strip()
     
-    # Try extracting sections
     ormuri_text = ""
     romanization = ""
     translation = ""
     
-    # Section matching (handles English "Ormuri", "Bargista", and Arabic "اُرموړی", "ارموړی", "اورموړی", "Perso-Arabic")
-    sec_ormuri = re.search(r'(?:###?\s*(?:Polished\s*)?(?:Ormuri|Bargista|[\u0600-\u06FF]+|Perso-Arabic).*?\n)(.*?)(?=(?:###?\s*(?:Phonetic|Romanization|Roman|IPA|English|Translation)|$))', content_after, re.DOTALL | re.IGNORECASE)
-    sec_roman = re.search(r'(?:###?\s*(?:Phonetic\s*)?(?:Romanization|Roman|IPA).*?\n)(.*?)(?=(?:###?\s*(?:English|Translation|Literal)|$))', content_after, re.DOTALL | re.IGNORECASE)
-    sec_trans = re.search(r'(?:###?\s*(?:English\s*)?(?:Translation|Meaning).*?\n)(.*?)(?=$)', content_after, re.DOTALL | re.IGNORECASE)
+    # 1. Flexible Heading Matching (handles levels # to ####, bold headers, numbered lists, and multilingual titles)
+    sec_ormuri = re.search(
+        r'(?:^|\n)\s*(?:#{1,4}|\*{2,3}|\d+[\.\)])\s*.*?(?:Ormuri|Bargista|[\u0600-\u06FF]+|Perso-Arabic|Script).*?\n+(.*?)(?=\n\s*(?:#{1,4}|\*{2,3}|\d+[\.\)])|\Z)',
+        content_after, re.DOTALL | re.IGNORECASE
+    )
+    sec_roman = re.search(
+        r'(?:^|\n)\s*(?:#{1,4}|\*{2,3}|\d+[\.\)])\s*.*?(?:Phonetic|Romanization|Roman|IPA|Transliteration).*?\n+(.*?)(?=\n\s*(?:#{1,4}|\*{2,3}|\d+[\.\)])|\Z)',
+        content_after, re.DOTALL | re.IGNORECASE
+    )
+    sec_trans = re.search(
+        r'(?:^|\n)\s*(?:#{1,4}|\*{2,3}|\d+[\.\)])\s*.*?(?:Translation|Meaning|Notes|Gloss|Vocabulary|Dialogue|Explanation|Breakdown|Analysis|ترجمہ|معنی|تشریح|وضاحت|ژباړه|معنا|توضیحات).*?\n+(.*?)(?=\n\s*(?:#{1,4}|\*{2,3}|\d+[\.\)])|\Z)',
+        content_after, re.DOTALL | re.IGNORECASE
+    )
     
     if sec_ormuri:
-        ormuri_text = sec_ormuri.group(1).strip()
+        ormuri_text = clean_section(sec_ormuri.group(1))
     if sec_roman:
-        romanization = sec_roman.group(1).strip()
+        romanization = clean_section(sec_roman.group(1))
     if sec_trans:
-        translation = sec_trans.group(1).strip()
+        translation = clean_section(sec_trans.group(1))
     
-    # Intelligent paragraph fallback if headings were omitted
+    # Sanity check: Ensure translation isn't mistakenly holding the Ormuri heading
+    if translation and re.match(r'^\s*#{0,4}\s*Polished\s*Ormuri', translation, re.IGNORECASE):
+        translation = ""
+
+    # 2. Structural Guarantee:
+    # In standard response structure, whatever follows the Romanization section until the end IS the Translation, Gloss & Notes
+    if romanization and not translation and sec_roman:
+        roman_end = sec_roman.end()
+        remaining = content_after[roman_end:].strip()
+        # Clean any leading markdown heading or divider like '---' or '### Translation'
+        remaining = re.sub(r'^(?:[\s\-\*#]+\n+)+', '', remaining).strip()
+        remaining = re.sub(r'^\s*#{1,4}\s+[^\n]+\n+', '', remaining).strip()
+        if remaining and not re.match(r'^\s*#{0,4}\s*Polished\s*Ormuri', remaining, re.IGNORECASE):
+            translation = clean_section(remaining)
+
+    # 3. Comprehensive Paragraph Fallback
     if not (ormuri_text and romanization and translation):
-        paragraphs = [p.strip() for p in content_after.split('\n\n') if p.strip()]
-        # Strip stray markdown headings
-        paragraphs = [re.sub(r'^#+.*?\n', '', p).strip() for p in paragraphs if p.strip()]
-        
-        for p in paragraphs:
+        raw_paragraphs = [p.strip() for p in content_after.split('\n\n') if p.strip()]
+        valid_paragraphs = []
+        for p in raw_paragraphs:
+            # Skip if paragraph is purely a markdown heading or divider
+            if re.match(r'^(?:#{1,4}\s+.*|[-=_*]{3,})$', p.strip()):
+                continue
+            cleaned_p = re.sub(r'^(?:#{1,4}\s+.*?\n+|[-=_*]{3,}\n+)', '', p).strip()
+            if cleaned_p and not re.match(r'^Polished\s*Ormuri', cleaned_p, re.IGNORECASE):
+                valid_paragraphs.append(cleaned_p)
+
+        trans_paragraphs = []
+        for p in valid_paragraphs:
             arb_chars = len(re.findall(r'[\u0600-\u06FF]', p))
             lat_chars = len(re.findall(r'[A-Za-z]', p))
             
             if arb_chars > lat_chars and arb_chars >= 3 and not ormuri_text:
-                ormuri_text = p
+                ormuri_text = clean_section(p)
             elif lat_chars > arb_chars:
                 has_ipa = any(c in p for c in 'əʌɪʊšžřɕʑčǰāēīōūḍṭṇṛ')
                 if (has_ipa or not romanization) and not romanization:
-                    romanization = p
-                elif not translation:
-                    translation = p
+                    romanization = clean_section(p)
+                else:
+                    trans_paragraphs.append(clean_section(p))
+            else:
+                trans_paragraphs.append(clean_section(p))
+        
+        if not translation and trans_paragraphs:
+            translation = clean_section('\n\n'.join(trans_paragraphs))
 
     return {
         "scratchpad": scratchpad.replace('*', ' ').strip(),
@@ -222,24 +271,63 @@ class PlaygroundHandler(SimpleHTTPRequestHandler):
                 data = json.loads(post_data)
                 prompt = data.get("prompt", "").strip()
                 temperature = float(data.get("temperature", 0.2))
-                mode = data.get("mode", "free")
+                mode = data.get("mode", "qa")
+                prompt_lang = data.get("prompt_lang", "auto")
 
                 if not prompt:
                     self.send_json({"error": "Prompt cannot be empty"}, status=400)
                     return
 
+                # Detect user prompt language
+                has_ps = any(c in prompt for c in ['ښ', 'ږ', 'ڼ', 'ۍ', 'ې', 'ئ', 'څ', 'ځ']) or any(w in prompt for w in ['څنګه', 'ولې', 'پښتو', 'کې', 'سره', 'ژبه', 'زده'])
+                has_ur = any(c in prompt for c in ['ں', 'ے', 'ٹ', 'ڈ', 'ڑ', 'ہ', 'ھ']) or any(w in prompt for w in ['کیا', 'ہے', 'ہیں', 'تھا', 'تھی', 'میں', 'اردو', 'بتائیں', 'سکھائیں', 'کیوں'])
+                
+                detected_lang = prompt_lang
+                if detected_lang not in ["ur", "ps", "en"]:
+                    if has_ps:
+                        detected_lang = "ps"
+                    elif has_ur:
+                        detected_lang = "ur"
+                    else:
+                        arb = len(re.findall(r'[\u0600-\u06FF]', prompt))
+                        lat = len(re.findall(r'[A-Za-z]', prompt))
+                        detected_lang = "ur" if arb > lat else "en"
+
                 # Enrich prompt based on mode
-                full_prompt = prompt
-                if mode == "story":
-                    full_prompt = f"Compose a rich traditional story in authentic Ormuri:\n{prompt}"
-                elif mode == "proverb":
-                    full_prompt = f"Provide and analyze authentic Ormuri proverbs regarding:\n{prompt}"
+                if mode == "qa":
+                    full_prompt = (
+                        f"CRITICAL REQUIREMENT FOR '### Polished Ormuri (Bargista / اُرموړی) Text':\n"
+                        f"This section MUST DIRECTLY answer the user's specific question or provide the exact Ormuri target expression/sentences requested.\n"
+                        f"DO NOT compose generic poetry, random praise of Kaniguram, or unrelated folk lines. The Ormuri text must state the actual answer or demonstrate the queried words in authentic context.\n\n"
+                        f"USER QUESTION: {prompt}\n\n"
+                        f"The '### Translation & Notes' section must then provide the exact 1-to-1 translation and linguistic breakdown of that Ormuri answer in the user's language."
+                    )
+                elif mode == "teach":
+                    full_prompt = (
+                        f"CRITICAL REQUIREMENT FOR '### Polished Ormuri (Bargista / اُرموړی) Text':\n"
+                        f"This section MUST contain the EXACT target Ormuri vocabulary, sentences, and conversation being taught for this lesson topic.\n"
+                        f"DO NOT generate unrelated stories. Every Ormuri sentence must be a direct part of the lesson.\n\n"
+                        f"LESSON TOPIC: {prompt}\n\n"
+                        f"The '### Translation & Notes' section must systematically break down the lesson (Vocabulary, Grammar Rules, Usage tips, Practice drill) matching the Ormuri text 1-to-1."
+                    )
+                elif mode == "story":
+                    full_prompt = f"Compose a rich traditional story in authentic Ormuri directly addressing:\n{prompt}"
                 elif mode == "dialogue":
-                    full_prompt = f"Write an authentic conversational dialogue between native Ormuri speakers:\n{prompt}"
+                    full_prompt = f"Write an authentic conversational dialogue between native Ormuri speakers directly about:\n{prompt}"
                 elif mode == "grammar_check":
                     full_prompt = f"Linguistically analyze and translate this sentence into authentic Ormuri, strictly enforcing split-ergativity and clitic rules:\n{prompt}"
+                else:
+                    full_prompt = prompt
 
-                full_prompt += "\n\n(CRITICAL INSTRUCTIONS: 1. In both the <morphological_scratchpad> and Raw Markdown, whenever an example is given or analyzed, you MUST always provide the complete example sentence in authentic Ormuri script along with Romanization. 2. Accurate Ormuri vocabulary: 'Language' is زبان [zbān] / زبنَّی [zbənni]; 'دیو' [dyō] strictly means the number 'two'.)"
+                # Strict language matching directive
+                if detected_lang == "ur":
+                    full_prompt += "\n\n(TARGET LANGUAGE REQUIREMENT: The user wrote in Urdu. You MUST write the '### Translation & Notes' section and all explanations, breakdowns, and definitions entirely in URDU (اردو). Do NOT use English for the translation section.)"
+                elif detected_lang == "ps":
+                    full_prompt += "\n\n(TARGET LANGUAGE REQUIREMENT: The user wrote in Pashto. You MUST write the '### Translation & Notes' section and all explanations, breakdowns, and definitions entirely in PASHTO (پښتو). Do NOT use English for the translation section.)"
+                else:
+                    full_prompt += "\n\n(TARGET LANGUAGE REQUIREMENT: The user wrote in English. Provide the '### Translation & Notes' section in English.)"
+
+                full_prompt += "\n\n(CRITICAL INSTRUCTIONS: 1. You MUST always output all three sections with their standard markdown headings in this exact order: '### Polished Ormuri (Bargista / اُرموړی) Text', '### Phonetic Romanization', and '### Translation & Notes'. Put all dialogue translations, word-by-word glosses, and vocabulary notes inside the '### Translation & Notes' section. Never omit the translation section. 2. In both the <morphological_scratchpad> and Raw Markdown, whenever an example is given or analyzed, you MUST always provide the complete example sentence in authentic Ormuri script along with Romanization. 3. Accurate Ormuri vocabulary: 'Language' is زبان [zbān] / زبنَّی [zbənni]; 'دیو' [dyō] strictly means the number 'two'.)"
 
                 if not KEY_POOL.has_keys():
                     self.send_json({
@@ -265,6 +353,7 @@ class PlaygroundHandler(SimpleHTTPRequestHandler):
                     "prompt": prompt,
                     "mode": mode,
                     "model": MODEL_NAME,
+                    "detected_lang": detected_lang,
                     "parsed": parsed_output
                 })
 

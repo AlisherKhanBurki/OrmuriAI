@@ -86,7 +86,7 @@
     <link rel="shortcut icon" href="favicon.ico" />
     <link rel="apple-touch-icon" href="favicon-apple.png" />
 
-    <link rel="stylesheet" href="style.css?v=4.3" />
+    <link rel="stylesheet" href="style.css?v=4.6" />
   </head>
   <body>
     <div class="app-container">
@@ -211,11 +211,13 @@
               <h2 data-i18n="prompt_title">Prompt Formulation</h2>
             </div>
             <div class="mode-selector" id="modeSelector">
-              <button class="mode-btn active" data-mode="free" data-i18n="mode_free">
-                Free Prompt
+              <button class="mode-btn active" data-mode="qa" data-i18n="mode_qa">
+                Q/A (Ask Anything)
+              </button>
+              <button class="mode-btn" data-mode="teach" data-i18n="mode_teach">
+                Teach Ormuri
               </button>
               <button class="mode-btn" data-mode="story" data-i18n="mode_story">Folk Story</button>
-              <button class="mode-btn" data-mode="proverb" data-i18n="mode_proverb">Proverb</button>
               <button class="mode-btn" data-mode="dialogue" data-i18n="mode_dialogue">Dialogue</button>
               <button class="mode-btn" data-mode="grammar_check" data-i18n="mode_ergativity">
                 Ergativity Test
@@ -228,7 +230,48 @@
             <span class="chips-label" data-i18n="chips_label">Quick Scenarios:</span>
             <button
               class="chip"
+              data-chip="qa-dialects"
+              data-mode="qa"
+              data-prompt="What are the key grammatical and phonetic differences between the Kaniguram (Pakistan) and Baraki Barak (Logar, Afghanistan) dialects of Ormuri based on the historical texts in the knowledge base?"
+            >
+              ❓ Q/A: Dialects
+            </button>
+            <button
+              class="chip"
+              data-chip="qa-urdu"
+              data-mode="qa"
+              data-prompt="ارموڑی زبان میں لفظ 'زبان' اور 'دیو' کے معنی اور فرق کو تاریخی متون اور لغت کی روشنی میں واضح کریں۔"
+            >
+              ❓ سوال (اردو): زبان اور دیو
+            </button>
+            <button
+              class="chip"
+              data-chip="qa-pashto"
+              data-mode="qa"
+              data-prompt="په ارموړي ژبه کې د تېرو متعدي فعلونو لپاره د ارګیټیوټي (Ergativity) اصول او فاعلي کلاټيکونه څنګه کارول کېږي؟"
+            >
+              ❓ پوښتنه (پښتو): ارګیټیوټي
+            </button>
+            <button
+              class="chip"
+              data-chip="teach-greetings"
+              data-mode="teach"
+              data-prompt="Teach me the basic morning, day, and evening greetings in Ormuri (Bargista): provide the Perso-Arabic script, IPA romanization, word-by-word gloss, and an everyday dialogue."
+            >
+              🎓 Teach: Greetings
+            </button>
+            <button
+              class="chip"
+              data-chip="teach-numbers"
+              data-mode="teach"
+              data-prompt="Teach me the numbers from 1 to 20 in authentic Ormuri using the traditional vigesimal system, with pronunciation guides and practice examples."
+            >
+              🎓 Teach: Numbers 1–20
+            </button>
+            <button
+              class="chip"
               data-chip="prechaak"
+              data-mode="qa"
               data-prompt="Translate and explain in authentic Ormuri using vocabulary from the novel Prechaak: 'In the cold winter of Kaniguram, the tribal elders gathered in the council house to resolve the blood dispute.'"
             >
               📖 Novel Prechaak
@@ -236,34 +279,15 @@
             <button
               class="chip"
               data-chip="folk"
+              data-mode="story"
               data-prompt="Narrate a traditional Ormuri folk story about the ancient iron-smiths (اوستاکار) of Kaniguram and the heritage of Baar Pit mountain."
             >
-              🏔️ Folk Stories
-            </button>
-            <button
-              class="chip"
-              data-chip="udhr"
-              data-prompt="Translate into formal civic Ormuri (following the Charter of Human Rights): 'All human beings are born free and equal in dignity and rights.'"
-            >
-              🕊️ Human Rights (UDHR)
-            </button>
-            <button
-              class="chip"
-              data-chip="proverb"
-              data-prompt="Present an authentic Ormuri proverb about hospitality (مېلمۀ) and honor (ننګ), with literal word breakdown, cultural meaning, and practical moral lesson."
-            >
-              📜 Proverbs (1,029)
-            </button>
-            <button
-              class="chip"
-              data-chip="idiom"
-              data-prompt="Present an authentic Ormuri idiom about courage and steadfastness from the Ormuri Idioms collection, with word gloss and idiomatic meaning."
-            >
-              💡 Idioms (1,491)
+              🏔️ Folk Story
             </button>
             <button
               class="chip"
               data-chip="dialogue"
+              data-mode="dialogue"
               data-prompt="Write a natural conversational dialogue between two Ormuri speakers meeting in the morning, greeting each other, asking about health, family, and sheep grazing."
             >
               🗣️ Daily Greetings
@@ -271,6 +295,7 @@
             <button
               class="chip"
               data-chip="ergativity"
+              data-mode="grammar_check"
               data-prompt="Translate and linguistically explain: 'Asima took Asim to the mountain, but the boy gave the bread to his mother' (verify past transitive object agreement vs agentive clitic al)."
             >
               ⚡ Ergativity Test
@@ -476,10 +501,9 @@
                 Polished Output
               </button>
               <button class="tab-btn" data-tab="scratchpad">
-                <span data-i18n="tab_scratchpad"><span class="tab-long">Morphological </span>Scratchpad</span>
+                <span data-i18n="tab_scratchpad"><span class="tab-long">Morphological </span>Scratchpad & Raw</span>
                 <span class="badge-mini" id="scratchpadBadge" data-i18n="tab_scratchpad_badge">Verified</span>
               </button>
-              <button class="tab-btn" data-tab="raw" data-i18n="tab_raw">Raw Markdown</button>
               <button class="tab-btn tab-btn-corpus" data-tab="corpus">
                 <span class="corpus-tab-icon">📚</span>
                 <span data-i18n="tab_corpus">Primary Corpus</span>
@@ -655,8 +679,9 @@
               </div>
             </div>
 
-            <!-- State 4: Scratchpad Tab -->
+            <!-- State 4: Scratchpad & Raw Output Tab (Combined) -->
             <div id="tabScratchpad" class="tab-content hidden">
+              <!-- Morphological Scratchpad Verification Section -->
               <div class="scratchpad-banner">
                 <div class="banner-icon">🛡️</div>
                 <div class="banner-text">
@@ -667,12 +692,43 @@
                     object-verb agreement before surface generation.</span
                   >
                 </div>
+                <button
+                  class="btn-copy-card scratchpad-copy-btn"
+                  onclick="copyCard('scratchpadContent')"
+                  data-i18n="btn_copy"
+                  title="Copy Morphological Scratchpad"
+                >
+                  Copy
+                </button>
               </div>
               <div id="scratchpadContent" class="scratchpad-inspector"></div>
-            </div>
 
-            <!-- State 5: Raw Output Tab -->
-            <div id="tabRaw" class="tab-content hidden">
+              <!-- Raw Markdown Output Section (Non-repeating) -->
+              <div class="raw-section-header">
+                <div class="raw-section-title">
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <polyline points="4 17 10 11 4 5"></polyline>
+                    <line x1="12" y1="19" x2="20" y2="19"></line>
+                  </svg>
+                  <span data-i18n="raw_section_title">Raw Markdown Output</span>
+                  <span class="badge-mini badge-raw-dedup" data-i18n="raw_dedup_badge">De-duplicated</span>
+                </div>
+                <button
+                  class="btn-copy-card"
+                  onclick="copyCard('rawContent')"
+                  data-i18n="btn_copy"
+                  title="Copy Raw Markdown"
+                >
+                  Copy
+                </button>
+              </div>
               <pre id="rawContent" class="raw-pre"></pre>
             </div>
 
@@ -1233,6 +1289,6 @@
     </div>
 
     <script src="corpus_data.js?v=4.0"></script>
-    <script src="app.js?v=4.3"></script>
+    <script src="app.js?v=4.6"></script>
   </body>
 </html>

@@ -152,17 +152,32 @@ CRITICAL GENERATIVE CONSTRAINTS (ZERO TOLERANCE FOR DEVIATION):
    
    After the scratchpad, output the full structured response:
    ### Polished Ormuri (Bargista / اُرموړی) Text
-   [Complete polished text in authentic Ormuri script with correct punctuation]
+   [STRICT RELEVANCE REQUIREMENT:
+    - This section MUST be the DIRECT answer, lesson content, or composition specifically requested by the user, in authentic Ormuri script.
+    - DO NOT generate unrelated generic poetry, random Kaniguram praises, or disconnected folk stories when the user asked a specific question or requested a lesson!
+    - If the user asks "What is X in Ormuri?", this section MUST directly state the term, its grammatical class, and authentic example sentences using X in Ormuri.
+    - If the user asks for a lesson, this section MUST contain the exact lesson sentences/dialogue being taught.
+    - Every sentence here must directly resolve the user's inquiry.]
    
    ### Phonetic Romanization
-   [Phonetic Romanization with IPA symbols]
+   [Phonetic Romanization with IPA symbols in strict 1-to-1 sentence alignment with the Ormuri text above]
    
-   ### English Translation
-   [Accurate translation and linguistic notes]
+   ### Translation & Notes
+   [Direct sentence-by-sentence translation and analytical explanation of the EXACT Ormuri text above:
+    - If the user asked or prompted in Urdu (اردو), write this section entirely in Urdu (اردو).
+    - If the user asked or prompted in Pashto (پښتو), write this section entirely in Pashto (پښتو).
+    - If the user prompted in English, write in English.
+    - Ensure 100% mutual semantic correspondence: this section must directly translate and explain the Ormuri text above, with zero divergence.]
 
 5. STRICT CANONICAL VOCABULARY ENFORCEMENT:
    - "Language" in Ormuri is strictly **زبان** [zbān] (Plural: **زبنَّی** [zbənni]) or the compound autonym **ورمړو زبان** [Warmaṛō zbān] / **ورمړو** [Warmaṛō].
    - CRITICAL WARNING: NEVER use "دیو" (dyō) for "language"! In authentic Ormuri, "دیو" [dyō] strictly means the numeral "TWO" (2 / دو / binary pair). "Language" is ALWAYS **زبان** [zbān].
+
+6. MULTILINGUAL ADAPTATION & DIRECT RELEVANCE DIRECTIVES:
+   - In Q/A Mode: Answer the question directly in Ormuri. The Ormuri text must state the facts, terminology, or rules in Ormuri itself, supplemented by the translation box.
+   - In Teaching Mode: The Ormuri text must contain the exact target vocabulary, grammatical patterns, and dialogue being taught.
+   - Strict 1-to-1 Alignment: Never let the Ormuri text discuss one topic while the translation discusses a different topic. Both sections must be 100% synchronized.
+   - Language Matching: Inquiries in Urdu receive Urdu explanations & translations; inquiries in Pashto receive Pashto explanations & translations.
 """
 
 def load_knowledge_base(kb_path: str) -> str:
@@ -269,15 +284,16 @@ def generate_ormuri(
                     err_lower = str(e).lower()
                     is_quota = any(w in err_lower for w in ["429", "resource_exhausted", "quota", "rate limit"])
                     is_unavailable = any(w in err_lower for w in ["503", "unavailable", "high demand", "overloaded"])
+                    is_not_found = any(w in err_lower for w in ["404", "not_found", "not found", "no longer available"])
                     
-                    if is_unavailable:
-                        print(f"[MODEL-DEMAND] Model {current_model} is experiencing high demand (503). Trying fallback model...")
-                        break  # Break inner attempt loop to try next model in models_to_try
+                    if is_unavailable or is_not_found:
+                        print(f"[MODEL-FALLBACK] Model {current_model} is {('not available (404)' if is_not_found else 'experiencing high demand (503)')}. Trying fallback model...")
+                        break  # Try next model in models_to_try
                     elif is_quota:
                         print(f"[QUOTA-LIMIT] Key #{key_idx + 1} reached quota limit (429). Rotating to next API key...")
                         KEY_POOL.mark_rate_limited(key_idx, 60.0)
-                        KEY_POOL.rotate(reason="429 Rate Limit")
-                        break  # Break to try next key
+                        active_client, active_key, key_idx = KEY_POOL.rotate(reason="429 Rate Limit")
+                        break  # Try next model/key
                     else:
                         print(f"[RETRY] Key #{key_idx + 1} Model {current_model} attempt {attempt}/2 returned error: {e}")
                         time.sleep(1.0 * attempt)

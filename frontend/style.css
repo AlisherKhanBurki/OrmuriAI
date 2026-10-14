@@ -1298,6 +1298,7 @@ html[dir="rtl"] .advanced-params-popover {
 .scratchpad-banner {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 0.75rem;
   padding: 0.9rem 1.1rem;
   background: rgba(16, 185, 129, 0.08);
@@ -1305,12 +1306,24 @@ html[dir="rtl"] .advanced-params-popover {
   border-radius: var(--radius-sm);
   font-size: 0.82rem;
   color: #A7F3D0;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.25rem;
 }
 .scratchpad-banner strong {
   display: block;
   font-size: 0.88rem;
   color: #34D399;
+}
+.scratchpad-copy-btn {
+  flex-shrink: 0;
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.35);
+  color: #34D399;
+  font-weight: 500;
+  padding: 0.3rem 0.65rem;
+}
+.scratchpad-copy-btn:hover {
+  background: rgba(16, 185, 129, 0.28);
+  color: #A7F3D0;
 }
 
 .scratchpad-inspector {
@@ -1323,10 +1336,47 @@ html[dir="rtl"] .advanced-params-popover {
   padding: 1.25rem;
   white-space: pre-wrap;
   color: #CBD5E1;
-  max-height: 520px;
+  max-height: 400px;
   overflow-y: auto;
   direction: ltr;
   unicode-bidi: plaintext;
+}
+
+/* Raw Markdown Section inside Combined Tab */
+.raw-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: rgba(30, 41, 59, 0.45);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  margin-top: 0.5rem;
+}
+.raw-section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+.raw-section-title svg {
+  color: var(--primary);
+  flex-shrink: 0;
+}
+.badge-raw-dedup {
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  color: #a5b4fc;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
 }
 
 .raw-pre {
@@ -1339,7 +1389,7 @@ html[dir="rtl"] .advanced-params-popover {
   padding: 1.25rem;
   white-space: pre-wrap;
   color: #94A3B8;
-  max-height: 520px;
+  max-height: 400px;
   overflow-y: auto;
   direction: ltr;
   unicode-bidi: plaintext;

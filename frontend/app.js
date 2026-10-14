@@ -22,21 +22,22 @@ const TRANSLATIONS = {
     btn_support: 'Support',
     btn_support_extra: ' Cause',
     prompt_title: 'Prompt Formulation',
-    mode_free: 'Free Prompt',
+    mode_qa: 'Q/A (Ask Anything)',
+    mode_teach: 'Teach Ormuri',
     mode_story: 'Folk Story',
-    mode_proverb: 'Proverb',
     mode_dialogue: 'Dialogue',
     mode_ergativity: 'Ergativity Test',
     chips_label: 'Quick Scenarios:',
-    prompt_placeholder: "Type your prompt in English, Urdu, or Ormuri...\nE.g., 'Describe the snowfall on Baar Pit mountain and the warmth of traditional hearths in Kaniguram.'",
+    prompt_placeholder: "Ask any question about Ormuri linguistics, vocabulary, or texts, or request a lesson...\nE.g., 'What is the word for water in Ormuri and how is it used?' or 'Teach me basic greetings in Ormuri.'",
     btn_advanced: 'Advanced',
     btn_clear: 'Clear',
     btn_generate: 'Generate Ormuri',
     output_title: 'Linguistic Output & Inspector',
     tab_rendered: 'Polished Output',
-    tab_scratchpad: 'Morphological Scratchpad',
+    tab_scratchpad: 'Morphological Scratchpad & Raw',
     tab_scratchpad_badge: 'Verified',
-    tab_raw: 'Raw Markdown',
+    raw_section_title: 'Raw Markdown Output',
+    raw_dedup_badge: 'De-duplicated',
     placeholder_title: 'Ready to Generate',
     placeholder_text: 'Select a scenario chip on the left or write a custom prompt to test Ormuri generation with anti-hallucination verification.',
     loading_title: 'Generating Authentic Ormuri...',
@@ -81,21 +82,22 @@ const TRANSLATIONS = {
     btn_support: 'مالی تعاون',
     btn_support_extra: ' کریں',
     prompt_title: 'پرامپٹ اور ہدایات',
-    mode_free: 'آزاد پرامپٹ',
+    mode_qa: 'سوال و جواب (Q/A)',
+    mode_teach: 'ارموڑی زبان سیکھیں',
     mode_story: 'لوک داستان',
-    mode_proverb: 'کہاوت / ضرب المثل',
     mode_dialogue: 'روزمرہ مکالمہ',
     mode_ergativity: 'ارګیٹیویٹی ٹیسٹ',
     chips_label: 'فوری نمونہ جات:',
-    prompt_placeholder: "اپنا پرامپٹ اردو، انگریزی یا ارموڑی میں لکھیں...\nمثال: 'بار پیٹ پہاڑ پر برفباری اور کانیگرم کے روایتی گھرانوں کے احوال بیان کریں۔'",
+    prompt_placeholder: "ارموڑی زبان، گرامر، متون یا لغت کے بارے میں کوئی بھی سوال پوچھیں یا ارموڑی سیکھنے کے اسباق طلب کریں...\nمثال: 'ارموڑی میں پانی کو کیا کہتے ہیں؟' یا 'مجھے ارموڑی میں سلام اور دعائیہ کلمات سکھائیں۔'",
     btn_advanced: 'جدید ترتیبات',
     btn_clear: 'صاف کریں',
     btn_generate: 'ارموڑی متن بنائیں',
     output_title: 'لسانی آؤٹ پٹ اور تجزیہ',
     tab_rendered: 'تیار شدہ متن',
-    tab_scratchpad: 'صرفی و نحوی تجزیہ',
+    tab_scratchpad: 'صرفی تجزیہ و خام مارک ڈاؤن',
     tab_scratchpad_badge: 'تصدیق شدہ',
-    tab_raw: 'خام مارک ڈاؤن',
+    raw_section_title: 'خام مارک ڈاؤن آؤٹ پٹ',
+    raw_dedup_badge: 'غیر تکراری',
     placeholder_title: 'متن بنانے کے لیے تیار',
     placeholder_text: 'بائیں جانب سے کوئی نمونہ منتخب کریں یا اپنا پرامپٹ لکھ کر ارموڑی زبان کی تصدیق شدہ تخلیق دیکھیں۔',
     loading_title: 'مستند ارموڑی متن تیار ہو رہا ہے...',
@@ -140,21 +142,22 @@ const TRANSLATIONS = {
     btn_support: 'ملاتړ وکړئ',
     btn_support_extra: ' (مرسته)',
     prompt_title: 'د پوښتنې / پرامپټ جوړول',
-    mode_free: 'ازاد پرامپټ',
+    mode_qa: 'پوښتنې او ځوابونه (Q/A)',
+    mode_teach: 'ارموړي ژبه زده کړئ',
     mode_story: 'ولسي کیسه',
-    mode_proverb: 'متل',
     mode_dialogue: 'ورځنۍ خبرې',
     mode_ergativity: 'د ارګیټیوټي آزموینه',
     chips_label: 'سمدستي بېلګې:',
-    prompt_placeholder: "خپله پوښتنه په پښتو، اردو، انګلیسي یا ارموړي ولیکئ...\nد بېلګې په توګه: 'د بار پېټ پر غره د واورې اورېدو او د کانیګرم د ولسي حجرو تودوخه بیان کړئ.'",
+    prompt_placeholder: "د ارموړي ژبې، ګرامر، متونو او لغتونو په اړه هره پوښتنه وپوښتئ یا د ارموړي ژبې د زده کړې غوښتنه وکړئ...\nد بېلګې په توګه: 'په ارموړي ژبه کې اوبو ته څه وايي؟' یا 'ما ته د سهار سلامونه زده کړئ.'",
     btn_advanced: 'پرمختللي ترتیبات',
     btn_clear: 'پاک کړئ',
     btn_generate: 'ارموړي متن جوړ کړئ',
     output_title: 'ژبنیزې لاسته راوړنې او څېړنه',
     tab_rendered: 'بشپړ متن',
-    tab_scratchpad: 'صرفي او نحوي شننه',
+    tab_scratchpad: 'صرفي شننه او خام مارک ډاون',
     tab_scratchpad_badge: 'تایید شوی',
-    tab_raw: 'خام مارک ډاون',
+    raw_section_title: 'خام مارک ډاون پایله',
+    raw_dedup_badge: 'بې تکراره',
     placeholder_title: 'د تولید لپاره چمتو دی',
     placeholder_text: 'له کیڼ اړخ څخه یوه بېلګه وټاکئ یا خپله پوښتنه ولیکئ ترڅو د ارموړي ژبې باوري تولید وګورئ.',
     loading_title: 'اصلي او کره ارموړي متن جوړېږي...',
@@ -364,7 +367,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const outputTabs = document.getElementById('outputTabs');
   const tabRendered = document.getElementById('tabRendered');
   const tabScratchpad = document.getElementById('tabScratchpad');
-  const tabRaw = document.getElementById('tabRaw');
   const tabCorpus = document.getElementById('tabCorpus');
 
   // Primary Corpus Archive Elements
@@ -426,7 +428,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let activeVkLang = 'oru';
 
   let currentLanguage = 'en';
-  let currentMode = 'free';
+  let currentMode = 'qa';
   let currentTab = 'rendered';
   let hasGenerated = false;
   let timerInterval = null;
@@ -677,13 +679,15 @@ document.addEventListener('DOMContentLoaded', () => {
    * cache-immune replacement of "Ready to Generate".
    */
   function showOutputState(stateName) {
+    // If 'raw' is requested, gracefully route to unified scratchpad tab
+    if (stateName === 'raw') stateName = 'scratchpad';
+
     const states = {
       placeholder: outputPlaceholder,
       loading: outputLoading,
       quota: outputQuotaError,
       rendered: tabRendered,
       scratchpad: tabScratchpad,
-      raw: tabRaw,
       corpus: tabCorpus
     };
 
@@ -699,7 +703,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    if (outputWrapper && (stateName === 'rendered' || stateName === 'scratchpad' || stateName === 'raw' || stateName === 'corpus')) {
+    if (outputWrapper && (stateName === 'rendered' || stateName === 'scratchpad' || stateName === 'corpus')) {
       outputWrapper.scrollTop = 0;
     }
   }
@@ -792,6 +796,12 @@ document.addEventListener('DOMContentLoaded', () => {
   quickChips.forEach(chip => {
     chip.addEventListener('click', () => {
       promptInput.value = chip.dataset.prompt;
+      if (chip.dataset.mode) {
+        currentMode = chip.dataset.mode;
+        modeSelector.querySelectorAll('.mode-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.mode === currentMode);
+        });
+      }
       promptInput.focus();
     });
   });
@@ -835,6 +845,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
   btnGenerate.addEventListener('click', triggerGeneration);
 
+  function detectInputLanguage(text) {
+    if (!text) return currentLanguage || 'en';
+    // Distinctive Pashto characters or typical particles
+    const pashtoCharsRegex = /[\u069A\u0696\u06BC\u06CD\u06D0\u0626\u0685\u0681]/; // ښ, ږ, ڼ, ۍ, ې, ئ, څ, ځ
+    const pashtoWordsRegex = /\b(او|په|کې|سره|څنګه|ولې|څه|دی|دغه|ژبه|پوښتنه|زده|کړئ|ورکړئ)\b/;
+    if (pashtoCharsRegex.test(text) || pashtoWordsRegex.test(text)) {
+      return 'ps';
+    }
+
+    // Distinctive Urdu characters or typical words
+    const urduCharsRegex = /[\u06BA\u06D2\u0679\u0688\u0691\u06C1\u06BE]/; // ں, ے, ٹ, ڈ, ڑ, ہ, ھ
+    const urduWordsRegex = /\b(اور|کیا|ہے|ہیں|تھا|تھی|تھے|میں|کے|کی|کو|سے|پر|بتائیں|سکھائیں|اردو|کیوں)\b/;
+    if (urduCharsRegex.test(text) || urduWordsRegex.test(text)) {
+      return 'ur';
+    }
+
+    const arabicScriptCount = (text.match(/[\u0600-\u06FF]/g) || []).length;
+    const latinCount = (text.match(/[a-zA-Z]/g) || []).length;
+    if (arabicScriptCount > latinCount && arabicScriptCount >= 2) {
+      return currentLanguage === 'ps' ? 'ps' : 'ur';
+    }
+
+    return 'en';
+  }
+
   // 7. Generation Trigger
   async function triggerGeneration() {
     const prompt = promptInput.value.trim();
@@ -861,6 +896,8 @@ document.addEventListener('DOMContentLoaded', () => {
       timerText.textContent = `${elapsed}s`;
     }, 100);
 
+    const inputLang = detectInputLanguage(prompt);
+
     try {
       const response = await fetch('/api/generate', {
         method: 'POST',
@@ -868,7 +905,8 @@ document.addEventListener('DOMContentLoaded', () => {
         body: JSON.stringify({
           prompt: prompt,
           temperature: parseFloat(tempNumberInput ? tempNumberInput.value : (tempSlider ? tempSlider.value : 0.2)),
-          mode: currentMode
+          mode: currentMode,
+          prompt_lang: inputLang
         })
       });
 
@@ -891,9 +929,10 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       const parsed = data.parsed || {};
+      const outputLang = data.detected_lang || inputLang;
       
-      // Render Content with clean asterisks
-      renderOrmuriOutput(parsed);
+      // Render Content with clean asterisks and proper language matching
+      renderOrmuriOutput(parsed, outputLang);
 
       // DIRECTLY REPLACE "Ready to Generate" where it was written
       if (currentTab === 'corpus') {
@@ -927,13 +966,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function renderOrmuriOutput(parsed) {
+  function renderOrmuriOutput(parsed, queryLang = 'en') {
     hasGenerated = true;
 
     // Replace all '*' symbols in the model's response with a space
     const cleanedOrmuri = cleanAsterisks(parsed.ormuri_text || 'No text extracted');
     const cleanedRoman = cleanAsterisks(parsed.romanization || '');
-    const cleanedTrans = cleanAsterisks(parsed.translation || '');
+    let cleanedTrans = cleanAsterisks(parsed.translation || '');
+    // Client-side safeguard against heading bleed
+    if (/^\s*#{0,4}\s*Polished\s*Ormuri/i.test(cleanedTrans)) {
+      cleanedTrans = '';
+    }
+    // Client-side recovery if translation was omitted from parsed dictionary but present in raw_text
+    if (!cleanedTrans && parsed.raw_text) {
+      const match = parsed.raw_text.match(/(?:^|\n)\s*(?:#{1,4}|\*{2,3}|\d+[\.\)])\s*.*?(?:Translation|Meaning|Notes|Gloss|Vocabulary|Dialogue|Explanation|Breakdown|ترجمہ|معنی|تشریح|وضاحت|ژباړه|معنا).*?\n+([\s\S]+)$/i);
+      if (match) {
+        cleanedTrans = cleanAsterisks(match[1].trim());
+      }
+    }
+
     const cleanedScratchpad = cleanAsterisks(parsed.scratchpad || 'No morphological scratchpad found.');
     const cleanedRaw = cleanAsterisks(parsed.raw_text || '');
 
@@ -948,19 +999,42 @@ document.addEventListener('DOMContentLoaded', () => {
       cardRomanization.style.display = 'none';
     }
 
-    // 3. Translation
+    // 3. Translation Box (Dynamic Language Matching)
     if (cleanedTrans) {
       transText.innerHTML = formatProse(cleanedTrans);
       cardTranslation.style.display = 'block';
+
+      const cardTransTag = document.getElementById('cardTransTag');
+      const lang = parsed.detected_lang || queryLang || detectInputLanguage(cleanedTrans);
+
+      if (lang === 'ur') {
+        if (cardTransTag) cardTransTag.textContent = 'اردو ترجمہ و تشریح (Urdu Translation)';
+        transText.setAttribute('dir', 'rtl');
+        transText.style.textAlign = 'right';
+        transText.style.fontFamily = 'var(--font-urdu), "Noto Nastaliq Urdu", serif';
+      } else if (lang === 'ps') {
+        if (cardTransTag) cardTransTag.textContent = 'د پښتو ژباړه او تشریح (Pashto Translation)';
+        transText.setAttribute('dir', 'rtl');
+        transText.style.textAlign = 'right';
+        transText.style.fontFamily = 'var(--font-arabic), "Amiri", "Pashto", serif';
+      } else {
+        if (cardTransTag) cardTransTag.textContent = 'English Translation & Notes';
+        transText.setAttribute('dir', 'ltr');
+        transText.style.textAlign = 'left';
+        transText.style.fontFamily = 'var(--font-sans)';
+      }
     } else {
       cardTranslation.style.display = 'none';
     }
 
-    // 4. Scratchpad
-    scratchpadContent.textContent = cleanedScratchpad;
+    // 4. Scratchpad (Decomposition)
+    scratchpadContent.textContent = cleanedScratchpad || 'No morphological scratchpad generated.';
 
-    // 5. Raw output
-    rawContent.textContent = cleanedRaw;
+    // 5. Raw output (Strip morphological_scratchpad so scratchpad is NOT duplicated)
+    let cleanedRawWithoutScratchpad = cleanedRaw
+      .replace(/<morphological_scratchpad>[\s\S]*?<\/morphological_scratchpad>/gi, '')
+      .trim();
+    rawContent.textContent = cleanedRawWithoutScratchpad || cleanedRaw;
   }
 
   function formatProse(text) {
@@ -969,7 +1043,7 @@ document.addEventListener('DOMContentLoaded', () => {
       .split('\n\n')
       .map(p => p.trim())
       .filter(p => p.length > 0)
-      .map(p => `<p>${escapeHtml(p)}</p>`)
+      .map(p => `<p>${escapeHtml(p).replace(/\n/g, '<br>')}</p>`)
       .join('');
   }
 

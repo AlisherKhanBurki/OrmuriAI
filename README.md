@@ -60,14 +60,22 @@ Synthesizes **100% of all primary linguistic works** unabridged without omitting
   - Split-ergativity in past transitive constructions.
   - Wackernagel second-position pronominal clitics (*-am*, *-at*, *-a/yē*, *-an*, *-at-an*, *-a-wē*).
   - Accurate vocabulary disambiguation (e.g., 'Language' = *زبان* [zbān] / *زبنَّی* [zbənni]; *دیو* [dyō] strictly means the number 'two').
-- **Dual Script Output**: Surfaces authentic Ormuri Arabic-based script (*Bargista*) alongside standardized International Phonetic Alphabet (IPA) Romanization and dual Urdu/English translations.
+- **Unified Scratchpad & Raw Inspector**: Consolidated the Morphological Scratchpad and Raw Markdown output into a single unified tab (`Morphological Scratchpad & Raw [Verified]`) with non-repeating, de-duplicated raw markdown and independent copy buttons.
+- **Ultra-Robust Parsing Engine**: Fully resilient section extractor supporting custom headings (dialogues, word-by-word glosses, grammatical notes) with structural sequence guarantees that ensure translations are never omitted.
 
 ---
 
-### 6. Trilingual Interface & On-Screen Virtual Keyboard
-- **Full Localization**: Seamless switching between English, Urdu, and Pashto with complete Right-to-Left (RTL) typography.
-- **Integrated Virtual Keyboard**: On-screen keyboard with tabs for Ormuri special characters (ݪ, ݫ, ݭ, ړ, ږ, ښ, etc.), Pashto, and Urdu.
-- **Live Lexicon Explorer**: Search 6,657 words with Part-of-Speech filtering and one-click insertion into the prompt.
+### 6. Interactive Modes & Dynamic Multilingual Matching
+- **Interactive Formulation Modes**:
+  - **Q/A (Ask Anything)**: Directly answers any inquiry about Ormuri grammar, vocabulary, dialectology, or texts based on the unabridged primary knowledge base.
+  - **Teach Ormuri**: Interactive language pedagogical mode providing structured vocabulary, daily dialogues, and grammatical usage tips.
+  - **Folk Story & Dialogue**: Generates authentic oral tales and natural conversations with morphological validation.
+  - **Ergativity Test**: Validates split-ergative past-tense agreement rules.
+- **Dynamic Language Matching**:
+  - Inquiries asked in **Urdu (اردو)** receive complete translations, explanations, and glosses in Urdu (RTL Nastaliq typography).
+  - Inquiries asked in **Pashto (پښتو)** receive complete translations and explanations in Pashto (RTL Amiri typography).
+  - Inquiries asked in English receive English translations and linguistic notes.
+- **Trilingual Interface & Virtual Keyboard**: Seamless switching between English, Urdu, and Pashto with full RTL layout support, on-screen keyboard with Ormuri special characters (ݪ, ݫ, ݭ, ړ, ږ, ښ, etc.), and a live 6,657-entry Part-of-Speech Lexicon Explorer.
 
 ---
 
