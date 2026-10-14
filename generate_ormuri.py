@@ -41,7 +41,7 @@ ALL_API_KEYS = [k.strip() for k in _keys_str.split(",") if k.strip()]
 if not ALL_API_KEYS and DEFAULT_API_KEY:
     ALL_API_KEYS = [DEFAULT_API_KEY]
 
-MODEL_NAME = os.environ.get("GEMINI_MODEL", "gemini-3.5-flash")
+MODEL_NAME = os.environ.get("GEMINI_MODEL", "gemini-3.6-flash")
 CACHE_TTL = "86400s"  # 24-hour TTL
 
 class ApiKeyPool:
@@ -205,7 +205,7 @@ def generate_ormuri(
     print(f"\n[*] Generating Ormuri response with {model_name} (temperature={temperature})...")
     
     models_to_try = [model_name]
-    for alt in ["gemini-3.5-flash", "gemini-3.7-flash", "gemini-3.8-flash", "gemini-flash-latest"]:
+    for alt in ["gemini-3.6-flash", "gemini-3.5-flash", "gemini-3.7-flash", "gemini-3.8-flash", "gemini-flash-latest"]:
         if alt not in models_to_try:
             models_to_try.append(alt)
 

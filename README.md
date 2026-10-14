@@ -4,7 +4,7 @@ An open-source digital preservation and AI generative linguistics engine for **O
 
 ![License](https://img.shields.io/badge/License-MIT-emerald.svg)
 ![Python](https://img.shields.io/badge/Python-3.11%2B-blue.svg)
-![Google Gemini](https://img.shields.io/badge/Model-Gemini%203.5%20Flash-cyan.svg)
+![Google Gemini](https://img.shields.io/badge/Model-Gemini%203.6%20Flash-cyan.svg)
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen.svg)
 ![Languages](https://img.shields.io/badge/Languages-English%20%7C%20Urdu%20%7C%20Pashto%20%7C%20Ormuri-orange.svg)
 
