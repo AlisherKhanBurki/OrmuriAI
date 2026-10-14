@@ -47,15 +47,32 @@ CACHE_TTL = "86400s"  # 24-hour TTL
 class ApiKeyPool:
     """Manages pool of free/paid Gemini API keys with automatic round-robin dispatch and rate-limit cooldowns."""
     def __init__(self, keys: list[str]):
-        self.keys = keys if keys else [""]
+        self.keys = [k.strip() for k in keys if k and k.strip()]
         self.current_idx = 0
         self._lock = threading.Lock()
         self.clients = {}
         self.cooldowns = {}  # key_idx -> timestamp until which it is on cooldown
 
+    def has_keys(self) -> bool:
+        if self.keys:
+            return True
+        env_single = os.environ.get("GEMINI_API_KEY", "").strip()
+        env_multi = os.environ.get("GEMINI_API_KEYS", "").strip()
+        return bool(env_single or env_multi)
+
     def get_client(self, round_robin: bool = True) -> tuple[genai.Client, str, int]:
         """Dispatch next available API key using thread-safe round-robin load balancing."""
         with self._lock:
+            if not self.keys:
+                env_single = os.environ.get("GEMINI_API_KEY", "").strip()
+                env_multi = os.environ.get("GEMINI_API_KEYS", "").strip()
+                combined = [k.strip() for k in f"{env_single},{env_multi}".split(",") if k.strip()]
+                if combined:
+                    self.keys = combined
+
+            if not self.keys:
+                raise ValueError("No Gemini API key provided. Please set GEMINI_API_KEY or GEMINI_API_KEYS.")
+
             now = time.time()
             n = len(self.keys)
             

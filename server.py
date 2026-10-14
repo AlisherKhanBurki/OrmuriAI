@@ -49,10 +49,23 @@ if os.path.exists(LEXICON_PATH):
         LEXICON_DATA = json.load(f)
 print(f"[OK] Loaded {len(LEXICON_DATA)} lexicon entries.")
 
-# Initialize GenAI Client using Key Pool
-CLIENT, ACTIVE_KEY, KEY_IDX = KEY_POOL.get_client()
-print(f"[*] Initialized GenAI Client with Key #{KEY_IDX + 1} of {len(KEY_POOL.keys)}.")
-CACHE_NAME = get_or_create_cache(CLIENT, KB_CONTENT, model_name=MODEL_NAME)
+# Initialize GenAI Client using Key Pool (failsafe if no API key is yet configured in Render)
+CLIENT = None
+ACTIVE_KEY = None
+KEY_IDX = -1
+CACHE_NAME = None
+
+if KEY_POOL.has_keys():
+    try:
+        CLIENT, ACTIVE_KEY, KEY_IDX = KEY_POOL.get_client()
+        print(f"[*] Initialized GenAI Client with Key #{KEY_IDX + 1} of {len(KEY_POOL.keys)}.", flush=True)
+        CACHE_NAME = get_or_create_cache(CLIENT, KB_CONTENT, model_name=MODEL_NAME)
+    except Exception as exc:
+        print(f"[WARNING] Could not initialize Gemini client at startup: {exc}", flush=True)
+else:
+    print("[WARNING] No Gemini API key detected in environment.", flush=True)
+    print("          Server will start and serve frontend, corpus archive, and lexicon.", flush=True)
+    print("          To enable generation, configure GEMINI_API_KEY in Render Environment Variables.", flush=True)
 
 
 def parse_ormuri_output(raw_text: str) -> Dict[str, Any]:
@@ -228,7 +241,15 @@ class PlaygroundHandler(SimpleHTTPRequestHandler):
 
                 full_prompt += "\n\n(CRITICAL INSTRUCTIONS: 1. In both the <morphological_scratchpad> and Raw Markdown, whenever an example is given or analyzed, you MUST always provide the complete example sentence in authentic Ormuri script along with Romanization. 2. Accurate Ormuri vocabulary: 'Language' is زبان [zbān] / زبنَّی [zbənni]; 'دیو' [dyō] strictly means the number 'two'.)"
 
-                print(f"[API] Generating for prompt ({len(prompt)} chars, mode={mode})...")
+                if not KEY_POOL.has_keys():
+                    self.send_json({
+                        "success": False,
+                        "error": "No GEMINI_API_KEY configured in server environment. Please set GEMINI_API_KEY in your Render dashboard under 'Environment Variables'.",
+                        "is_quota_limit": False
+                    }, status=200)
+                    return
+
+                print(f"[API] Generating for prompt ({len(prompt)} chars, mode={mode})...", flush=True)
                 result_text = generate_ormuri(
                     CLIENT,
                     full_prompt,
@@ -277,17 +298,17 @@ class PlaygroundHandler(SimpleHTTPRequestHandler):
 
 def run_server(port: int = PORT):
     os.makedirs(FRONTEND_DIR, exist_ok=True)
-    server_address = ("", port)
+    server_address = ("0.0.0.0", port)
     httpd = ThreadingHTTPServer(server_address, PlaygroundHandler)
-    print(f"\n==================================================================")
-    print(f"  🚀 Ormuri AI Playground Server running at http://localhost:{port}")
-    print(f"  📂 Serving Frontend from: {FRONTEND_DIR}")
-    print(f"  🧠 Model: {MODEL_NAME} | KB Tokens: 866,060 | Lexicon: {len(LEXICON_DATA)}")
-    print(f"==================================================================\n")
+    print(f"\n==================================================================", flush=True)
+    print(f"  🚀 Ormuri AI Playground Server running at http://0.0.0.0:{port}", flush=True)
+    print(f"  📂 Serving Frontend from: {FRONTEND_DIR}", flush=True)
+    print(f"  🧠 Model: {MODEL_NAME} | KB Tokens: 866,060 | Lexicon: {len(LEXICON_DATA)}", flush=True)
+    print(f"==================================================================\n", flush=True)
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:
-        print("\n[*] Shutting down server...")
+        print("\n[*] Shutting down server...", flush=True)
         httpd.server_close()
 
 
