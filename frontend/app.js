@@ -21,12 +21,24 @@ const TRANSLATIONS = {
     corpus_banner_desc: 'Direct authentic linguistic texts of Kaniguram Ormuri (Bargista). Select any sub-tab below to read or search.',
     btn_support: 'Support',
     btn_support_extra: ' Cause',
+    btn_install_app: 'Install App',
     prompt_title: 'Prompt Formulation',
-    mode_qa: 'Q/A (Ask Anything)',
+    mode_label: 'Mode:',
+    mode_menu_title: 'Formulation Modes',
+    mode_qa_general: 'General Q/A Assistant',
+    mode_qa_general_desc: 'Answers any question you ask: linguistic, factual, historical, cultural, or conversational with expert depth.',
     mode_teach: 'Teach Ormuri',
+    mode_teach_desc: 'Structured educational lessons, target vocabulary, grammar rules, dialogues, and practice drills.',
+    mode_qa_context: 'Corpus & Historical Q/A',
+    mode_qa_context_desc: 'Queries answered strictly based on primary historical manuscripts, Grierson texts, and dictionary records.',
     mode_story: 'Folk Story',
-    mode_dialogue: 'Dialogue',
+    mode_story_desc: 'Composes rich traditional folk narratives, tales of elders, and ancient legends in authentic Ormuri.',
+    mode_dialogue: 'Everyday Dialogue',
+    mode_dialogue_desc: 'Natural conversational exchanges and daily life dialogues between native Ormuri speakers.',
     mode_ergativity: 'Ergativity Test',
+    mode_ergativity_desc: 'Syntactic testing, verifying split-ergativity rules, past transitive verbal agreement, and 2P clitics.',
+    badge_default: 'Default',
+    mode_qa: 'Q/A (Ask Anything)',
     chips_label: 'Quick Scenarios:',
     prompt_placeholder: "Ask any question about Ormuri linguistics, vocabulary, or texts, or request a lesson...\nE.g., 'What is the word for water in Ormuri and how is it used?' or 'Teach me basic greetings in Ormuri.'",
     btn_advanced: 'Advanced',
@@ -81,12 +93,24 @@ const TRANSLATIONS = {
     corpus_banner_desc: 'کانیگرم ارموڑی (بارګِسته) کے اصل تاریخی متون۔ منتخب کتاب پڑھنے یا تلاش کرنے کے لیے نیچے دیے گئے ٹیبز پر کلک کریں۔',
     btn_support: 'مالی تعاون',
     btn_support_extra: ' کریں',
+    btn_install_app: 'ایپ انسٹال کریں',
     prompt_title: 'پرامپٹ اور ہدایات',
-    mode_qa: 'سوال و جواب (Q/A)',
+    mode_label: 'موڈ:',
+    mode_menu_title: 'پرامپٹ فارمولیشن موڈز',
+    mode_qa_general: 'عمومی سوال و جواب (AI اسسٹنٹ)',
+    mode_qa_general_desc: 'کسی بھی سوال کا بہترین اور جامع ترین جواب: لسانیات، معلومات، تاریخ، ثقافت یا عمومی گفتگو۔',
     mode_teach: 'ارموڑی زبان سیکھیں',
+    mode_teach_desc: 'مربوط تعلیمی اسباق، مطلوبہ الفاظ، قواعد، روزمرہ مکالمے اور مشقیں۔',
+    mode_qa_context: 'تاریخی متون اور کتب پر مبنی Q/A',
+    mode_qa_context_desc: 'ارموڑی کے 10 بنیادی تاریخی متون، گریئرسن کے مواد اور مستند لغت پر مبنی استفسار۔',
     mode_story: 'لوک داستان',
+    mode_story_desc: 'کانیگرم کی روایتی لوک کہانیاں، بزرگوں کے قصے اور تاریخی روایات۔',
     mode_dialogue: 'روزمرہ مکالمہ',
+    mode_dialogue_desc: 'اہلِ زبان کے درمیان روزمرہ زندگی کے فطری مکالمات اور گفتگو۔',
     mode_ergativity: 'ارګیٹیویٹی ٹیسٹ',
+    mode_ergativity_desc: 'ماضی متعدی قواعد، فاعلی کلاٹکس (ال، م، ت، ل) اور مفعولی مطابقت کا کڑا لسانی امتحان۔',
+    badge_default: 'پہلے سے طے شدہ',
+    mode_qa: 'سوال و جواب (Q/A)',
     chips_label: 'فوری نمونہ جات:',
     prompt_placeholder: "ارموڑی زبان، گرامر، متون یا لغت کے بارے میں کوئی بھی سوال پوچھیں یا ارموڑی سیکھنے کے اسباق طلب کریں...\nمثال: 'ارموڑی میں پانی کو کیا کہتے ہیں؟' یا 'مجھے ارموڑی میں سلام اور دعائیہ کلمات سکھائیں۔'",
     btn_advanced: 'جدید ترتیبات',
@@ -141,7 +165,23 @@ const TRANSLATIONS = {
     corpus_banner_desc: 'د کانیګرم د ارموړي (بارګِسته) اصلي تاریخي متون. د هر کتاب لوستلو لپاره لاندې ټبونو باندې کلیک وکړئ.',
     btn_support: 'ملاتړ وکړئ',
     btn_support_extra: ' (مرسته)',
+    btn_install_app: 'ایپ انسټال کړئ',
     prompt_title: 'د پوښتنې / پرامپټ جوړول',
+    mode_label: 'حالت:',
+    mode_menu_title: 'د پرامپټ ډولونه',
+    mode_qa_general: 'عمومي پوښتنې او ځوابونه (AI مرستیال)',
+    mode_qa_general_desc: 'د هرې پوښتنې غوره او تفصیلي ځواب: ژبپوهنه، تاریخ، کلتور، ژباړه او ورځنۍ اړیکې.',
+    mode_teach: 'ارموړي ژبه زده کړئ',
+    mode_teach_desc: 'تعلیمي درسونه، اړین لغتونه، ګرامري اصول، محاورې او عملي تمرینونه.',
+    mode_qa_context: 'د متني پانګې او تاریخ اړوند Q/A',
+    mode_qa_context_desc: 'پوښتنې چې یوازې د ارموړي د ۱۰ تاریخي کتابونو او لغتنامې پر بنسټ ځوابېږي.',
+    mode_story: 'ولسي کیسه',
+    mode_story_desc: 'د کانیګرم او ارموړي کلتور اصلي ولسي او تاریخي کیسې.',
+    mode_dialogue: 'ورځنۍ خبرې',
+    mode_dialogue_desc: 'د ارموړي ویونکو ترمنځ د ورځني ژوند طبیعي خبرې او مجلس.',
+    mode_ergativity: 'د ارګیټیوټي آزموینه',
+    mode_ergativity_desc: 'د تېرو متعدي فعلونو د ارګیټیوټي او د کلاټیکونو دقیق ګرامري ازموینه.',
+    badge_default: 'اصلي (ډیفالټ)',
     mode_qa: 'پوښتنې او ځوابونه (Q/A)',
     mode_teach: 'ارموړي ژبه زده کړئ',
     mode_story: 'ولسي کیسه',
@@ -354,8 +394,54 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnGenerate = document.getElementById('btnGenerate');
   const btnClear = document.getElementById('btnClear');
   const btnSpinner = document.getElementById('btnSpinner');
-  const modeSelector = document.getElementById('modeSelector');
+  const btnModeDropdown = document.getElementById('btnModeDropdown');
+  const modeDropdownMenu = document.getElementById('modeDropdownMenu');
+  const modeDropdownWrapper = document.getElementById('modeDropdownWrapper');
+  const modeBtnIcon = document.getElementById('modeBtnIcon');
+  const modeBtnName = document.getElementById('modeBtnName');
+  const modeDefaultPill = document.getElementById('modeDefaultPill');
+  const btnInstallPwa = document.getElementById('btnInstallPwa');
+  let deferredInstallPrompt = null;
   const quickChips = document.querySelectorAll('.chip');
+
+  const MODES_CONFIG = {
+    qa_general: {
+      icon: '⚡',
+      titleKey: 'mode_qa_general',
+      descKey: 'mode_qa_general_desc',
+      isDefault: true
+    },
+    teach: {
+      icon: '🎓',
+      titleKey: 'mode_teach',
+      descKey: 'mode_teach_desc',
+      isDefault: false
+    },
+    qa_context: {
+      icon: '📚',
+      titleKey: 'mode_qa_context',
+      descKey: 'mode_qa_context_desc',
+      isDefault: false
+    },
+    story: {
+      icon: '📖',
+      titleKey: 'mode_story',
+      descKey: 'mode_story_desc',
+      isDefault: false
+    },
+    dialogue: {
+      icon: '🗣️',
+      titleKey: 'mode_dialogue',
+      descKey: 'mode_dialogue_desc',
+      isDefault: false
+    },
+    grammar_check: {
+      icon: '🔬',
+      titleKey: 'mode_ergativity',
+      descKey: 'mode_ergativity_desc',
+      isDefault: false
+    }
+  };
 
   // Output Elements & States
   const outputPanel = document.getElementById('outputPanel');
@@ -428,12 +514,35 @@ document.addEventListener('DOMContentLoaded', () => {
   let activeVkLang = 'oru';
 
   let currentLanguage = 'en';
-  let currentMode = 'qa';
+  let currentMode = 'qa_general';
   let currentTab = 'rendered';
   let hasGenerated = false;
   let timerInterval = null;
   let lexiconDebounce = null;
   let activePosFilter = '';
+
+  function updateModeDropdownUI(mode) {
+    if (mode === 'qa' || mode === 'free' || !MODES_CONFIG[mode]) mode = 'qa_general';
+    currentMode = mode;
+    const config = MODES_CONFIG[mode] || MODES_CONFIG.qa_general;
+
+    if (modeBtnIcon) modeBtnIcon.textContent = config.icon;
+    if (modeBtnName) {
+      modeBtnName.setAttribute('data-i18n', config.titleKey);
+      const dict = TRANSLATIONS[currentLanguage] || TRANSLATIONS.en;
+      modeBtnName.textContent = dict[config.titleKey] || config.titleKey;
+    }
+    if (modeDefaultPill) {
+      modeDefaultPill.style.display = config.isDefault ? 'inline-block' : 'none';
+    }
+
+    if (modeDropdownMenu) {
+      modeDropdownMenu.querySelectorAll('.mode-option').forEach(opt => {
+        const isSelected = opt.dataset.mode === mode;
+        opt.classList.toggle('active', isSelected);
+      });
+    }
+  }
 
   /**
    * Child-Friendly Language Switcher & Application Localization
@@ -513,6 +622,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (virtualKeyboardPanel && !virtualKeyboardPanel.classList.contains('hidden')) {
       renderVirtualKeyboard(activeVkLang);
     }
+
+    // Refresh mode dropdown UI to active language
+    updateModeDropdownUI(currentMode);
 
     if (showNotification) {
       const switchMessages = {
@@ -783,24 +895,54 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 2. Mode Selector
-  modeSelector.addEventListener('click', (e) => {
-    if (e.target.classList.contains('mode-btn')) {
-      modeSelector.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
-      e.target.classList.add('active');
-      currentMode = e.target.dataset.mode;
-    }
-  });
+  // 2. Mode Dropdown Selector
+  if (btnModeDropdown && modeDropdownMenu) {
+    btnModeDropdown.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isHidden = modeDropdownMenu.classList.contains('hidden');
+      modeDropdownMenu.classList.toggle('hidden', !isHidden);
+      btnModeDropdown.classList.toggle('open', isHidden);
+      btnModeDropdown.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+    });
+
+    modeDropdownMenu.addEventListener('click', (e) => {
+      const option = e.target.closest('.mode-option');
+      if (!option) return;
+      const selectedMode = option.dataset.mode;
+      updateModeDropdownUI(selectedMode);
+      modeDropdownMenu.classList.add('hidden');
+      btnModeDropdown.classList.remove('open');
+      btnModeDropdown.setAttribute('aria-expanded', 'false');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (modeDropdownWrapper && !modeDropdownWrapper.contains(e.target)) {
+        modeDropdownMenu.classList.add('hidden');
+        btnModeDropdown.classList.remove('open');
+        btnModeDropdown.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modeDropdownMenu.classList.contains('hidden')) {
+        modeDropdownMenu.classList.add('hidden');
+        btnModeDropdown.classList.remove('open');
+        btnModeDropdown.setAttribute('aria-expanded', 'false');
+        btnModeDropdown.focus();
+      }
+    });
+  }
 
   // 3. Quick Chips
   quickChips.forEach(chip => {
     chip.addEventListener('click', () => {
       promptInput.value = chip.dataset.prompt;
       if (chip.dataset.mode) {
-        currentMode = chip.dataset.mode;
-        modeSelector.querySelectorAll('.mode-btn').forEach(btn => {
-          btn.classList.toggle('active', btn.dataset.mode === currentMode);
-        });
+        let chipMode = chip.dataset.mode;
+        if (chipMode === 'qa') chipMode = 'qa_general';
+        updateModeDropdownUI(chipMode);
       }
       promptInput.focus();
     });
@@ -1709,6 +1851,74 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
       openLanguageModal();
     }, 200);
+  }
+
+  // ========================================================================
+  // Progressive Web App (PWA) — Service Worker Registration & Install Flow
+  // ========================================================================
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then((reg) => {
+          console.log('[PWA] Service Worker registered successfully (scope: ' + reg.scope + ')');
+        })
+        .catch((err) => {
+          console.warn('[PWA] Service Worker registration failed:', err);
+        });
+    });
+  }
+
+  // Capture install prompt for supported mobile & desktop browsers
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredInstallPrompt = e;
+    if (btnInstallPwa) {
+      btnInstallPwa.classList.remove('hidden');
+    }
+  });
+
+  if (btnInstallPwa) {
+    btnInstallPwa.addEventListener('click', async () => {
+      if (deferredInstallPrompt) {
+        deferredInstallPrompt.prompt();
+        const choice = await deferredInstallPrompt.userChoice;
+        if (choice && choice.outcome === 'accepted') {
+          console.log('[PWA] User accepted installation prompt');
+          btnInstallPwa.classList.add('hidden');
+        }
+        deferredInstallPrompt = null;
+      } else {
+        // Fallback for iOS Safari or manual installation instructions
+        const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        if (isIos) {
+          const iosMsgs = {
+            en: 'To install on iPhone/iPad: tap the Share button (⎋) in Safari and select "Add to Home Screen" (➕)',
+            ur: 'آئی فون پر انسٹال کرنے کے لیے: سفاری میں شیئر بٹن (⎋) دبائیں اور "Add to Home Screen" منتخب کریں۔',
+            ps: 'په آیفون کې د انسټال لپاره: په سفاري کې د Share تڼۍ (⎋) کېکاږئ او "Add to Home Screen" وټاکئ.'
+          };
+          showToast(iosMsgs[currentLanguage] || iosMsgs.en);
+        } else {
+          showToast('To install: click the Install icon (📲) in your browser address bar.');
+        }
+      }
+    });
+  }
+
+  window.addEventListener('appinstalled', () => {
+    console.log('[PWA] Ormuri AI installed successfully');
+    if (btnInstallPwa) {
+      btnInstallPwa.classList.add('hidden');
+    }
+    showToast('Ormuri AI installed successfully! ✓');
+  });
+
+  // Handle shortcut action URL parameters
+  const pwaUrlParams = new URLSearchParams(window.location.search);
+  const pwaOpen = pwaUrlParams.get('open');
+  if (pwaOpen === 'lexicon' && btnOpenLexicon) {
+    setTimeout(() => btnOpenLexicon.click(), 450);
+  } else if (pwaOpen === 'corpus' && btnOpenCorpusNav) {
+    setTimeout(() => btnOpenCorpusNav.click(), 450);
   }
 
 });

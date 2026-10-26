@@ -180,9 +180,15 @@ class PlaygroundHandler(SimpleHTTPRequestHandler):
         super().__init__(*args, directory=FRONTEND_DIR, **kwargs)
 
     def end_headers(self):
-        self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
-        self.send_header("Pragma", "no-cache")
-        self.send_header("Expires", "0")
+        if self.path.startswith("/sw.js"):
+            self.send_header("Service-Worker-Allowed", "/")
+            self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
+        elif self.path.startswith("/manifest.json"):
+            self.send_header("Content-Type", "application/manifest+json")
+        else:
+            self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
+            self.send_header("Pragma", "no-cache")
+            self.send_header("Expires", "0")
         super().end_headers()
 
     def do_GET(self):
@@ -294,13 +300,31 @@ class PlaygroundHandler(SimpleHTTPRequestHandler):
                         detected_lang = "ur" if arb > lat else "en"
 
                 # Enrich prompt based on mode
-                if mode == "qa":
+                if mode in ["qa_general", "qa", "free", "general", ""]:
                     full_prompt = (
-                        f"CRITICAL REQUIREMENT FOR '### Polished Ormuri (Bargista / اُرموړی) Text':\n"
-                        f"This section MUST DIRECTLY answer the user's specific question or provide the exact Ormuri target expression/sentences requested.\n"
-                        f"DO NOT compose generic poetry, random praise of Kaniguram, or unrelated folk lines. The Ormuri text must state the actual answer or demonstrate the queried words in authentic context.\n\n"
+                        f"CRITICAL SYSTEM DIRECTIVE — MASTER QUESTION ANSWERING & KNOWLEDGE ENGINE:\n"
+                        f"You are the world's foremost computational linguist and native AI authority on the Ormuri (Bargista / اُرموړی) language, its history, literature, culture, and linguistics. "
+                        f"Your primary mission in this default mode is to provide the MOST ACCURATE, COMPLETE, INTELLIGENT, AND DIRECT ANSWER to any question the user asks.\n\n"
                         f"USER QUESTION: {prompt}\n\n"
-                        f"The '### Translation & Notes' section must then provide the exact 1-to-1 translation and linguistic breakdown of that Ormuri answer in the user's language."
+                        f"MANDATORY REQUIREMENTS BY SECTION:\n"
+                        f"1. '### Polished Ormuri (Bargista / اُرموړی) Text':\n"
+                        f"   - This section MUST DIRECTLY formulate the authentic answer in Ormuri (Bargista) script.\n"
+                        f"   - If the user asks a factual, historical, linguistic, or conversational question, state the direct, factual, and informative answer in articulate, grammatically authentic Ormuri sentences.\n"
+                        f"   - If the user asks for translations, vocabulary, or grammar structures, provide the exact target Ormuri formulation.\n"
+                        f"   - NEVER generate generic poetry, random Kaniguram praises, or unrelated folk lines. Every Ormuri sentence must directly resolve the user's inquiry.\n\n"
+                        f"2. '### Phonetic Romanization':\n"
+                        f"   - Provide the exact IPA-based Romanization strictly matching the Ormuri text above sentence-by-sentence.\n\n"
+                        f"3. '### Translation & Notes':\n"
+                        f"   - Deliver the most comprehensive, authoritative, and direct answer to the user's question.\n"
+                        f"   - Provide the 1-to-1 sentence translation of the Ormuri answer, followed by thorough explanation, linguistic analysis, historical context, and any specific details needed to completely answer the user's question.\n"
+                        f"   - Answer ALL parts of the user's query thoroughly."
+                    )
+                elif mode == "qa_context":
+                    full_prompt = (
+                        f"CRITICAL SYSTEM DIRECTIVE — CORPUS & HISTORICAL CONTEXT Q/A:\n"
+                        f"Answer the user's inquiry strictly and explicitly based on the primary historical Ormuri texts, Grierson 1929 records, Efimov 1986 grammar, and the unabridged dictionary in your knowledge base.\n\n"
+                        f"USER QUESTION: {prompt}\n\n"
+                        f"The '### Polished Ormuri (Bargista / اُرموړی) Text' must directly present the relevant Ormuri terms or sentences cited from the corpus, with 1-to-1 Romanization and Translation with historical citations."
                     )
                 elif mode == "teach":
                     full_prompt = (

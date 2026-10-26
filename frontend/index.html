@@ -80,13 +80,23 @@
       rel="stylesheet"
     />
 
-    <!-- Browser Tab Favicon / Logo -->
+    <!-- Progressive Web App (PWA) Manifest & Meta -->
+    <link rel="manifest" href="manifest.json" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Ormuri AI" />
+    <meta name="application-name" content="Ormuri AI" />
+
+    <!-- Browser Tab Favicon / Logo & PWA Icons -->
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
     <link rel="shortcut icon" href="favicon.ico" />
-    <link rel="apple-touch-icon" href="favicon-apple.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
 
-    <link rel="stylesheet" href="style.css?v=4.6" />
+    <link rel="stylesheet" href="style.css?v=4.7" />
   </head>
   <body>
     <div class="app-container">
@@ -186,6 +196,27 @@
             <span class="lang-flag-current" id="navLangFlag">🌐</span>
             <span class="btn-label" id="navLangName">Language</span>
           </button>
+
+          <!-- PWA Install Button (Shown on mobile/desktop when installable) -->
+          <button
+            id="btnInstallPwa"
+            class="btn btn-primary btn-install-pwa hidden"
+            title="Install Ormuri AI Mobile & Desktop App"
+          >
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+            >
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span class="btn-label" data-i18n="btn_install_app">Install App</span>
+          </button>
         </div>
       </header>
 
@@ -210,18 +241,141 @@
               </svg>
               <h2 data-i18n="prompt_title">Prompt Formulation</h2>
             </div>
-            <div class="mode-selector" id="modeSelector">
-              <button class="mode-btn active" data-mode="qa" data-i18n="mode_qa">
-                Q/A (Ask Anything)
+            <div class="mode-dropdown-wrapper" id="modeDropdownWrapper">
+              <button
+                id="btnModeDropdown"
+                class="mode-dropdown-btn"
+                type="button"
+                aria-haspopup="true"
+                aria-expanded="false"
+                title="Select prompt formulation mode"
+              >
+                <span class="mode-btn-icon" id="modeBtnIcon">⚡</span>
+                <span class="mode-btn-text">
+                  <span class="mode-btn-type-label" data-i18n="mode_label">Mode:</span>
+                  <span class="mode-btn-name" id="modeBtnName" data-i18n="mode_qa_general">General Q/A Assistant</span>
+                </span>
+                <span class="badge-default-pill" id="modeDefaultPill" data-i18n="badge_default">Default</span>
+                <svg class="mode-chevron-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
               </button>
-              <button class="mode-btn" data-mode="teach" data-i18n="mode_teach">
-                Teach Ormuri
-              </button>
-              <button class="mode-btn" data-mode="story" data-i18n="mode_story">Folk Story</button>
-              <button class="mode-btn" data-mode="dialogue" data-i18n="mode_dialogue">Dialogue</button>
-              <button class="mode-btn" data-mode="grammar_check" data-i18n="mode_ergativity">
-                Ergativity Test
-              </button>
+
+              <div class="mode-dropdown-menu hidden" id="modeDropdownMenu" role="menu">
+                <div class="mode-menu-header">
+                  <span class="mode-menu-header-title" data-i18n="mode_menu_title">Formulation Modes</span>
+                  <span class="mode-menu-header-count">6 Types</span>
+                </div>
+
+                <!-- 1. General Q/A (Default) -->
+                <div class="mode-option active" data-mode="qa_general" role="menuitem" tabindex="0">
+                  <div class="mode-opt-icon">⚡</div>
+                  <div class="mode-opt-info">
+                    <div class="mode-opt-header">
+                      <span class="mode-opt-title" data-i18n="mode_qa_general">General Q/A Assistant</span>
+                      <span class="mode-opt-badge-default" data-i18n="badge_default">Default</span>
+                    </div>
+                    <p class="mode-opt-desc" data-i18n="mode_qa_general_desc">
+                      Answers any question you ask: linguistic, factual, historical, cultural, or conversational with expert depth.
+                    </p>
+                  </div>
+                  <div class="mode-opt-check">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- 2. Teach Ormuri -->
+                <div class="mode-option" data-mode="teach" role="menuitem" tabindex="0">
+                  <div class="mode-opt-icon">🎓</div>
+                  <div class="mode-opt-info">
+                    <div class="mode-opt-header">
+                      <span class="mode-opt-title" data-i18n="mode_teach">Teach Ormuri</span>
+                    </div>
+                    <p class="mode-opt-desc" data-i18n="mode_teach_desc">
+                      Structured educational lessons, target vocabulary, grammar rules, dialogues, and practice drills.
+                    </p>
+                  </div>
+                  <div class="mode-opt-check">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- 3. Corpus & Historical Q/A -->
+                <div class="mode-option" data-mode="qa_context" role="menuitem" tabindex="0">
+                  <div class="mode-opt-icon">📚</div>
+                  <div class="mode-opt-info">
+                    <div class="mode-opt-header">
+                      <span class="mode-opt-title" data-i18n="mode_qa_context">Corpus & Historical Q/A</span>
+                    </div>
+                    <p class="mode-opt-desc" data-i18n="mode_qa_context_desc">
+                      Queries answered strictly based on primary historical manuscripts, Grierson texts, and dictionary records.
+                    </p>
+                  </div>
+                  <div class="mode-opt-check">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- 4. Folk Story -->
+                <div class="mode-option" data-mode="story" role="menuitem" tabindex="0">
+                  <div class="mode-opt-icon">📖</div>
+                  <div class="mode-opt-info">
+                    <div class="mode-opt-header">
+                      <span class="mode-opt-title" data-i18n="mode_story">Folk Story</span>
+                    </div>
+                    <p class="mode-opt-desc" data-i18n="mode_story_desc">
+                      Composes rich traditional folk narratives, tales of elders, and ancient legends in authentic Ormuri.
+                    </p>
+                  </div>
+                  <div class="mode-opt-check">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- 5. Everyday Dialogue -->
+                <div class="mode-option" data-mode="dialogue" role="menuitem" tabindex="0">
+                  <div class="mode-opt-icon">🗣️</div>
+                  <div class="mode-opt-info">
+                    <div class="mode-opt-header">
+                      <span class="mode-opt-title" data-i18n="mode_dialogue">Everyday Dialogue</span>
+                    </div>
+                    <p class="mode-opt-desc" data-i18n="mode_dialogue_desc">
+                      Natural conversational exchanges and daily life dialogues between native Ormuri speakers.
+                    </p>
+                  </div>
+                  <div class="mode-opt-check">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- 6. Ergativity & Grammar Test -->
+                <div class="mode-option" data-mode="grammar_check" role="menuitem" tabindex="0">
+                  <div class="mode-opt-icon">🔬</div>
+                  <div class="mode-opt-info">
+                    <div class="mode-opt-header">
+                      <span class="mode-opt-title" data-i18n="mode_ergativity">Ergativity & Grammar Test</span>
+                    </div>
+                    <p class="mode-opt-desc" data-i18n="mode_ergativity_desc">
+                      Syntactic testing, verifying split-ergativity rules, past transitive verbal agreement, and 2P clitics.
+                    </p>
+                  </div>
+                  <div class="mode-opt-check">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -1289,6 +1443,6 @@
     </div>
 
     <script src="corpus_data.js?v=4.0"></script>
-    <script src="app.js?v=4.6"></script>
+    <script src="app.js?v=4.7"></script>
   </body>
 </html>
