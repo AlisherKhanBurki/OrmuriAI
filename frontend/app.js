@@ -21,8 +21,18 @@ const TRANSLATIONS = {
     corpus_banner_desc: 'Direct authentic linguistic texts of Kaniguram Ormuri (Bargista). Select any sub-tab below to read or search.',
     btn_support: 'Support',
     btn_support_extra: ' Cause',
+    btn_header_menu: 'Explore',
+    header_menu_title: 'Linguistic Resources',
+    dict_menu_desc: 'Full Ormuri lexicon lookup with IPA & POS',
+    corpus_menu_desc: 'Primary historical manuscripts & folk tales',
+    grammar_menu_desc: 'Split-ergativity, clitics & inflection tables',
+    support_menu_desc: 'Support cloud & AI server preservation costs',
+    support_tag: 'Preservation',
+    vk_space: 'Space',
+    vk_backspace: 'Backspace',
+    vk_enter: 'Enter',
     btn_install_app: 'Install App',
-    prompt_title: 'Prompt Formulation',
+    prompt_title: 'Ask Ormuri AI',
     mode_label: 'Mode:',
     mode_menu_title: 'Formulation Modes',
     mode_qa_general: 'General Q/A Assistant',
@@ -93,8 +103,18 @@ const TRANSLATIONS = {
     corpus_banner_desc: 'کانیگرم ارموڑی (بارګِسته) کے اصل تاریخی متون۔ منتخب کتاب پڑھنے یا تلاش کرنے کے لیے نیچے دیے گئے ٹیبز پر کلک کریں۔',
     btn_support: 'مالی تعاون',
     btn_support_extra: ' کریں',
+    btn_header_menu: 'وسائل',
+    header_menu_title: 'لسانی ذخائر اور کتب',
+    dict_menu_desc: '6,657 ارموڑی الفاظ، تلفظ اور گرامر',
+    corpus_menu_desc: '10 بنیادی کتب اور تاریخی متنی ذخیرہ',
+    grammar_menu_desc: 'ارګیٹیویٹی اور قواعدی چارٹس',
+    support_menu_desc: 'کلاؤڈ اور لسانی تحفظ کے لیے مالی تعاون',
+    support_tag: 'ورثہ',
+    vk_space: 'فاصلہ (Space)',
+    vk_backspace: 'ړنګول',
+    vk_enter: 'نوی سطر',
     btn_install_app: 'ایپ انسٹال کریں',
-    prompt_title: 'پرامپٹ اور ہدایات',
+    prompt_title: 'اورموڑی اے آئی سے پوچھیں',
     mode_label: 'موڈ:',
     mode_menu_title: 'پرامپٹ فارمولیشن موڈز',
     mode_qa_general: 'عمومی سوال و جواب (AI اسسٹنٹ)',
@@ -165,8 +185,18 @@ const TRANSLATIONS = {
     corpus_banner_desc: 'د کانیګرم د ارموړي (بارګِسته) اصلي تاریخي متون. د هر کتاب لوستلو لپاره لاندې ټبونو باندې کلیک وکړئ.',
     btn_support: 'ملاتړ وکړئ',
     btn_support_extra: ' (مرسته)',
+    btn_header_menu: 'لارښود',
+    header_menu_title: 'ژبنۍ سرچینې او متون',
+    dict_menu_desc: 'د 6,657 کلمو لغت، تلفظ او ګرامر',
+    corpus_menu_desc: 'د 10 اصلي کتابونو بشپړه متني پانګه',
+    grammar_menu_desc: 'د ارګیټیوټي او کلاټیکونو ګرامري جدولونه',
+    support_menu_desc: 'د کلاوډ او AI سرور د لګښتونو ملاتړ',
+    support_tag: 'تاریخي',
+    vk_space: 'فاصله',
+    vk_backspace: 'ړنګول',
+    vk_enter: 'نوې کرښه',
     btn_install_app: 'ایپ انسټال کړئ',
-    prompt_title: 'د پوښتنې / پرامپټ جوړول',
+    prompt_title: 'له ارموړي AI څخه وپوښتئ',
     mode_label: 'حالت:',
     mode_menu_title: 'د پرامپټ ډولونه',
     mode_qa_general: 'عمومي پوښتنې او ځوابونه (AI مرستیال)',
@@ -504,6 +534,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const navLangFlag = document.getElementById('navLangFlag');
   const navLangName = document.getElementById('navLangName');
   const langCards = document.querySelectorAll('.lang-card');
+
+  // Header Overflow Menu Elements
+  const btnHeaderMenu = document.getElementById('btnHeaderMenu');
+  const headerMenuDropdown = document.getElementById('headerMenuDropdown');
+  const headerMenuWrapper = document.getElementById('headerMenuWrapper');
 
   // Virtual Keyboard Elements
   const btnToggleKeyboard = document.getElementById('btnToggleKeyboard');
@@ -944,17 +979,23 @@ document.addEventListener('DOMContentLoaded', () => {
         if (chipMode === 'qa') chipMode = 'qa_general';
         updateModeDropdownUI(chipMode);
       }
+      if (advancedParamsPopover) {
+        advancedParamsPopover.classList.add('hidden');
+        if (btnToggleAdvanced) btnToggleAdvanced.classList.remove('active');
+      }
       promptInput.focus();
     });
   });
 
-  // 4. Clear Button
-  btnClear.addEventListener('click', () => {
-    promptInput.value = '';
-    hasGenerated = false;
-    showOutputState('placeholder');
-    promptInput.focus();
-  });
+  // 4. Clear Button (Guarded if removed from UI)
+  if (btnClear) {
+    btnClear.addEventListener('click', () => {
+      promptInput.value = '';
+      hasGenerated = false;
+      showOutputState('placeholder');
+      promptInput.focus();
+    });
+  }
 
   // 5. Output Tabs Switching
   outputTabs.addEventListener('click', (e) => {
@@ -1517,6 +1558,41 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+
+  // Header Three-Dotted Overflow Menu Controller
+  if (btnHeaderMenu && headerMenuDropdown) {
+    btnHeaderMenu.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isHidden = headerMenuDropdown.classList.contains('hidden');
+      headerMenuDropdown.classList.toggle('hidden', !isHidden);
+      btnHeaderMenu.classList.toggle('open', isHidden);
+      btnHeaderMenu.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+    });
+
+    headerMenuDropdown.addEventListener('click', (e) => {
+      if (e.target.closest('.header-menu-item')) {
+        headerMenuDropdown.classList.add('hidden');
+        btnHeaderMenu.classList.remove('open');
+        btnHeaderMenu.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (headerMenuWrapper && !headerMenuWrapper.contains(e.target)) {
+        headerMenuDropdown.classList.add('hidden');
+        btnHeaderMenu.classList.remove('open');
+        btnHeaderMenu.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !headerMenuDropdown.classList.contains('hidden')) {
+        headerMenuDropdown.classList.add('hidden');
+        btnHeaderMenu.classList.remove('open');
+        btnHeaderMenu.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
 
   // 13. Unabridged 10-Work Primary Corpus Archive Controller
   function initCorpusViewer() {

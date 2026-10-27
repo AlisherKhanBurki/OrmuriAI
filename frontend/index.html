@@ -96,7 +96,7 @@
     <link rel="shortcut icon" href="favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
 
-    <link rel="stylesheet" href="style.css?v=4.7" />
+    <link rel="stylesheet" href="style.css?v=4.9" />
   </head>
   <body>
     <div class="app-container">
@@ -116,76 +116,124 @@
 
 
         <div class="header-actions">
-          <button
-            id="btnOpenLexicon"
-            class="btn btn-secondary"
-            title="Search 6,657+ verified Ormuri words in Dictionary"
-          >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
+          <!-- Overflow Menu (Three-Dotted Button) containing Dictionary, Corpus, Grammar, Support -->
+          <div class="header-menu-wrapper" id="headerMenuWrapper">
+            <button
+              id="btnHeaderMenu"
+              class="btn btn-secondary btn-header-menu"
+              type="button"
+              aria-haspopup="true"
+              aria-expanded="false"
+              title="Explore Resources & Tools / وسائل اور کتب"
             >
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-            <span id="lexiconBtnText"
-              ><span class="btn-label" data-i18n="btn_lexicon">Dictionary</span>
-              <span class="btn-count" data-i18n="btn_lexicon_count">(6,657 Words)</span></span
-            >
-          </button>
-          <button
-            id="btnOpenCorpusNav"
-            class="btn btn-secondary btn-corpus-nav"
-            title="Explore Unabridged 10-Work Primary Corpus Archive"
-          >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-              <path
-                d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"
-              ></path>
-            </svg>
-            <span class="btn-label" data-i18n="btn_corpus">Corpus Archive</span>
-            <span class="btn-count">(10 Works)</span>
-          </button>
-          <button
-            id="btnOpenGrammar"
-            class="btn btn-secondary"
-            title="View Ergativity & Clitic Grammar Tables"
-          >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-              <polyline points="2 17 12 22 22 17"></polyline>
-              <polyline points="2 12 12 17 22 12"></polyline>
-            </svg>
-            <span class="btn-label" data-i18n="btn_grammar">Grammar Cheat Sheet</span>
-          </button>
-          <button
-            id="btnOpenSupport"
-            class="btn btn-secondary btn-support"
-            title="Support Ormuri AI Language Preservation"
-          >
-            <span class="btn-support-icon">🏛️</span>
-            <span class="btn-label" data-i18n="btn_support">Support</span
-            ><span class="btn-extra" data-i18n="btn_support_extra"> Cause</span>
-          </button>
+              <svg class="dots-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="5" r="2.2"></circle>
+                <circle cx="12" cy="12" r="2.2"></circle>
+                <circle cx="12" cy="19" r="2.2"></circle>
+              </svg>
+              <span class="btn-label" data-i18n="btn_header_menu">Explore</span>
+              <svg class="header-menu-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+
+            <!-- Dropdown Menu displaying each option clearly -->
+            <div class="header-menu-dropdown hidden" id="headerMenuDropdown" role="menu">
+              <div class="header-menu-header">
+                <span class="header-menu-title" data-i18n="header_menu_title">Linguistic Resources</span>
+                <span class="header-menu-badge">4 Tools</span>
+              </div>
+
+              <!-- Option 1: Dictionary -->
+              <button
+                id="btnOpenLexicon"
+                class="header-menu-item"
+                type="button"
+                role="menuitem"
+                title="Search 6,657+ verified Ormuri words in Dictionary"
+              >
+                <div class="menu-item-icon menu-icon-dict">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  </svg>
+                </div>
+                <div class="menu-item-text">
+                  <div class="menu-item-title-row">
+                    <span class="menu-item-title" data-i18n="btn_lexicon">Dictionary Explorer</span>
+                    <span class="menu-item-count" data-i18n="btn_lexicon_count">(6,657 Words)</span>
+                  </div>
+                  <span class="menu-item-desc" data-i18n="dict_menu_desc">Full Ormuri lexicon lookup with IPA & POS</span>
+                </div>
+              </button>
+
+              <!-- Option 2: Corpus Archive -->
+              <button
+                id="btnOpenCorpusNav"
+                class="header-menu-item"
+                type="button"
+                role="menuitem"
+                title="Explore Unabridged 10-Work Primary Corpus Archive"
+              >
+                <div class="menu-item-icon menu-icon-corpus">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                  </svg>
+                </div>
+                <div class="menu-item-text">
+                  <div class="menu-item-title-row">
+                    <span class="menu-item-title" data-i18n="btn_corpus">Corpus Archive</span>
+                    <span class="menu-item-count">(10 Works)</span>
+                  </div>
+                  <span class="menu-item-desc" data-i18n="corpus_menu_desc">Primary historical manuscripts & folk tales</span>
+                </div>
+              </button>
+
+              <!-- Option 3: Grammar Cheat Sheet -->
+              <button
+                id="btnOpenGrammar"
+                class="header-menu-item"
+                type="button"
+                role="menuitem"
+                title="View Ergativity & Clitic Grammar Tables"
+              >
+                <div class="menu-item-icon menu-icon-grammar">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                    <polyline points="2 17 12 22 22 17"></polyline>
+                    <polyline points="2 12 12 17 22 12"></polyline>
+                  </svg>
+                </div>
+                <div class="menu-item-text">
+                  <div class="menu-item-title-row">
+                    <span class="menu-item-title" data-i18n="btn_grammar">Grammar Cheat Sheet</span>
+                  </div>
+                  <span class="menu-item-desc" data-i18n="grammar_menu_desc">Split-ergativity, clitics & inflection tables</span>
+                </div>
+              </button>
+
+              <!-- Option 4: Support Cause -->
+              <button
+                id="btnOpenSupport"
+                class="header-menu-item menu-item-support"
+                type="button"
+                role="menuitem"
+                title="Support Ormuri AI Language Preservation"
+              >
+                <div class="menu-item-icon menu-icon-support">
+                  <span>🏛️</span>
+                </div>
+                <div class="menu-item-text">
+                  <div class="menu-item-title-row">
+                    <span class="menu-item-title" data-i18n="btn_support">Support Cause</span>
+                    <span class="menu-item-tag" data-i18n="support_tag">Preservation</span>
+                  </div>
+                  <span class="menu-item-desc" data-i18n="support_menu_desc">Support cloud & AI server preservation costs</span>
+                </div>
+              </button>
+            </div>
+          </div>
 
           <!-- Language Selector Button -->
           <button
@@ -222,7 +270,7 @@
 
       <!-- Main Playground Workspace -->
       <main class="workbench-layout">
-        <!-- Left Panel: Prompt Formulation -->
+        <!-- Left Panel: Ask Ormuri AI -->
         <section class="panel prompt-panel">
           <div class="panel-header">
             <div class="panel-title">
@@ -239,221 +287,8 @@
                   d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"
                 ></path>
               </svg>
-              <h2 data-i18n="prompt_title">Prompt Formulation</h2>
+              <h2 data-i18n="prompt_title">Ask Ormuri AI</h2>
             </div>
-            <div class="mode-dropdown-wrapper" id="modeDropdownWrapper">
-              <button
-                id="btnModeDropdown"
-                class="mode-dropdown-btn"
-                type="button"
-                aria-haspopup="true"
-                aria-expanded="false"
-                title="Select prompt formulation mode"
-              >
-                <span class="mode-btn-icon" id="modeBtnIcon">⚡</span>
-                <span class="mode-btn-text">
-                  <span class="mode-btn-type-label" data-i18n="mode_label">Mode:</span>
-                  <span class="mode-btn-name" id="modeBtnName" data-i18n="mode_qa_general">General Q/A Assistant</span>
-                </span>
-                <span class="badge-default-pill" id="modeDefaultPill" data-i18n="badge_default">Default</span>
-                <svg class="mode-chevron-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-              </button>
-
-              <div class="mode-dropdown-menu hidden" id="modeDropdownMenu" role="menu">
-                <div class="mode-menu-header">
-                  <span class="mode-menu-header-title" data-i18n="mode_menu_title">Formulation Modes</span>
-                  <span class="mode-menu-header-count">6 Types</span>
-                </div>
-
-                <!-- 1. General Q/A (Default) -->
-                <div class="mode-option active" data-mode="qa_general" role="menuitem" tabindex="0">
-                  <div class="mode-opt-icon">⚡</div>
-                  <div class="mode-opt-info">
-                    <div class="mode-opt-header">
-                      <span class="mode-opt-title" data-i18n="mode_qa_general">General Q/A Assistant</span>
-                      <span class="mode-opt-badge-default" data-i18n="badge_default">Default</span>
-                    </div>
-                    <p class="mode-opt-desc" data-i18n="mode_qa_general_desc">
-                      Answers any question you ask: linguistic, factual, historical, cultural, or conversational with expert depth.
-                    </p>
-                  </div>
-                  <div class="mode-opt-check">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                  </div>
-                </div>
-
-                <!-- 2. Teach Ormuri -->
-                <div class="mode-option" data-mode="teach" role="menuitem" tabindex="0">
-                  <div class="mode-opt-icon">🎓</div>
-                  <div class="mode-opt-info">
-                    <div class="mode-opt-header">
-                      <span class="mode-opt-title" data-i18n="mode_teach">Teach Ormuri</span>
-                    </div>
-                    <p class="mode-opt-desc" data-i18n="mode_teach_desc">
-                      Structured educational lessons, target vocabulary, grammar rules, dialogues, and practice drills.
-                    </p>
-                  </div>
-                  <div class="mode-opt-check">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                  </div>
-                </div>
-
-                <!-- 3. Corpus & Historical Q/A -->
-                <div class="mode-option" data-mode="qa_context" role="menuitem" tabindex="0">
-                  <div class="mode-opt-icon">📚</div>
-                  <div class="mode-opt-info">
-                    <div class="mode-opt-header">
-                      <span class="mode-opt-title" data-i18n="mode_qa_context">Corpus & Historical Q/A</span>
-                    </div>
-                    <p class="mode-opt-desc" data-i18n="mode_qa_context_desc">
-                      Queries answered strictly based on primary historical manuscripts, Grierson texts, and dictionary records.
-                    </p>
-                  </div>
-                  <div class="mode-opt-check">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                  </div>
-                </div>
-
-                <!-- 4. Folk Story -->
-                <div class="mode-option" data-mode="story" role="menuitem" tabindex="0">
-                  <div class="mode-opt-icon">📖</div>
-                  <div class="mode-opt-info">
-                    <div class="mode-opt-header">
-                      <span class="mode-opt-title" data-i18n="mode_story">Folk Story</span>
-                    </div>
-                    <p class="mode-opt-desc" data-i18n="mode_story_desc">
-                      Composes rich traditional folk narratives, tales of elders, and ancient legends in authentic Ormuri.
-                    </p>
-                  </div>
-                  <div class="mode-opt-check">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                  </div>
-                </div>
-
-                <!-- 5. Everyday Dialogue -->
-                <div class="mode-option" data-mode="dialogue" role="menuitem" tabindex="0">
-                  <div class="mode-opt-icon">🗣️</div>
-                  <div class="mode-opt-info">
-                    <div class="mode-opt-header">
-                      <span class="mode-opt-title" data-i18n="mode_dialogue">Everyday Dialogue</span>
-                    </div>
-                    <p class="mode-opt-desc" data-i18n="mode_dialogue_desc">
-                      Natural conversational exchanges and daily life dialogues between native Ormuri speakers.
-                    </p>
-                  </div>
-                  <div class="mode-opt-check">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                  </div>
-                </div>
-
-                <!-- 6. Ergativity & Grammar Test -->
-                <div class="mode-option" data-mode="grammar_check" role="menuitem" tabindex="0">
-                  <div class="mode-opt-icon">🔬</div>
-                  <div class="mode-opt-info">
-                    <div class="mode-opt-header">
-                      <span class="mode-opt-title" data-i18n="mode_ergativity">Ergativity & Grammar Test</span>
-                    </div>
-                    <p class="mode-opt-desc" data-i18n="mode_ergativity_desc">
-                      Syntactic testing, verifying split-ergativity rules, past transitive verbal agreement, and 2P clitics.
-                    </p>
-                  </div>
-                  <div class="mode-opt-check">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Quick Launch Scenario Chips -->
-          <div class="quick-chips">
-            <span class="chips-label" data-i18n="chips_label">Quick Scenarios:</span>
-            <button
-              class="chip"
-              data-chip="qa-dialects"
-              data-mode="qa"
-              data-prompt="What are the key grammatical and phonetic differences between the Kaniguram (Pakistan) and Baraki Barak (Logar, Afghanistan) dialects of Ormuri based on the historical texts in the knowledge base?"
-            >
-              ❓ Q/A: Dialects
-            </button>
-            <button
-              class="chip"
-              data-chip="qa-urdu"
-              data-mode="qa"
-              data-prompt="ارموڑی زبان میں لفظ 'زبان' اور 'دیو' کے معنی اور فرق کو تاریخی متون اور لغت کی روشنی میں واضح کریں۔"
-            >
-              ❓ سوال (اردو): زبان اور دیو
-            </button>
-            <button
-              class="chip"
-              data-chip="qa-pashto"
-              data-mode="qa"
-              data-prompt="په ارموړي ژبه کې د تېرو متعدي فعلونو لپاره د ارګیټیوټي (Ergativity) اصول او فاعلي کلاټيکونه څنګه کارول کېږي؟"
-            >
-              ❓ پوښتنه (پښتو): ارګیټیوټي
-            </button>
-            <button
-              class="chip"
-              data-chip="teach-greetings"
-              data-mode="teach"
-              data-prompt="Teach me the basic morning, day, and evening greetings in Ormuri (Bargista): provide the Perso-Arabic script, IPA romanization, word-by-word gloss, and an everyday dialogue."
-            >
-              🎓 Teach: Greetings
-            </button>
-            <button
-              class="chip"
-              data-chip="teach-numbers"
-              data-mode="teach"
-              data-prompt="Teach me the numbers from 1 to 20 in authentic Ormuri using the traditional vigesimal system, with pronunciation guides and practice examples."
-            >
-              🎓 Teach: Numbers 1–20
-            </button>
-            <button
-              class="chip"
-              data-chip="prechaak"
-              data-mode="qa"
-              data-prompt="Translate and explain in authentic Ormuri using vocabulary from the novel Prechaak: 'In the cold winter of Kaniguram, the tribal elders gathered in the council house to resolve the blood dispute.'"
-            >
-              📖 Novel Prechaak
-            </button>
-            <button
-              class="chip"
-              data-chip="folk"
-              data-mode="story"
-              data-prompt="Narrate a traditional Ormuri folk story about the ancient iron-smiths (اوستاکار) of Kaniguram and the heritage of Baar Pit mountain."
-            >
-              🏔️ Folk Story
-            </button>
-            <button
-              class="chip"
-              data-chip="dialogue"
-              data-mode="dialogue"
-              data-prompt="Write a natural conversational dialogue between two Ormuri speakers meeting in the morning, greeting each other, asking about health, family, and sheep grazing."
-            >
-              🗣️ Daily Greetings
-            </button>
-            <button
-              class="chip"
-              data-chip="ergativity"
-              data-mode="grammar_check"
-              data-prompt="Translate and linguistically explain: 'Asima took Asim to the mountain, but the boy gave the bread to his mother' (verify past transitive object agreement vs agentive clitic al)."
-            >
-              ⚡ Ergativity Test
-            </button>
           </div>
 
           <!-- Textarea input -->
@@ -461,102 +296,19 @@
             <textarea
               id="promptInput"
               data-i18n-ph="prompt_placeholder"
-              placeholder="Type your prompt in English, Urdu, or Ormuri...&#10;E.g., 'Describe the snowfall on Baar Pit mountain and the warmth of traditional hearths in Kaniguram.'"
+              placeholder="Ask any question about Ormuri linguistics, vocabulary, or texts, or request a lesson...&#10;E.g., 'What is the word for water in Ormuri and how is it used?' or 'Teach me basic greetings in Ormuri.'"
               rows="6"
             ></textarea>
           </div>
 
-          <!-- Virtual Keyboard & Special Characters Toolbar -->
-          <div class="keyboard-toolbar">
-            <button
-              type="button"
-              id="btnToggleKeyboard"
-              class="btn-kb-toggle"
-              title="Toggle Virtual Keyboard / کیبورڈ کھولیں یا بند کریں"
-            >
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect>
-                <line x1="6" y1="8" x2="6" y2="8"></line>
-                <line x1="10" y1="8" x2="10" y2="8"></line>
-                <line x1="14" y1="8" x2="14" y2="8"></line>
-                <line x1="18" y1="8" x2="18" y2="8"></line>
-                <line x1="6" y1="12" x2="6" y2="12"></line>
-                <line x1="10" y1="12" x2="10" y2="12"></line>
-                <line x1="14" y1="12" x2="14" y2="12"></line>
-                <line x1="18" y1="12" x2="18" y2="12"></line>
-                <line x1="7" y1="16" x2="17" y2="16"></line>
-              </svg>
-              <span id="kbToggleText" data-i18n="btn_keyboard">⌨️ Virtual Keyboard</span>
-            </button>
-
-            <!-- Quick Special Characters Strip (Instant Insertion) -->
-            <div class="quick-chars-strip" id="quickCharsStrip">
-              <span class="quick-chars-hint">Special:</span>
-              <!-- Ormuri Rare Phonemes -->
-              <button type="button" class="q-char q-oru" data-char="ڒ" title="Ormuri retroflex 'ř' (U+0692)">ڒ</button>
-              <button type="button" class="q-char q-oru" data-char="ݫ" title="Ormuri alveolo-palatal 'ʑ' (U+076B)">ݫ</button>
-              <button type="button" class="q-char q-oru" data-char="ݭ" title="Ormuri alveolo-palatal 'ɕ' (U+076D)">ݭ</button>
-              <button type="button" class="q-char q-oru" data-char="یٛ" title="Ormuri modified ye">یٛ</button>
-              <!-- Pashto / Regional Letters -->
-              <button type="button" class="q-char q-ps" data-char="څ" title="ts">څ</button>
-              <button type="button" class="q-char q-ps" data-char="ځ" title="dz">ځ</button>
-              <button type="button" class="q-char q-ps" data-char="ښ" title="ṣ̌">ښ</button>
-              <button type="button" class="q-char q-ps" data-char="ږ" title="ẓ̌">ږ</button>
-              <button type="button" class="q-char q-ps" data-char="ڼ" title="ṇ">ڼ</button>
-              <button type="button" class="q-char q-ps" data-char="ګ" title="g">ګ</button>
-              <button type="button" class="q-char q-ps" data-char="ې" title="e (Pashto/Ormuri)">ې</button>
-              <button type="button" class="q-char q-ps" data-char="ۍ" title="feminine ay">ۍ</button>
-              <button type="button" class="q-char q-ps" data-char="ي" title="i">ي</button>
-            </div>
-          </div>
-
-          <!-- Expandable Virtual Keyboard Panel -->
-          <div id="virtualKeyboardPanel" class="virtual-keyboard-panel hidden">
-            <div class="vk-header">
-              <div class="vk-tabs" id="vkTabs">
-                <button type="button" class="vk-tab-btn active" data-vk-lang="oru">
-                  <span>🏔️ بارګِسته (Ormuri)</span>
-                </button>
-                <button type="button" class="vk-tab-btn" data-vk-lang="ps">
-                  <span>☀️ پښتو (Pashto)</span>
-                </button>
-                <button type="button" class="vk-tab-btn" data-vk-lang="ur">
-                  <span>🇵🇰 اردو (Urdu)</span>
-                </button>
-              </div>
-              <button type="button" id="btnCloseKeyboard" class="vk-btn-close" title="Close Keyboard">&times;</button>
-            </div>
-
-            <!-- Keys Grid Container (Dynamically rendered based on active vk-tab) -->
-            <div class="vk-keys-container" id="vkKeysContainer" dir="rtl">
-              <!-- Dynamically populated via JS -->
-            </div>
-
-            <!-- Action Controls Row -->
-            <div class="vk-bottom-bar" dir="rtl">
-              <button type="button" class="vk-action-key vk-space" data-action="space" title="Space / فاصله">
-                <span>⎵ فاصلہ (Space)</span>
-              </button>
-              <button type="button" class="vk-action-key vk-backspace" data-action="backspace" title="Backspace / ړنګول">
-                <span>⌫ ړنګول (Backspace)</span>
-              </button>
-              <button type="button" class="vk-action-key vk-enter" data-action="enter" title="Newline / نوې کرښه">
-                <span>↵ نوی سطر (Enter)</span>
-              </button>
-              <button type="button" class="vk-action-key vk-clear" data-action="clear" title="Clear input / پاکول">
-                <span>صاف کریں</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Controls Bar -->
+          <!-- Controls Bar (Advanced Settings & Generate Button) -->
           <div class="controls-bar">
             <div class="advanced-params-wrapper">
               <button
                 type="button"
                 id="btnToggleAdvanced"
                 class="btn-advanced-trigger"
-                title="Model Parameters (Advanced)"
+                title="Model Parameters, Mode & Scenarios (Advanced)"
               >
                 <span class="adv-icon">⚙️</span>
                 <span class="adv-label" data-i18n="btn_advanced">Advanced</span>
@@ -566,16 +318,247 @@
               <div id="advancedParamsPopover" class="advanced-params-popover hidden">
                 <div class="adv-popover-header">
                   <div class="adv-popover-title-row">
-                    <span class="adv-popover-title">⚙️ Creativity / Temperature</span>
+                    <span class="adv-popover-title">⚙️ Advanced Settings & Options</span>
                     <button type="button" id="btnCloseAdvanced" class="btn-adv-close" title="Close">&times;</button>
                   </div>
                   <p class="adv-popover-desc">
-                    Fine-tune generative randomness. Lower values (0.0–0.2) ensure strict adherence to grammar rules and lexicon.
+                    Configure generative formulation mode, quick prompt scenarios, and model creativity.
                   </p>
                 </div>
-                <div class="adv-popover-body">
+
+                <!-- 1. Formulation Mode Section -->
+                <div class="adv-section adv-section-mode">
+                  <div class="adv-section-header">
+                    <span class="adv-section-title" data-i18n="mode_label">Mode:</span>
+                    <span class="adv-section-subtitle">Select generative task</span>
+                  </div>
+                  <div class="mode-dropdown-wrapper" id="modeDropdownWrapper">
+                    <button
+                      id="btnModeDropdown"
+                      class="mode-dropdown-btn"
+                      type="button"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                      title="Select prompt formulation mode"
+                    >
+                      <span class="mode-btn-icon" id="modeBtnIcon">⚡</span>
+                      <span class="mode-btn-text">
+                        <span class="mode-btn-name" id="modeBtnName" data-i18n="mode_qa_general">General Q/A Assistant</span>
+                      </span>
+                      <span class="badge-default-pill" id="modeDefaultPill" data-i18n="badge_default">Default</span>
+                      <svg class="mode-chevron-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </button>
+
+                    <div class="mode-dropdown-menu hidden" id="modeDropdownMenu" role="menu">
+                      <div class="mode-menu-header">
+                        <span class="mode-menu-header-title" data-i18n="mode_menu_title">Formulation Modes</span>
+                        <span class="mode-menu-header-count">6 Types</span>
+                      </div>
+
+                      <!-- 1. General Q/A (Default) -->
+                      <div class="mode-option active" data-mode="qa_general" role="menuitem" tabindex="0">
+                        <div class="mode-opt-icon">⚡</div>
+                        <div class="mode-opt-info">
+                          <div class="mode-opt-header">
+                            <span class="mode-opt-title" data-i18n="mode_qa_general">General Q/A Assistant</span>
+                            <span class="mode-opt-badge-default" data-i18n="badge_default">Default</span>
+                          </div>
+                          <p class="mode-opt-desc" data-i18n="mode_qa_general_desc">
+                            Answers any question you ask: linguistic, factual, historical, cultural, or conversational with expert depth.
+                          </p>
+                        </div>
+                        <div class="mode-opt-check">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                        </div>
+                      </div>
+
+                      <!-- 2. Teach Ormuri -->
+                      <div class="mode-option" data-mode="teach" role="menuitem" tabindex="0">
+                        <div class="mode-opt-icon">🎓</div>
+                        <div class="mode-opt-info">
+                          <div class="mode-opt-header">
+                            <span class="mode-opt-title" data-i18n="mode_teach">Teach Ormuri</span>
+                          </div>
+                          <p class="mode-opt-desc" data-i18n="mode_teach_desc">
+                            Structured educational lessons, target vocabulary, grammar rules, dialogues, and practice drills.
+                          </p>
+                        </div>
+                        <div class="mode-opt-check">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                        </div>
+                      </div>
+
+                      <!-- 3. Corpus & Historical Q/A -->
+                      <div class="mode-option" data-mode="qa_context" role="menuitem" tabindex="0">
+                        <div class="mode-opt-icon">📚</div>
+                        <div class="mode-opt-info">
+                          <div class="mode-opt-header">
+                            <span class="mode-opt-title" data-i18n="mode_qa_context">Corpus & Historical Q/A</span>
+                          </div>
+                          <p class="mode-opt-desc" data-i18n="mode_qa_context_desc">
+                            Queries answered strictly based on primary historical manuscripts, Grierson texts, and dictionary records.
+                          </p>
+                        </div>
+                        <div class="mode-opt-check">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                        </div>
+                      </div>
+
+                      <!-- 4. Folk Story -->
+                      <div class="mode-option" data-mode="story" role="menuitem" tabindex="0">
+                        <div class="mode-opt-icon">📖</div>
+                        <div class="mode-opt-info">
+                          <div class="mode-opt-header">
+                            <span class="mode-opt-title" data-i18n="mode_story">Folk Story</span>
+                          </div>
+                          <p class="mode-opt-desc" data-i18n="mode_story_desc">
+                            Composes rich traditional folk narratives, tales of elders, and ancient legends in authentic Ormuri.
+                          </p>
+                        </div>
+                        <div class="mode-opt-check">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                        </div>
+                      </div>
+
+                      <!-- 5. Everyday Dialogue -->
+                      <div class="mode-option" data-mode="dialogue" role="menuitem" tabindex="0">
+                        <div class="mode-opt-icon">🗣️</div>
+                        <div class="mode-opt-info">
+                          <div class="mode-opt-header">
+                            <span class="mode-opt-title" data-i18n="mode_dialogue">Everyday Dialogue</span>
+                          </div>
+                          <p class="mode-opt-desc" data-i18n="mode_dialogue_desc">
+                            Natural conversational exchanges and daily life dialogues between native Ormuri speakers.
+                          </p>
+                        </div>
+                        <div class="mode-opt-check">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                        </div>
+                      </div>
+
+                      <!-- 6. Ergativity & Grammar Test -->
+                      <div class="mode-option" data-mode="grammar_check" role="menuitem" tabindex="0">
+                        <div class="mode-opt-icon">🔬</div>
+                        <div class="mode-opt-info">
+                          <div class="mode-opt-header">
+                            <span class="mode-opt-title" data-i18n="mode_ergativity">Ergativity & Grammar Test</span>
+                          </div>
+                          <p class="mode-opt-desc" data-i18n="mode_ergativity_desc">
+                            Syntactic testing, verifying split-ergativity rules, past transitive verbal agreement, and 2P clitics.
+                          </p>
+                        </div>
+                        <div class="mode-opt-check">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 2. Quick Scenarios Section -->
+                <div class="adv-section adv-section-scenarios">
+                  <div class="adv-section-header">
+                    <span class="adv-section-title" data-i18n="chips_label">Quick Scenarios:</span>
+                    <span class="adv-section-subtitle">Tap to pre-fill prompt</span>
+                  </div>
+                  <div class="quick-chips adv-quick-chips">
+                    <button
+                      class="chip"
+                      data-chip="qa-dialects"
+                      data-mode="qa"
+                      data-prompt="What are the key grammatical and phonetic differences between the Kaniguram (Pakistan) and Baraki Barak (Logar, Afghanistan) dialects of Ormuri based on the historical texts in the knowledge base?"
+                    >
+                      ❓ Q/A: Dialects
+                    </button>
+                    <button
+                      class="chip"
+                      data-chip="qa-urdu"
+                      data-mode="qa"
+                      data-prompt="ارموڑی زبان میں لفظ 'زبان' اور 'دیو' کے معنی اور فرق کو تاریخی متون اور لغت کی روشنی میں واضح کریں۔"
+                    >
+                      ❓ سوال (اردو): زبان اور دیو
+                    </button>
+                    <button
+                      class="chip"
+                      data-chip="qa-pashto"
+                      data-mode="qa"
+                      data-prompt="په ارموړي ژبه کې د تېرو متعدي فعلونو لپاره د ارګیټیوټي (Ergativity) اصول او فاعلي کلاټيکونه څنګه کارول کېږي؟"
+                    >
+                      ❓ پوښتنه (پښتو): ارګیټیوټي
+                    </button>
+                    <button
+                      class="chip"
+                      data-chip="teach-greetings"
+                      data-mode="teach"
+                      data-prompt="Teach me the basic morning, day, and evening greetings in Ormuri (Bargista): provide the Perso-Arabic script, IPA romanization, word-by-word gloss, and an everyday dialogue."
+                    >
+                      🎓 Teach: Greetings
+                    </button>
+                    <button
+                      class="chip"
+                      data-chip="teach-numbers"
+                      data-mode="teach"
+                      data-prompt="Teach me the numbers from 1 to 20 in authentic Ormuri using the traditional vigesimal system, with pronunciation guides and practice examples."
+                    >
+                      🎓 Teach: Numbers 1–20
+                    </button>
+                    <button
+                      class="chip"
+                      data-chip="prechaak"
+                      data-mode="qa"
+                      data-prompt="Translate and explain in authentic Ormuri using vocabulary from the novel Prechaak: 'In the cold winter of Kaniguram, the tribal elders gathered in the council house to resolve the blood dispute.'"
+                    >
+                      📖 Novel Prechaak
+                    </button>
+                    <button
+                      class="chip"
+                      data-chip="folk"
+                      data-mode="story"
+                      data-prompt="Narrate a traditional Ormuri folk story about the ancient iron-smiths (اوستاکار) of Kaniguram and the heritage of Baar Pit mountain."
+                    >
+                      🏔️ Folk Story
+                    </button>
+                    <button
+                      class="chip"
+                      data-chip="dialogue"
+                      data-mode="dialogue"
+                      data-prompt="Write a natural conversational dialogue between two Ormuri speakers meeting in the morning, greeting each other, asking about health, family, and sheep grazing."
+                    >
+                      🗣️ Daily Greetings
+                    </button>
+                    <button
+                      class="chip"
+                      data-chip="ergativity"
+                      data-mode="grammar_check"
+                      data-prompt="Translate and linguistically explain: 'Asima took Asim to the mountain, but the boy gave the bread to his mother' (verify past transitive object agreement vs agentive clitic al)."
+                    >
+                      ⚡ Ergativity Test
+                    </button>
+                  </div>
+                </div>
+
+                <!-- 3. Creativity / Temperature Section -->
+                <div class="adv-section adv-section-temp">
+                  <div class="adv-section-header">
+                    <span class="adv-section-title">🎛️ Creativity / Temperature:</span>
+                    <span class="adv-section-subtitle">Randomness control</span>
+                  </div>
                   <div class="adv-input-row">
-                    <label for="tempNumberInput">Enter Number (0.0 – 1.0):</label>
+                    <label for="tempNumberInput">Temperature (0.0 – 1.0):</label>
                     <div class="adv-num-box">
                       <input
                         type="number"
@@ -610,9 +593,6 @@
             </div>
 
             <div class="action-buttons">
-              <button id="btnClear" class="btn btn-ghost" title="Clear input" data-i18n="btn_clear">
-                Clear
-              </button>
               <button id="btnGenerate" class="btn btn-primary">
                 <span class="btn-spinner" id="btnSpinner"></span>
                 <svg
@@ -627,6 +607,73 @@
                 </svg>
                 <span data-i18n="btn_generate">Generate Ormuri</span>
                 <kbd>Ctrl+↵</kbd>
+              </button>
+            </div>
+          </div>
+
+          <!-- Virtual Keyboard Toolbar -->
+          <div class="keyboard-toolbar">
+            <button
+              type="button"
+              id="btnToggleKeyboard"
+              class="btn-kb-toggle"
+              title="Toggle Virtual Keyboard / کیبورڈ کھولیں یا بند کریں"
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect>
+                <line x1="6" y1="8" x2="6" y2="8"></line>
+                <line x1="10" y1="8" x2="10" y2="8"></line>
+                <line x1="14" y1="8" x2="14" y2="8"></line>
+                <line x1="18" y1="8" x2="18" y2="8"></line>
+                <line x1="6" y1="12" x2="6" y2="12"></line>
+                <line x1="10" y1="12" x2="10" y2="12"></line>
+                <line x1="14" y1="12" x2="14" y2="12"></line>
+                <line x1="18" y1="12" x2="18" y2="12"></line>
+                <line x1="7" y1="16" x2="17" y2="16"></line>
+              </svg>
+              <span id="kbToggleText" data-i18n="btn_keyboard">⌨️ Virtual Keyboard</span>
+            </button>
+          </div>
+
+          <!-- Expandable Virtual Keyboard Panel -->
+          <div id="virtualKeyboardPanel" class="virtual-keyboard-panel hidden">
+            <div class="vk-header">
+              <div class="vk-tabs" id="vkTabs">
+                <button type="button" class="vk-tab-btn active" data-vk-lang="oru">
+                  <span>🏔️ بارګِسته (Ormuri)</span>
+                </button>
+                <button type="button" class="vk-tab-btn" data-vk-lang="ps">
+                  <span>☀️ پښتو (Pashto)</span>
+                </button>
+                <button type="button" class="vk-tab-btn" data-vk-lang="ur">
+                  <span>🇵🇰 اردو (Urdu)</span>
+                </button>
+              </div>
+              <button type="button" id="btnCloseKeyboard" class="vk-btn-close" title="Close Keyboard">&times;</button>
+            </div>
+
+            <!-- Keys Grid Container (Dynamically rendered based on active vk-tab) -->
+            <div class="vk-keys-container" id="vkKeysContainer" dir="rtl">
+              <!-- Dynamically populated via JS -->
+            </div>
+
+            <!-- Action Controls Row -->
+            <div class="vk-bottom-bar" dir="rtl">
+              <button type="button" class="vk-action-key vk-space" data-action="space" title="Space / فاصله">
+                <span class="vk-key-icon">⎵</span>
+                <span class="vk-key-label" data-i18n="vk_space">فاصلہ (Space)</span>
+              </button>
+              <button type="button" class="vk-action-key vk-backspace" data-action="backspace" title="Backspace / ړنګول">
+                <span class="vk-key-icon">⌫</span>
+                <span class="vk-key-label" data-i18n="vk_backspace">ړنګول</span>
+              </button>
+              <button type="button" class="vk-action-key vk-enter" data-action="enter" title="Newline / نوې کرښه">
+                <span class="vk-key-icon">↵</span>
+                <span class="vk-key-label" data-i18n="vk_enter">نوی سطر</span>
+              </button>
+              <button type="button" class="vk-action-key vk-clear" data-action="clear" title="Clear input / پاکول">
+                <span class="vk-key-icon">✕</span>
+                <span class="vk-key-label" data-i18n="btn_clear">پاکول</span>
               </button>
             </div>
           </div>
@@ -1443,6 +1490,6 @@
     </div>
 
     <script src="corpus_data.js?v=4.0"></script>
-    <script src="app.js?v=4.7"></script>
+    <script src="app.js?v=4.8"></script>
   </body>
 </html>
