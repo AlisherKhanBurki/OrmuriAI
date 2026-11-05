@@ -16,7 +16,7 @@ const TRANSLATIONS = {
     btn_lexicon_count: '(6,657 Words)',
     btn_corpus: 'Corpus Archive',
     btn_grammar: 'Grammar Cheat Sheet',
-    tab_corpus: 'Corpus Archive',
+    tab_corpus: 'Primary Corpus',
     badge_corpus_count: '10 Works',
     corpus_banner_title: '10 Historical Ormuri Books & Literature Archive',
     corpus_banner_desc: 'Browse original historical manuscripts, folk stories, and linguistic texts of Kaniguram Ormuri (Bargista). Select any book below to read or search.',
@@ -55,14 +55,14 @@ const TRANSLATIONS = {
     btn_advanced: 'Advanced',
     btn_clear: 'Clear',
     btn_generate: 'Generate Ormuri',
-    output_title: 'Ormuri Response',
-    tab_rendered: 'Response',
-    tab_scratchpad: 'Morphology & Rules',
+    output_title: 'Linguistic Output & Inspector',
+    tab_rendered: 'Polished Output',
+    tab_scratchpad: 'Morphological Scratchpad & Raw',
     tab_scratchpad_badge: 'Verified',
-    raw_section_title: 'View Raw Markdown',
+    raw_section_title: 'Raw Markdown Output',
     raw_dedup_badge: 'De-duplicated',
-    placeholder_title: 'Ready to Translate & Explore',
-    placeholder_text: 'Type a question or sentence on the left, or pick one of the quick examples to generate authentic Ormuri with pronunciation and grammar.',
+    placeholder_title: 'Ready to Generate',
+    placeholder_text: 'Select a scenario chip on the left or write a custom prompt to test Ormuri generation with anti-hallucination verification.',
     loading_title: 'Generating Authentic Ormuri...',
     loading_text: 'Checking grammar rules and verifying dictionary words...',
     elapsed_label: 'Elapsed:',
@@ -70,8 +70,8 @@ const TRANSLATIONS = {
     card_phonetic_tag: 'Pronunciation Guide (Roman / IPA)',
     card_trans_tag: 'Translation & Notes',
     btn_copy: 'Copy',
-    scratchpad_banner_title: 'Grammar Rules & Structure Verified',
-    scratchpad_banner_text: 'Every sentence has been checked for correct verb agreement, sentence structure, and authentic Ormuri words (zero Pashto substitutions).',
+    scratchpad_banner_title: 'Anti-Hallucination Guardrail Active',
+    scratchpad_banner_text: 'Every sentence below was linguistically decomposed to verify split ergativity, clitics, and authentic dictionary roots before being output.',
     footer_mission_title: 'Preservation Mission',
     footer_mission_text: 'Ormuri is critically endangered. Support cloud & API costs to keep this heritage AI engine active.',
     footer_btn_copy: 'Copy Account',
@@ -84,7 +84,7 @@ const TRANSLATIONS = {
     pos_adv: 'Adverbs',
     pos_prn: 'Pronouns/Clitics',
     btn_load_all: 'Load All Words',
-    grammar_title: 'Ormuri Generative Grammar System',
+    grammar_title: 'Ormuri Generative Grammar Cheat Sheet',
     support_title: 'Support Ormuri (Bargista) AI Preservation',
     alert_no_prompt: 'Please type or select a prompt first.',
     copied_toast: 'Copied to clipboard',
@@ -99,7 +99,7 @@ const TRANSLATIONS = {
     btn_lexicon_count: '(6,657 الفاظ)',
     btn_corpus: 'متنی ذخیرہ (Corpus)',
     btn_grammar: 'قواعدی رہنمائی',
-    tab_corpus: 'کارپس آرکائیو',
+    tab_corpus: 'بنیادی متنی ذخیرہ',
     badge_corpus_count: '۱۰ کتب',
     corpus_banner_title: '10 تاریخی ارموڑی کتب و متون',
     corpus_banner_desc: 'کانیگرم ارموڑی (بارګِسته) کے اصل تاریخی متون۔ منتخب کتاب پڑھنے یا تلاش کرنے کے لیے نیچے دیے گئے ٹیبز پر کلک کریں۔',
@@ -139,12 +139,12 @@ const TRANSLATIONS = {
     btn_clear: 'صاف کریں',
     btn_generate: 'ارموڑی متن بنائیں',
     output_title: 'ارموڑی جواب و ترجمہ',
-    tab_rendered: 'جواب',
-    tab_scratchpad: 'قواعد و تجزیہ',
+    tab_rendered: 'تیار شدہ متن',
+    tab_scratchpad: 'صرفی تجزیہ و خام مارک ڈاؤن',
     tab_scratchpad_badge: 'تصدیق شدہ',
-    raw_section_title: 'خام مارک ڈاؤن دیکھیں',
+    raw_section_title: 'خام مارک ڈاؤن آؤٹ پٹ',
     raw_dedup_badge: 'غیر تکراری',
-    placeholder_title: 'ارموڑی پوچھنے کے لیے تیار',
+    placeholder_title: 'متن بنانے کے لیے تیار',
     placeholder_text: 'بائیں جانب سوال یا جملہ لکھیں، یا فوری نمونہ منتخب کر کے مستند ارموڑی ترجمہ اور قواعد دیکھیں۔',
     loading_title: 'مستند ارموڑی متن تیار ہو رہا ہے...',
     loading_text: 'قواعد کے اصولوں اور لغت کے الفاظ کی تصدیق جاری ہے...',
@@ -182,7 +182,7 @@ const TRANSLATIONS = {
     btn_lexicon_count: '(6,657 کلمې)',
     btn_corpus: 'متني پانګه (Corpus)',
     btn_grammar: 'د ګرامر لارښود',
-    tab_corpus: 'د کارپس آرشیف',
+    tab_corpus: 'اصلي متني پانګه',
     badge_corpus_count: '۱۰ کتابونه',
     corpus_banner_title: 'د ۱۰ تاریخي کتابونو متني پانګه',
     corpus_banner_desc: 'د کانیګرم د ارموړي (بارګِسته) اصلي تاریخي متون. د هر کتاب لوستلو لپاره لاندې ټبونو باندې کلیک وکړئ.',
@@ -226,8 +226,8 @@ const TRANSLATIONS = {
     btn_clear: 'پاک کړئ',
     btn_generate: 'ارموړي متن جوړ کړئ',
     output_title: 'د ارموړي ژبې ځواب',
-    tab_rendered: 'ځواب',
-    tab_scratchpad: 'ګرامر او اصول',
+    tab_rendered: 'بشپړ متن',
+    tab_scratchpad: 'صرفي شننه او خام مارک ډاون',
     tab_scratchpad_badge: 'تصدیق شوی',
     raw_section_title: 'خام مارک ډاون کتل',
     raw_dedup_badge: 'بې تکراره',
@@ -2000,6 +2000,42 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (err) {
       console.warn('Could not sync status:', err);
     }
+  }
+
+
+  // ==========================================================================
+  // Dark / Light Theme Toggle (Default: Dark)
+  // ==========================================================================
+  const btnThemeToggle = document.getElementById('btnThemeToggle');
+  const themeIconLight = document.querySelector('.theme-icon-light');
+  const themeIconDark = document.querySelector('.theme-icon-dark');
+  const themeLabelText = document.getElementById('themeLabelText');
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    document.body.setAttribute('data-theme', theme);
+    localStorage.setItem('ormuri_theme', theme);
+    if (themeIconLight && themeIconDark) {
+      themeIconLight.classList.toggle('hidden', theme !== 'light');
+      themeIconDark.classList.toggle('hidden', theme === 'light');
+    }
+    if (themeLabelText) {
+      themeLabelText.textContent = theme === 'dark' ? 'Dark' : 'Light';
+    }
+    if (window.lucide && typeof lucide.createIcons === 'function') {
+      try { lucide.createIcons(); } catch(e) {}
+    }
+  }
+
+  const initialTheme = localStorage.getItem('ormuri_theme') || 'dark';
+  applyTheme(initialTheme);
+
+  if (btnThemeToggle) {
+    btnThemeToggle.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme') || 'dark';
+      const next = current === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+    });
   }
 
   // Initial State Setup

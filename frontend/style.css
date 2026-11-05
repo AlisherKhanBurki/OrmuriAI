@@ -2,18 +2,22 @@
    Ormuri AI Playground — Modern Design System & Stylesheet
    ========================================================================== */
 
-:root {
-  /* Precision Industrial Engineering Palette: Matte Carbon, Graphite, Precision Steel */
+:root,
+[data-theme="dark"] {
+  /* Dark Theme (Default): Precision Carbon Slate */
   --bg-dark: #090B0E;
   --bg-surface: #0F131A;
+  --bg-panel: #11151F;
   --bg-card: #141822;
   --bg-card-hover: #1A212E;
-  --bg-elevated: #1F2736;
+  --bg-elevated: #181E2A;
   --bg-input: #0B0E14;
+  --bg-hover: rgba(255, 255, 255, 0.04);
+  --bg-active: rgba(255, 255, 255, 0.08);
 
   --border-subtle: rgba(255, 255, 255, 0.08);
   --border-medium: rgba(255, 255, 255, 0.14);
-  --border-active: #10B981;
+  --border-focus: #10B981;
 
   --primary-emerald: #10B981;
   --primary-emerald-dark: #0D7A5F;
@@ -27,24 +31,86 @@
   --text-dim: #64748B;
   --text-faint: #475569;
 
-  /* Precision Industrial Typography */
+  /* Typography */
   --font-ui: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-heading: 'Space Grotesk', -apple-system, sans-serif;
   --font-code: 'JetBrains Mono', monospace;
   --font-ormuri: 'Amiri', 'Noto Sans Arabic', 'Noto Nastaliq Urdu', serif;
 
-  /* Machined Tight Radii */
+  /* Radii */
   --radius-xs: 3px;
   --radius-sm: 5px;
   --radius-md: 7px;
   --radius-lg: 9px;
   --radius-xl: 12px;
 
-  /* Mechanical Shadows & Highlights */
-  --shadow-key: 0 2px 0 rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  /* Shadows */
+  --shadow-key: 0 2px 0 rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
   --shadow-card: 0 4px 18px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   --shadow-bevel: inset 0 1px 0 rgba(255, 255, 255, 0.12);
-  --shadow-glow: none;
+  --grid-line: rgba(255, 255, 255, 0.02);
+
+  /* Virtual Keyboard */
+  --vk-key-bg: #141822;
+  --vk-key-border: rgba(255, 255, 255, 0.09);
+  --vk-key-bottom: #080B10;
+  --vk-key-text: #F1F5F9;
+  --vk-key-hover: #1C2332;
+}
+
+[data-theme="light"] {
+  /* Light Theme: Precision Clean Technical Laboratory */
+  --bg-dark: #F8FAFC;
+  --bg-surface: #FFFFFF;
+  --bg-panel: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #F1F5F9;
+  --bg-elevated: #F1F5F9;
+  --bg-input: #F8FAFC;
+  --bg-hover: rgba(0, 0, 0, 0.03);
+  --bg-active: rgba(0, 0, 0, 0.06);
+
+  --border-subtle: #E2E8F0;
+  --border-medium: #CBD5E1;
+  --border-focus: #059669;
+
+  --primary-emerald: #059669;
+  --primary-emerald-dark: #047857;
+  --primary-cyan: #0284C7;
+  --accent-amber: #D97706;
+  --accent-purple: #6366F1;
+  --accent-rose: #E11D48;
+
+  --text-main: #0F172A;
+  --text-muted: #475569;
+  --text-dim: #64748B;
+  --text-faint: #94A3B8;
+
+  /* Typography */
+  --font-ui: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading: 'Space Grotesk', -apple-system, sans-serif;
+  --font-code: 'JetBrains Mono', monospace;
+  --font-ormuri: 'Amiri', 'Noto Sans Arabic', 'Noto Nastaliq Urdu', serif;
+
+  /* Radii */
+  --radius-xs: 3px;
+  --radius-sm: 5px;
+  --radius-md: 7px;
+  --radius-lg: 9px;
+  --radius-xl: 12px;
+
+  /* Shadows */
+  --shadow-key: 0 1px 0 rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-bevel: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  --grid-line: rgba(0, 0, 0, 0.03);
+
+  /* Virtual Keyboard */
+  --vk-key-bg: #FFFFFF;
+  --vk-key-border: #CBD5E1;
+  --vk-key-bottom: #94A3B8;
+  --vk-key-text: #0F172A;
+  --vk-key-hover: #F1F5F9;
 }
 
 /* Reset & Base Setup */
@@ -57,8 +123,8 @@
 body {
   background-color: var(--bg-dark);
   background-image: 
-    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
   background-size: 32px 32px;
   background-attachment: fixed;
   color: var(--text-main);
@@ -67,6 +133,7 @@ body {
   line-height: 1.5;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 /* Scrollbar Customization */
@@ -107,19 +174,100 @@ body {
 /* ==========================================================================
    Header & Navigation
    ========================================================================== */
+
+/* Brand Logo Frame (Exact User Logo in Green) */
+.brand-logo-frame {
+  width: 48px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  background: #00A859;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  flex-shrink: 0;
+}
+.brand-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+[data-theme="light"] .brand-logo-frame {
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.badge-lang {
+  font-family: 'Noto Nastaliq Urdu', 'Amiri', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #00A859;
+  background: rgba(0, 168, 89, 0.12);
+  border: 1px solid rgba(0, 168, 89, 0.3);
+  padding: 0.1rem 0.6rem;
+  border-radius: var(--radius-xs);
+  line-height: 1.3;
+  display: inline-flex;
+  align-items: center;
+}
+[data-theme="light"] .badge-lang {
+  color: #008746;
+  background: rgba(0, 168, 89, 0.08);
+  border-color: rgba(0, 168, 89, 0.25);
+}
+
+/* Theme Switcher Button */
+.btn-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.38rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+.btn-theme-toggle svg {
+  width: 14px;
+  height: 14px;
+  stroke-width: 2px;
+}
+.theme-icon-light {
+  color: #F59E0B;
+}
+.theme-icon-dark {
+  color: #38BDF8;
+}
+
+/* Lucide Icon Standardized Sizing */
+.tab-lucide-icon {
+  width: 14px;
+  height: 14px;
+  stroke-width: 2px;
+  flex-shrink: 0;
+  opacity: 0.75;
+}
+.tab-btn.active .tab-lucide-icon {
+  opacity: 1;
+  color: var(--primary-emerald);
+}
+
 .navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0.65rem 1.4rem;
-  height: 58px;
+  height: 56px;
   flex-shrink: 0;
-  background: #0B0E14;
+  background: var(--bg-surface);
   border-bottom: 1px solid var(--border-subtle);
   position: sticky;
   top: 0;
   z-index: 50;
   box-sizing: border-box;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .brand {
@@ -618,8 +766,7 @@ kbd {
 }
 
 .panel {
-  background: var(--bg-card);
-  backdrop-filter: blur(16px);
+  background: var(--bg-panel);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-card);
@@ -629,6 +776,7 @@ kbd {
   position: relative;
   min-height: 0;
   scroll-margin-top: 110px;
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 @media (min-width: 961px) {
@@ -659,19 +807,34 @@ kbd {
 }
 
 .prompt-panel.keyboard-open textarea#promptInput {
-  min-height: 75px;
-  height: 90px;
+  width: 100%;
+  height: 100%;
+  min-height: 100px;
+  background: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  color: var(--text-main);
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  resize: none;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
 }
 
 .panel-header {
-  padding: 1.1rem 1.4rem;
+  padding: 0.75rem 1.25rem;
   border-bottom: 1px solid var(--border-subtle);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(14, 19, 31, 0.5);
+  background: var(--bg-surface);
   flex-wrap: wrap;
   gap: 0.75rem;
+  min-height: 48px;
+  box-sizing: border-box;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .panel-title {
@@ -1264,16 +1427,19 @@ textarea#promptInput:focus {
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  background: rgba(30, 41, 59, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  border-radius: 6px;
-  color: #F1F5F9;
-  font-family: 'Amiri', 'Noto Nastaliq Urdu', 'Segoe UI', Tahoma, serif;
+  background: var(--vk-key-bg);
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(0, 0, 0, 0.1) 100%);
+  border: 1px solid var(--vk-key-border);
+  border-bottom: 2px solid var(--vk-key-bottom);
+  border-radius: var(--radius-xs);
+  box-shadow: var(--shadow-key);
+  color: var(--vk-key-text);
+  font-family: 'Amiri', 'Noto Sans Arabic', serif;
   font-size: 1.05rem;
   font-weight: 500;
   cursor: pointer;
   user-select: none;
-  transition: all 0.12s ease;
+  transition: transform 0.06s ease, box-shadow 0.06s ease, background-color 0.1s ease;
   line-height: 1;
 }
 .vk-key:hover {
@@ -1750,10 +1916,11 @@ html[dir="rtl"] .advanced-params-popover {
   display: inline-flex;
   align-items: center;
   gap: 2px;
-  background: #0B0E14;
+  background: var(--bg-input);
   padding: 3px;
   border-radius: var(--radius-sm);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-subtle);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .tab-btn {
@@ -1778,10 +1945,10 @@ html[dir="rtl"] .advanced-params-popover {
   background: rgba(255, 255, 255, 0.04);
 }
 .tab-btn.active {
-  background: #181E2A;
-  color: #FFFFFF;
-  border-color: rgba(255, 255, 255, 0.12);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  background: var(--bg-elevated);
+  color: var(--text-main);
+  border-color: var(--border-medium);
+  box-shadow: var(--shadow-key);
   font-weight: 600;
 }
 
@@ -1981,12 +2148,13 @@ html[dir="rtl"] .advanced-params-popover {
 
 /* Cards */
 .card {
-  background: rgba(0, 0, 0, 0.35);
+  background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   padding: 1.25rem;
   position: relative;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, background-color 0.2s;
+  box-shadow: var(--shadow-card);
 }
 .card:hover {
   border-color: rgba(255, 255, 255, 0.15);
@@ -3684,7 +3852,10 @@ html[dir="rtl"] .lang-card.active::after {
     overflow: visible;
   }
 
-  .navbar {
+  
+
+
+.navbar {
     height: auto;
     min-height: 58px;
     flex-wrap: wrap;
@@ -4008,7 +4179,10 @@ html[dir="rtl"] .lang-card.active::after {
 
 /* 3. Mobile Phones (<= 640px) */
 @media (max-width: 640px) {
-  .navbar {
+  
+
+
+.navbar {
     padding: 0.5rem 0.75rem 0.35rem;
     padding-top: max(0.5rem, env(safe-area-inset-top, 0px));
   }
