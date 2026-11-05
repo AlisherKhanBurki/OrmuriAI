@@ -72,11 +72,11 @@
     }
     </script>
 
-    <!-- Modern Google Fonts -->
+    <!-- Precision Industrial Fonts: Plus Jakarta Sans, Space Grotesk, JetBrains Mono, Amiri, Noto Sans Arabic -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&family=Noto+Nastaliq+Urdu:wght@400;700&family=Noto+Sans+Arabic:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Tajawal:wght@400;500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Noto+Sans+Arabic:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
 
@@ -96,11 +96,11 @@
     <link rel="shortcut icon" href="favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
 
-    <link rel="stylesheet" href="style.css?v=5.1" />
+    <link rel="stylesheet" href="style.css?v=6.0" />
   </head>
   <body>
     <div class="app-container">
-      <!-- Top Navigation Bar -->
+      <!-- Top Navigation Bar (Machined Instrument Bar) -->
       <header class="navbar">
         <div class="brand">
           <div class="brand-icon">
@@ -109,8 +109,18 @@
           <div class="brand-text">
             <h1>Ormuri AI <span class="badge-lang">بارګِسته</span></h1>
             <p class="subtitle" data-i18n="brand_subtitle">
-              Endangered Language Generative Engine & Linguistic Playground
+              Kaniguram Archive & Generative Linguistics Studio
             </p>
+          </div>
+        </div>
+
+        <!-- Telemetry Status Indicator -->
+        <div class="header-telemetry">
+          <div class="telemetry-pill">
+            <span class="telemetry-dot pulse"></span>
+            <span class="telemetry-label">CORPUS ENGINE</span>
+            <span class="telemetry-divider">/</span>
+            <span class="telemetry-val">6,657 ENTRIES</span>
           </div>
         </div>
 
@@ -222,7 +232,7 @@
                 title="Support Ormuri AI Language Preservation"
               >
                 <div class="menu-item-icon menu-icon-support">
-                  <span>🏛️</span>
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"></path><path d="M5 21V10"></path><path d="M19 21V10"></path><path d="M9 21V10"></path><path d="M15 21V10"></path><path d="M2 10h20L12 3 2 10z"></path></svg>
                 </div>
                 <div class="menu-item-text">
                   <div class="menu-item-title-row">
@@ -241,7 +251,7 @@
             class="btn btn-secondary btn-lang-selector"
             title="Choose Language / اپنی زبان منتخب کریں / خپله ژبه غوره کړئ"
           >
-            <span class="lang-flag-current" id="navLangFlag">🌐</span>
+            <svg class="lang-flag-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
             <span class="btn-label" id="navLangName">Language</span>
           </button>
 
@@ -287,7 +297,7 @@
                   d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"
                 ></path>
               </svg>
-              <h2 data-i18n="prompt_title">Ask Ormuri AI</h2>
+              <h2 data-i18n="prompt_title">Input & Translation Studio</h2>
             </div>
           </div>
 
@@ -310,15 +320,25 @@
                 class="btn-advanced-trigger"
                 title="Model Parameters, Mode & Scenarios (Advanced)"
               >
-                <span class="adv-icon">⚙️</span>
-                <span class="adv-label" data-i18n="btn_advanced">Advanced</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="adv-icon-svg">
+                  <line x1="4" y1="21" x2="4" y2="14"></line>
+                  <line x1="4" y1="10" x2="4" y2="3"></line>
+                  <line x1="12" y1="21" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12" y2="3"></line>
+                  <line x1="20" y1="21" x2="20" y2="16"></line>
+                  <line x1="20" y1="12" x2="20" y2="3"></line>
+                  <line x1="1" y1="14" x2="7" y2="14"></line>
+                  <line x1="9" y1="8" x2="15" y2="8"></line>
+                  <line x1="17" y1="16" x2="23" y2="16"></line>
+                </svg>
+                <span class="adv-label" data-i18n="btn_advanced">Options</span>
                 <span class="adv-val-pill" id="advTempPill">0.2</span>
               </button>
 
               <div id="advancedParamsPopover" class="advanced-params-popover hidden">
                 <div class="adv-popover-header">
                   <div class="adv-popover-title-row">
-                    <span class="adv-popover-title">⚙️ Advanced Settings & Options</span>
+                    <span class="adv-popover-title">Studio Parameters & Mode</span>
                     <button type="button" id="btnCloseAdvanced" class="btn-adv-close" title="Close">&times;</button>
                   </div>
                   <p class="adv-popover-desc">
@@ -341,7 +361,11 @@
                       aria-expanded="false"
                       title="Select prompt formulation mode"
                     >
-                      <span class="mode-btn-icon" id="modeBtnIcon">⚡</span>
+                      <span class="mode-btn-icon" id="modeBtnIcon">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                      </span>
                       <span class="mode-btn-text">
                         <span class="mode-btn-name" id="modeBtnName" data-i18n="mode_qa_general">General Q/A Assistant</span>
                       </span>
@@ -359,7 +383,7 @@
 
                       <!-- 1. General Q/A (Default) -->
                       <div class="mode-option active" data-mode="qa_general" role="menuitem" tabindex="0">
-                        <div class="mode-opt-icon">⚡</div>
+                        <div class="mode-opt-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
                         <div class="mode-opt-info">
                           <div class="mode-opt-header">
                             <span class="mode-opt-title" data-i18n="mode_qa_general">General Q/A Assistant</span>
@@ -378,7 +402,7 @@
 
                       <!-- 2. Teach Ormuri -->
                       <div class="mode-option" data-mode="teach" role="menuitem" tabindex="0">
-                        <div class="mode-opt-icon">🎓</div>
+                        <div class="mode-opt-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg></div>
                         <div class="mode-opt-info">
                           <div class="mode-opt-header">
                             <span class="mode-opt-title" data-i18n="mode_teach">Teach Ormuri</span>
@@ -396,7 +420,7 @@
 
                       <!-- 3. Corpus & Historical Q/A -->
                       <div class="mode-option" data-mode="qa_context" role="menuitem" tabindex="0">
-                        <div class="mode-opt-icon">📚</div>
+                        <div class="mode-opt-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></div>
                         <div class="mode-opt-info">
                           <div class="mode-opt-header">
                             <span class="mode-opt-title" data-i18n="mode_qa_context">Corpus & Historical Q/A</span>
@@ -414,7 +438,7 @@
 
                       <!-- 4. Folk Story -->
                       <div class="mode-option" data-mode="story" role="menuitem" tabindex="0">
-                        <div class="mode-opt-icon">📖</div>
+                        <div class="mode-opt-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
                         <div class="mode-opt-info">
                           <div class="mode-opt-header">
                             <span class="mode-opt-title" data-i18n="mode_story">Folk Story</span>
@@ -432,7 +456,7 @@
 
                       <!-- 5. Everyday Dialogue -->
                       <div class="mode-option" data-mode="dialogue" role="menuitem" tabindex="0">
-                        <div class="mode-opt-icon">🗣️</div>
+                        <div class="mode-opt-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></div>
                         <div class="mode-opt-info">
                           <div class="mode-opt-header">
                             <span class="mode-opt-title" data-i18n="mode_dialogue">Everyday Dialogue</span>
@@ -450,7 +474,7 @@
 
                       <!-- 6. Ergativity & Grammar Test -->
                       <div class="mode-option" data-mode="grammar_check" role="menuitem" tabindex="0">
-                        <div class="mode-opt-icon">🔬</div>
+                        <div class="mode-opt-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></div>
                         <div class="mode-opt-info">
                           <div class="mode-opt-header">
                             <span class="mode-opt-title" data-i18n="mode_ergativity">Ergativity & Grammar Test</span>
@@ -482,7 +506,7 @@
                       data-mode="qa"
                       data-prompt="What are the key grammatical and phonetic differences between the Kaniguram (Pakistan) and Baraki Barak (Logar, Afghanistan) dialects of Ormuri based on the historical texts in the knowledge base?"
                     >
-                      ❓ Q/A: Dialects
+                      Dialect Analysis
                     </button>
                     <button
                       class="chip"
@@ -490,7 +514,7 @@
                       data-mode="qa"
                       data-prompt="ارموڑی زبان میں لفظ 'زبان' اور 'دیو' کے معنی اور فرق کو تاریخی متون اور لغت کی روشنی میں واضح کریں۔"
                     >
-                      ❓ سوال (اردو): زبان اور دیو
+                      سوال: زبان و دیو
                     </button>
                     <button
                       class="chip"
@@ -498,7 +522,7 @@
                       data-mode="qa"
                       data-prompt="په ارموړي ژبه کې د تېرو متعدي فعلونو لپاره د ارګیټیوټي (Ergativity) اصول او فاعلي کلاټيکونه څنګه کارول کېږي؟"
                     >
-                      ❓ پوښتنه (پښتو): ارګیټیوټي
+                      پوښتنه: ارګیټیوټي
                     </button>
                     <button
                       class="chip"
@@ -506,7 +530,7 @@
                       data-mode="teach"
                       data-prompt="Teach me the basic morning, day, and evening greetings in Ormuri (Bargista): provide the Perso-Arabic script, IPA romanization, word-by-word gloss, and an everyday dialogue."
                     >
-                      🎓 Teach: Greetings
+                      Greetings Lesson
                     </button>
                     <button
                       class="chip"
@@ -514,7 +538,7 @@
                       data-mode="teach"
                       data-prompt="Teach me the numbers from 1 to 20 in authentic Ormuri using the traditional vigesimal system, with pronunciation guides and practice examples."
                     >
-                      🎓 Teach: Numbers 1–20
+                      Numbers 1–20
                     </button>
                     <button
                       class="chip"
@@ -522,7 +546,7 @@
                       data-mode="qa"
                       data-prompt="Translate and explain in authentic Ormuri using vocabulary from the novel Prechaak: 'In the cold winter of Kaniguram, the tribal elders gathered in the council house to resolve the blood dispute.'"
                     >
-                      📖 Novel Prechaak
+                      Novel Prechaak
                     </button>
                     <button
                       class="chip"
@@ -530,7 +554,7 @@
                       data-mode="story"
                       data-prompt="Narrate a traditional Ormuri folk story about the ancient iron-smiths (اوستاکار) of Kaniguram and the heritage of Baar Pit mountain."
                     >
-                      🏔️ Folk Story
+                      Folk Story
                     </button>
                     <button
                       class="chip"
@@ -538,7 +562,7 @@
                       data-mode="dialogue"
                       data-prompt="Write a natural conversational dialogue between two Ormuri speakers meeting in the morning, greeting each other, asking about health, family, and sheep grazing."
                     >
-                      🗣️ Daily Greetings
+                      Daily Greetings
                     </button>
                     <button
                       class="chip"
@@ -546,7 +570,7 @@
                       data-mode="grammar_check"
                       data-prompt="Translate and linguistically explain: 'Asima took Asim to the mountain, but the boy gave the bread to his mother' (verify past transitive object agreement vs agentive clitic al)."
                     >
-                      ⚡ Ergativity Test
+                      Ergativity Test
                     </button>
                   </div>
                 </div>
@@ -554,7 +578,7 @@
                 <!-- 3. Creativity / Temperature Section -->
                 <div class="adv-section adv-section-temp">
                   <div class="adv-section-header">
-                    <span class="adv-section-title">🎛️ Creativity / Temperature:</span>
+                    <span class="adv-section-title">Sampling Temperature:</span>
                     <span class="adv-section-subtitle">Randomness control</span>
                   </div>
                   <div class="adv-input-row">
@@ -593,19 +617,19 @@
             </div>
 
             <div class="action-buttons">
-              <button id="btnGenerate" class="btn btn-primary">
+              <button id="btnGenerate" class="btn btn-primary" title="Execute Ormuri Translation">
                 <span class="btn-spinner" id="btnSpinner"></span>
                 <svg
-                  width="18"
-                  height="18"
+                  width="16"
+                  height="16"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
+                  stroke-width="2.5"
                 >
                   <polygon points="5 3 19 12 5 21 5 3"></polygon>
                 </svg>
-                <span data-i18n="btn_generate">Generate Ormuri</span>
+                <span data-i18n="btn_generate">Translate / Run</span>
                 <kbd>Ctrl+↵</kbd>
               </button>
             </div>
@@ -617,7 +641,7 @@
               type="button"
               id="btnToggleKeyboard"
               class="btn-kb-toggle"
-              title="Toggle Virtual Keyboard / کیبورڈ کھولیں یا بند کریں"
+              title="Toggle Mechanical Virtual Keyboard"
             >
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect>
@@ -631,7 +655,7 @@
                 <line x1="18" y1="12" x2="18" y2="12"></line>
                 <line x1="7" y1="16" x2="17" y2="16"></line>
               </svg>
-              <span id="kbToggleText" data-i18n="btn_keyboard">⌨️ Virtual Keyboard</span>
+              <span id="kbToggleText" data-i18n="btn_keyboard">Virtual Keyboard</span>
             </button>
           </div>
 
@@ -640,13 +664,13 @@
             <div class="vk-header">
               <div class="vk-tabs" id="vkTabs">
                 <button type="button" class="vk-tab-btn active" data-vk-lang="oru">
-                  <span>🏔️ بارګِسته (Ormuri)</span>
+                  <span>بارګِسته (Ormuri)</span>
                 </button>
                 <button type="button" class="vk-tab-btn" data-vk-lang="ps">
-                  <span>☀️ پښتو (Pashto)</span>
+                  <span>پښتو (Pashto)</span>
                 </button>
                 <button type="button" class="vk-tab-btn" data-vk-lang="ur">
-                  <span>🇵🇰 اردو (Urdu)</span>
+                  <span>اردو (Urdu)</span>
                 </button>
               </div>
               <button type="button" id="btnCloseKeyboard" class="vk-btn-close" title="Close Keyboard">&times;</button>
@@ -698,19 +722,19 @@
             </div>
 
             <div class="output-tabs" id="outputTabs">
-              <button class="tab-btn active" data-tab="rendered" title="Ormuri Answer & Translation">
-                <span class="tab-icon">✨</span>
-                <span data-i18n="tab_rendered">Answer</span>
+              <button class="tab-btn active" data-tab="rendered" title="Ormuri Response & Linguistic Output">
+                <svg class="tab-icon-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                <span data-i18n="tab_rendered">Response</span>
               </button>
               <button class="tab-btn" data-tab="scratchpad" title="Grammar Rules & Structure Verification">
-                <span class="tab-icon">📐</span>
-                <span data-i18n="tab_scratchpad">Grammar & Rules</span>
-                <span class="badge-mini" id="scratchpadBadge" data-i18n="tab_scratchpad_badge">✓ Verified</span>
+                <svg class="tab-icon-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg>
+                <span data-i18n="tab_scratchpad">Morphology & Rules</span>
+                <span class="badge-mini" id="scratchpadBadge"><span class="badge-dot">●</span> <span data-i18n="tab_scratchpad_badge">Verified</span></span>
               </button>
-              <button class="tab-btn tab-btn-corpus" data-tab="corpus" title="10 Historical Books & Literature Sources">
-                <span class="corpus-tab-icon">📚</span>
-                <span data-i18n="tab_corpus">Library</span>
-                <span class="badge-mini badge-corpus-count" data-i18n="badge_corpus_count">10 Books</span>
+              <button class="tab-btn tab-btn-corpus" data-tab="corpus" title="10 Historical Manuscripts & Primary Literature Sources">
+                <svg class="tab-icon-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                <span data-i18n="tab_corpus">Corpus Archive</span>
+                <span class="badge-mini badge-corpus-count" data-i18n="badge_corpus_count">10 Works</span>
               </button>
             </div>
 
@@ -740,11 +764,18 @@
           <div class="output-content-wrapper">
             <!-- State 1: Placeholder -->
             <div id="outputPlaceholder" class="output-state placeholder-state">
-              <div class="empty-illustration">✨</div>
-              <h3 data-i18n="placeholder_title">Ready to Generate</h3>
+              <div class="empty-illustration">
+                <div class="empty-tech-circle">
+                  <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1 4-10z"></path>
+                  </svg>
+                </div>
+              </div>
+              <h3 data-i18n="placeholder_title">Ready to Translate & Explore</h3>
               <p data-i18n="placeholder_text">
-                Select a scenario chip on the left or write a custom prompt to
-                test Ormuri generation with anti-hallucination verification.
+                Enter any word, sentence, or query in English, Urdu, or Pashto to look up authentic Ormuri vocabulary, sentence patterns, and grammar rules.
               </p>
             </div>
 
@@ -766,10 +797,10 @@
                 <div class="stream-badge-row">
                   <span class="stream-rag-pill" id="streamRagPill">
                     <span class="stream-pulse-dot"></span>
-                    <span id="streamRagText">⚡ Dynamic RAG Active</span>
+                    <span id="streamRagText">DYNAMIC RAG: ACTIVE</span>
                   </span>
                   <span class="stream-status-pill" id="streamStatusPill">
-                    <span class="stream-icon">✨</span>
+                    <span class="stream-icon-dot"></span>
                     <span id="streamStatusText">Streaming Generation...</span>
                   </span>
                 </div>
@@ -779,7 +810,7 @@
 
             <!-- State 2.5: API Quota / Limit Hit Support State (Replaces Placeholder/Output) -->
             <div id="outputQuotaError" class="output-state quota-state hidden">
-              <div class="quota-icon">🏛️</div>
+              <div class="quota-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"></rect><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></div>
               <h3>API Quota Exceeded / حد مکمل / حد پوره شو</h3>
               <p class="quota-subtext">
                 Due to recurring cloud infrastructure costs, the API limit has
@@ -901,7 +932,7 @@
             <div id="tabScratchpad" class="tab-content hidden">
               <!-- Morphological Scratchpad Verification Section -->
               <div class="scratchpad-banner">
-                <div class="banner-icon">🛡️</div>
+                <div class="banner-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg></div>
                 <div class="banner-text">
                   <strong data-i18n="scratchpad_banner_title">Grammar Rules & Structure Verified</strong>
                   <span data-i18n="scratchpad_banner_text"
@@ -950,7 +981,7 @@
                 <!-- Corpus Header Banner -->
                 <div class="corpus-banner">
                   <div class="corpus-banner-info">
-                    <div class="corpus-banner-icon">📚</div>
+                    <div class="corpus-banner-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></div>
                     <div class="corpus-banner-text">
                       <h3 class="corpus-banner-title" data-i18n="corpus_banner_title">Unabridged 10-Work Primary Corpus Archive</h3>
                       <p class="corpus-banner-desc" data-i18n="corpus_banner_desc">
@@ -992,7 +1023,7 @@
       <footer class="app-footer">
         <div class="footer-inner">
           <div class="footer-mission">
-            <span class="footer-badge" data-i18n="footer_mission_title">🏛️ Preservation Mission</span>
+            <span class="footer-badge" data-i18n="footer_mission_title">Preservation Mission</span>
             <span class="footer-txt-en" id="footerMissionTxt" data-i18n="footer_mission_text"
               >Ormuri is critically endangered. Support cloud & API costs to
               keep this heritage AI engine active.</span
@@ -1096,7 +1127,7 @@
       <div id="grammarModal" class="modal-overlay hidden">
         <div class="modal-content">
           <div class="modal-header">
-            <h3 data-i18n="grammar_title">📐 Ormuri Generative Grammar Cheat Sheet</h3>
+            <h3 data-i18n="grammar_title">Ormuri Generative Grammar System</h3>
             <button id="btnCloseGrammar" class="btn-close">&times;</button>
           </div>
           <div class="modal-body">
@@ -1317,7 +1348,7 @@
               </table>
               <div class="mt-3 modal-corpus-cta">
                 <button id="btnOpenCorpusFromModal" class="btn btn-secondary btn-sm">
-                  📚 Open Interactive Corpus Archive (10 Works) &rarr;
+                  Open Interactive Corpus Archive (10 Works) &rarr;
                 </button>
               </div>
             </div>
@@ -1330,7 +1361,7 @@
         <div class="modal-content modal-support">
           <div class="modal-header">
             <div class="support-modal-title">
-              <span class="support-icon">🏛️</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"></path><path d="M5 21V10"></path><path d="M19 21V10"></path><path d="M9 21V10"></path><path d="M15 21V10"></path><path d="M2 10h20L12 3 2 10z"></path></svg>
               <h3 data-i18n="support_title">Support Ormuri (Bargista) AI Preservation</h3>
             </div>
             <button id="btnCloseSupport" class="btn-close">&times;</button>
@@ -1440,7 +1471,7 @@
         <div class="modal-content modal-language animate-scale-up">
           <div class="lang-modal-header">
             <div class="lang-welcome-badge">
-              <span class="pulse-emoji">🌍</span>
+              <svg class="pulse-globe-svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
               <span class="welcome-text">Language Selection / خپله ژبه / اپنی زبان</span>
             </div>
             <h2 class="lang-modal-title">
@@ -1455,7 +1486,7 @@
           <div class="lang-selection-grid">
             <!-- English -->
             <button type="button" class="lang-card lang-card-en" data-lang="en">
-              <div class="lang-card-flag">🇬🇧</div>
+              <div class="lang-card-flag">EN</div>
               <div class="lang-card-body">
                 <div class="lang-card-name">English</div>
                 <div class="lang-card-native">International</div>
@@ -1468,7 +1499,7 @@
 
             <!-- Urdu -->
             <button type="button" class="lang-card lang-card-ur" data-lang="ur">
-              <div class="lang-card-flag">🇵🇰</div>
+              <div class="lang-card-flag">UR</div>
               <div class="lang-card-body">
                 <div class="lang-card-name">اردو</div>
                 <div class="lang-card-native">قومی زبان (پاکستان)</div>
@@ -1481,7 +1512,7 @@
 
             <!-- Pashto -->
             <button type="button" class="lang-card lang-card-ps" data-lang="ps">
-              <div class="lang-card-flag">☀️</div>
+              <div class="lang-card-flag">PS</div>
               <div class="lang-card-body">
                 <div class="lang-card-name">پښتو</div>
                 <div class="lang-card-native">سیمه ییزه او قومي ژبه</div>
@@ -1494,7 +1525,7 @@
           </div>
 
           <div class="lang-modal-footer">
-            <span class="lang-footer-hint">💡 You can change your language anytime from the top menu (🌐 button).</span>
+            <span class="lang-footer-hint">You can change your language anytime from the top menu (🌐 button).</span>
           </div>
         </div>
       </div>

@@ -4,9 +4,9 @@
  */
 
 const LANG_META = {
-  en: { name: 'English', native: 'English', flag: '🇬🇧', dir: 'ltr' },
-  ur: { name: 'اردو', native: 'اردو', flag: '🇵🇰', dir: 'rtl' },
-  ps: { name: 'پښتو', native: 'پښتو', flag: '☀️', dir: 'rtl' }
+  en: { name: 'English', native: 'English', flag: 'EN', dir: 'ltr' },
+  ur: { name: 'اردو', native: 'اردو', flag: 'UR', dir: 'rtl' },
+  ps: { name: 'پښتو', native: 'پښتو', flag: 'PS', dir: 'rtl' }
 };
 
 const TRANSLATIONS = {
@@ -16,8 +16,8 @@ const TRANSLATIONS = {
     btn_lexicon_count: '(6,657 Words)',
     btn_corpus: 'Corpus Archive',
     btn_grammar: 'Grammar Cheat Sheet',
-    tab_corpus: 'Library',
-    badge_corpus_count: '10 Books',
+    tab_corpus: 'Corpus Archive',
+    badge_corpus_count: '10 Works',
     corpus_banner_title: '10 Historical Ormuri Books & Literature Archive',
     corpus_banner_desc: 'Browse original historical manuscripts, folk stories, and linguistic texts of Kaniguram Ormuri (Bargista). Select any book below to read or search.',
     btn_support: 'Support',
@@ -56,9 +56,9 @@ const TRANSLATIONS = {
     btn_clear: 'Clear',
     btn_generate: 'Generate Ormuri',
     output_title: 'Ormuri Response',
-    tab_rendered: 'Answer',
-    tab_scratchpad: 'Grammar & Rules',
-    tab_scratchpad_badge: '✓ Verified',
+    tab_rendered: 'Response',
+    tab_scratchpad: 'Morphology & Rules',
+    tab_scratchpad_badge: 'Verified',
     raw_section_title: 'View Raw Markdown',
     raw_dedup_badge: 'De-duplicated',
     placeholder_title: 'Ready to Translate & Explore',
@@ -72,7 +72,7 @@ const TRANSLATIONS = {
     btn_copy: 'Copy',
     scratchpad_banner_title: 'Grammar Rules & Structure Verified',
     scratchpad_banner_text: 'Every sentence has been checked for correct verb agreement, sentence structure, and authentic Ormuri words (zero Pashto substitutions).',
-    footer_mission_title: '🏛️ Preservation Mission',
+    footer_mission_title: 'Preservation Mission',
     footer_mission_text: 'Ormuri is critically endangered. Support cloud & API costs to keep this heritage AI engine active.',
     footer_btn_copy: 'Copy Account',
     drawer_title: 'Ormuri Dictionary Explorer',
@@ -84,12 +84,12 @@ const TRANSLATIONS = {
     pos_adv: 'Adverbs',
     pos_prn: 'Pronouns/Clitics',
     btn_load_all: 'Load All Words',
-    grammar_title: '📐 Ormuri Generative Grammar Cheat Sheet',
+    grammar_title: 'Ormuri Generative Grammar System',
     support_title: 'Support Ormuri (Bargista) AI Preservation',
     alert_no_prompt: 'Please type or select a prompt first.',
-    copied_toast: 'Copied to clipboard! ✓',
-    ormuri_copied_toast: 'Ormuri text copied! ✓',
-    account_copied_toast: 'Account details copied: PK62ASCM0001143230003241 (ALI SHER KHAN BURKI) ✓',
+    copied_toast: 'Copied to clipboard',
+    ormuri_copied_toast: 'Ormuri text copied',
+    account_copied_toast: 'Account details copied: PK62ASCM0001143230003241 (ALI SHER KHAN BURKI)',
     word_inserted: 'Inserted into prompt!',
     btn_keyboard: '⌨️ Virtual Keyboard'
   },
@@ -99,8 +99,8 @@ const TRANSLATIONS = {
     btn_lexicon_count: '(6,657 الفاظ)',
     btn_corpus: 'متنی ذخیرہ (Corpus)',
     btn_grammar: 'قواعدی رہنمائی',
-    tab_corpus: 'کتب خانہ',
-    badge_corpus_count: '10 کتب',
+    tab_corpus: 'کارپس آرکائیو',
+    badge_corpus_count: '۱۰ کتب',
     corpus_banner_title: '10 تاریخی ارموڑی کتب و متون',
     corpus_banner_desc: 'کانیگرم ارموڑی (بارګِسته) کے اصل تاریخی متون۔ منتخب کتاب پڑھنے یا تلاش کرنے کے لیے نیچے دیے گئے ٹیبز پر کلک کریں۔',
     btn_support: 'مالی تعاون',
@@ -140,8 +140,8 @@ const TRANSLATIONS = {
     btn_generate: 'ارموڑی متن بنائیں',
     output_title: 'ارموڑی جواب و ترجمہ',
     tab_rendered: 'جواب',
-    tab_scratchpad: 'قواعد و گرامر',
-    tab_scratchpad_badge: '✓ تصدیق شدہ',
+    tab_scratchpad: 'قواعد و تجزیہ',
+    tab_scratchpad_badge: 'تصدیق شدہ',
     raw_section_title: 'خام مارک ڈاؤن دیکھیں',
     raw_dedup_badge: 'غیر تکراری',
     placeholder_title: 'ارموڑی پوچھنے کے لیے تیار',
@@ -155,7 +155,7 @@ const TRANSLATIONS = {
     btn_copy: 'کاپی کریں',
     scratchpad_banner_title: 'قواعدی صحت کی تصدیق',
     scratchpad_banner_text: 'تمام جملوں کی فاعلی و مفعولی مطابقت، صحیح املا اور اصل ارموڑی الفاظ کے مطابق مکمل تصدیق کی گئی ہے۔',
-    footer_mission_title: '🏛️ تحفظِ ورثہ مشن',
+    footer_mission_title: 'تحفظِ ورثہ مشن',
     footer_mission_text: 'ارموڑی ایک معدوم ہوتی نایاب زبان ہے۔ کلاؤڈ اور اے پی آئی اخراجات کے لیے تعاون فرمائیں۔',
     footer_btn_copy: 'اکاؤنٹ کاپی کریں',
     drawer_title: 'ارموڑی جامع ڈکشنری / لغت (Dictionary)',
@@ -167,12 +167,12 @@ const TRANSLATIONS = {
     pos_adv: 'متعلق فعل (Adverbs)',
     pos_prn: 'ضمیر / کلاٹک',
     btn_load_all: 'تمام الفاظ لوڈ کریں',
-    grammar_title: '📐 ارموڑی قواعد و نحوی رہنمائی',
+    grammar_title: 'ارموڑی قواعد و نحوی رہنمائی',
     support_title: 'ارموڑی (بارګِسته) اے آئی تحفظ کے لیے تعاون',
     alert_no_prompt: 'براہ کرم پہلے پرامپٹ لکھیں یا منتخب کریں۔',
-    copied_toast: 'کاپی ہو گیا! ✓',
-    ormuri_copied_toast: 'ارموڑی متن کاپی ہو گیا! ✓',
-    account_copied_toast: 'اکاؤنٹ تفصیلات کاپی ہو گئیں: PK62ASCM0001143230003241 (علی شیر خان برکی) ✓',
+    copied_toast: 'کاپی ہو گیا',
+    ormuri_copied_toast: 'ارموڑی متن کاپی ہو گیا',
+    account_copied_toast: 'اکاؤنٹ تفصیلات کاپی ہو گئیں: PK62ASCM0001143230003241 (علی شیر خان برکی)',
     word_inserted: 'لفظ پرامپٹ میں شامل کر دیا گیا!',
     btn_keyboard: '⌨️ ورچوئل کیبورڈ'
   },
@@ -182,8 +182,8 @@ const TRANSLATIONS = {
     btn_lexicon_count: '(6,657 کلمې)',
     btn_corpus: 'متني پانګه (Corpus)',
     btn_grammar: 'د ګرامر لارښود',
-    tab_corpus: 'کتابتون',
-    badge_corpus_count: '10 کتابونه',
+    tab_corpus: 'د کارپس آرشیف',
+    badge_corpus_count: '۱۰ کتابونه',
     corpus_banner_title: 'د ۱۰ تاریخي کتابونو متني پانګه',
     corpus_banner_desc: 'د کانیګرم د ارموړي (بارګِسته) اصلي تاریخي متون. د هر کتاب لوستلو لپاره لاندې ټبونو باندې کلیک وکړئ.',
     btn_support: 'ملاتړ وکړئ',
@@ -228,7 +228,7 @@ const TRANSLATIONS = {
     output_title: 'د ارموړي ژبې ځواب',
     tab_rendered: 'ځواب',
     tab_scratchpad: 'ګرامر او اصول',
-    tab_scratchpad_badge: '✓ تایید شوی',
+    tab_scratchpad_badge: 'تصدیق شوی',
     raw_section_title: 'خام مارک ډاون کتل',
     raw_dedup_badge: 'بې تکراره',
     placeholder_title: 'پوښتنې ته چمتو دی',
@@ -242,7 +242,7 @@ const TRANSLATIONS = {
     btn_copy: 'کاپي کړئ',
     scratchpad_banner_title: 'د ګرامري سموالي تصدیق',
     scratchpad_banner_text: 'هر جمله د فعل او مفعول د سمون، زمانې او اصلي ارموړي کلمو له مخې کتل شوې ده.',
-    footer_mission_title: '🏛️ د ژبې ژغورنې ماموریت',
+    footer_mission_title: 'د ژبې ژغورنې ماموریت',
     footer_mission_text: 'ارموړي یوه نایابه او تاریخي ژبه ده. د کلاوډ او سرور لګښتونو کې مرسته وکړئ.',
     footer_btn_copy: 'اکاونټ کاپي کړئ',
     drawer_title: 'د ارموړي ژبې قاموس / ډکشنري',
@@ -254,12 +254,12 @@ const TRANSLATIONS = {
     pos_adv: 'قیدونه (Adverbs)',
     pos_prn: 'ضمائر / کلاټیک',
     btn_load_all: 'ټول کلمات راولئ',
-    grammar_title: '📐 د ارموړي ژبې ګرامر او جدولونه',
+    grammar_title: 'د ارموړي ژبې ګرامر او جدولونه',
     support_title: 'د ارموړي (بارګِسته) ژبې له ساتنې سره مرسته',
     alert_no_prompt: 'مهرباني وکړئ لومړی پوښتنه یا پرامپټ ولیکئ.',
-    copied_toast: 'کاپي شوه! ✓',
-    ormuri_copied_toast: 'ارموړي متن کاپي شو! ✓',
-    account_copied_toast: 'د بانکي حساب شمېره کاپي شوه: PK62ASCM0001143230003241 (علي شیر خان برکي) ✓',
+    copied_toast: 'کاپي شوه',
+    ormuri_copied_toast: 'ارموړي متن کاپي شو',
+    account_copied_toast: 'د بانکي حساب شمېره کاپي شوه: PK62ASCM0001143230003241 (علي شیر خان برکي)',
     word_inserted: 'کلمه پرامپټ ته واستول شوه!',
     btn_keyboard: '⌨️ مجازی کیبورډ'
   }
@@ -268,91 +268,91 @@ const TRANSLATIONS = {
 const CHIP_PROMPTS = {
   en: {
     prechaak: {
-      label: '📖 Novel Prechaak',
+      label: 'Novel Prechaak',
       prompt: "Translate and explain in authentic Ormuri using vocabulary from the novel Prechaak: 'In the cold winter of Kaniguram, the tribal elders gathered in the council house to resolve the blood dispute.'"
     },
     folk: {
-      label: '🏔️ Folk Stories',
+      label: 'Folk Stories',
       prompt: "Narrate a traditional Ormuri folk story about the ancient iron-smiths (اوستاکار) of Kaniguram and the heritage of Baar Pit mountain."
     },
     udhr: {
-      label: '🕊️ Human Rights (UDHR)',
+      label: 'Human Rights (UDHR)',
       prompt: "Translate into formal civic Ormuri (following the Charter of Human Rights): 'All human beings are born free and equal in dignity and rights.'"
     },
     proverb: {
-      label: '📜 Proverbs (1,029)',
+      label: 'Proverbs (1,029)',
       prompt: "Present an authentic Ormuri proverb about hospitality (مېلمۀ) and honor (ننګ), with literal word breakdown, cultural meaning, and practical moral lesson."
     },
     idiom: {
-      label: '💡 Idioms (1,491)',
+      label: 'Idioms (1,491)',
       prompt: "Present an authentic Ormuri idiom about courage and steadfastness from the Ormuri Idioms collection, with word gloss and idiomatic meaning."
     },
     dialogue: {
-      label: '🗣️ Daily Greetings',
+      label: 'Daily Greetings',
       prompt: "Write a natural conversational dialogue between two Ormuri speakers meeting in the morning, greeting each other, asking about health, family, and sheep grazing."
     },
     ergativity: {
-      label: '⚡ Ergativity Test',
+      label: 'Ergativity Test',
       prompt: "Translate and linguistically explain: 'Asima took Asim to the mountain, but the boy gave the bread to his mother' (verify past transitive object agreement vs agentive clitic al)."
     }
   },
   ur: {
     prechaak: {
-      label: '📖 ناول پریچاک',
+      label: 'ناول پریچاک',
       prompt: "ناول پریچاک کے مستند ذخیرہ الفاظ کے ساتھ ارموڑی میں ترجمہ کریں: 'کانیگرم کے سرد موسم سرما میں قبائلی عمائدین خون کے جھگڑے کو سلجھانے کے لیے بیٹھک میں جمع ہوئے۔'"
     },
     folk: {
-      label: '🏔️ لوک کہانیاں',
+      label: 'لوک کہانیاں',
       prompt: "کانیگرم کے قدیم لوہاروں (اوستاکار) اور بار پیٹ پہاڑ کی روایت پر ایک روایتی ارموڑی لوک کہانی بیان کریں۔"
     },
     udhr: {
-      label: '🕊️ انسانی حقوق (UDHR)',
+      label: 'انسانی حقوق (UDHR)',
       prompt: "انسانی حقوق کے عالمی منشور کے مطابق ارموڑی میں ترجمہ کریں: 'تمام انسان پیدائشی طور پر آزاد اور وقار و حقوق میں برابر ہیں۔'"
     },
     proverb: {
-      label: '📜 ضرب الامثال (1,029)',
+      label: 'ضرب الامثال (1,029)',
       prompt: "مہمان نوازی (مېلمۀ) اور ننگ و ناموس پر ایک مستند ارموڑی کہاوت پیش کریں جس میں لفظ بہ لفظ تجزیہ اور اخلاقی درس شامل ہو۔"
     },
     idiom: {
-      label: '💡 محاورات (1,491)',
+      label: 'محاورات (1,491)',
       prompt: "ارموڑی محاورات کے ذخیرے سے بہادری اور ثابت قدمی پر ایک مستند محاورہ پیش کریں بمع مفہوم و لغوی تشریح۔"
     },
     dialogue: {
-      label: '🗣️ روزمرہ مکالمہ',
+      label: 'روزمرہ مکالمہ',
       prompt: "صبح کے وقت ملنے والے دو ارموڑی بولنے والوں کے درمیان فطری گفتگو لکھیں جس میں خیریت، اہل خانہ اور بھیڑ بکریاں چرانے کا احوال ہو۔"
     },
     ergativity: {
-      label: '⚡ ارګیٹیویٹی ٹیسٹ',
+      label: 'ارګیٹیویٹی ٹیسٹ',
       prompt: "ارموڑی میں ترجمہ اور لسانی تصدیق کریں: 'عاصمہ عاصم کو پہاڑ لے گئی، مگر لڑکے نے روٹی اپنی ماں کو دی۔' (ماضی متعدی مفعولی مطابقت اور فاعلی کلاٹک 'ال' کی تصدیق کریں)"
     }
   },
   ps: {
     prechaak: {
-      label: '📖 ناول پریچاک',
+      label: 'ناول پریچاک',
       prompt: "د پریچاک ناول له مستندې ذخیرې څخه په ګټې اخیستنې په ارموړي ژباړه وکړئ: 'د کانیګرم په یخ ژمي کې قومي مشران په حجره کې د وینې د شخړې د هواري لپاره راټول شول.'"
     },
     folk: {
-      label: '🏔️ ولسي کیسې',
+      label: 'ولسي کیسې',
       prompt: "د کانیګرم د پخوانیو اوسپنو جوړوونکو (اوستاکار) او د بار پېټ د غره په اړه یوه دودیزه ارموړي ولسي کیسه بیان کړئ."
     },
     udhr: {
-      label: '🕊️ بشري حقونه (UDHR)',
+      label: 'بشري حقونه (UDHR)',
       prompt: "د بشري حقونو د نړیوال منشور پر بنسټ رسمي ارموړي ته وژباړئ: 'ټول انسانان ازاد پیدا شوي او په حقوقو او کرامت کې سره مساوي دي.'"
     },
     proverb: {
-      label: '📜 متلونه (1,029)',
+      label: 'متلونه (1,029)',
       prompt: "د مېلمستیا (مېلمۀ) او ننګ په اړه یو مستند ارموړی متل د ټکي په ټکي مانا او اخلاقي درس سره وړاندې کړئ."
     },
     idiom: {
-      label: '💡 اصطلاحات (1,491)',
+      label: 'اصطلاحات (1,491)',
       prompt: "د ارموړي اصطلاحاتو له ټولګې څخه د مېړانې او زړورتیا په هکله یوه مستنده اصطلاح له تشریح سره ولیکئ."
     },
     dialogue: {
-      label: '🗣️ ورځنۍ خبرې اترې',
+      label: 'ورځنۍ خبرې اترې',
       prompt: "د دوو ارموړي ژبو ترمنځ چې سهار وختي یو بل سره ویني، د روغتیا، کورنۍ او رمو پوښتنه کوي، یوه روانه مکالمه ولیکئ."
     },
     ergativity: {
-      label: '⚡ د ارګیټیوټي آزموینه',
+      label: 'د ارګیټیوټي آزموینه',
       prompt: "په ارموړي کې ژباړه او صرفي تحلیل وکړئ: 'عاصمې عاصم غره ته بوته، خو هلک خپله ډوډۍ مور ته ورکړه.' (په تېر مهال کې د مفعولي مطابقت او فاعلي کلاټک ال تصدیق)"
     }
   }
@@ -439,37 +439,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const MODES_CONFIG = {
     qa_general: {
-      icon: '⚡',
+      icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>',
       titleKey: 'mode_qa_general',
       descKey: 'mode_qa_general_desc',
       isDefault: true
     },
     teach: {
-      icon: '🎓',
+      icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>',
       titleKey: 'mode_teach',
       descKey: 'mode_teach_desc',
       isDefault: false
     },
     qa_context: {
-      icon: '📚',
+      icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>',
       titleKey: 'mode_qa_context',
       descKey: 'mode_qa_context_desc',
       isDefault: false
     },
     story: {
-      icon: '📖',
+      icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>',
       titleKey: 'mode_story',
       descKey: 'mode_story_desc',
       isDefault: false
     },
     dialogue: {
-      icon: '🗣️',
+      icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>',
       titleKey: 'mode_dialogue',
       descKey: 'mode_dialogue_desc',
       isDefault: false
     },
     grammar_check: {
-      icon: '🔬',
+      icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>',
       titleKey: 'mode_ergativity',
       descKey: 'mode_ergativity_desc',
       isDefault: false
@@ -568,7 +568,7 @@ document.addEventListener('DOMContentLoaded', () => {
     currentMode = mode;
     const config = MODES_CONFIG[mode] || MODES_CONFIG.qa_general;
 
-    if (modeBtnIcon) modeBtnIcon.textContent = config.icon;
+    if (modeBtnIcon) modeBtnIcon.innerHTML = config.icon;
     if (modeBtnName) {
       modeBtnName.setAttribute('data-i18n', config.titleKey);
       const dict = TRANSLATIONS[currentLanguage] || TRANSLATIONS.en;
@@ -672,7 +672,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const switchMessages = {
         en: 'Switched to English 🇬🇧',
         ur: 'اردو زبان منتخب ہو گئی 🇵🇰',
-        ps: 'پښتو ژبه وټاکل شوه ☀️'
+        ps: 'پښتو ژبه وټاکل شوه'
       };
       showToast(switchMessages[lang] || `Language set to ${meta.name}`);
     }
@@ -1080,7 +1080,7 @@ document.addEventListener('DOMContentLoaded', () => {
       streamLiveBox.classList.remove('hidden');
       if (streamLiveText) streamLiveText.textContent = '';
       if (streamRagText) {
-        streamRagText.textContent = '⚡ Slicing targeted lexicon (RAG)...';
+        streamRagText.textContent = 'Slicing targeted lexicon (RAG)...';
       }
       if (streamStatusText) streamStatusText.textContent = 'Connecting to model...';
     }
@@ -1157,14 +1157,14 @@ document.addEventListener('DOMContentLoaded', () => {
               const kw = data.keywords && data.keywords.length ? data.keywords.join(', ') : '';
               if (data.stage === 'planning') {
                 if (streamRagText) {
-                  streamRagText.textContent = `🧠 English Grounding: Formulating conceptual response & plan...`;
+                  streamRagText.textContent = `English Grounding: Formulating conceptual response & plan...`;
                 }
                 if (streamStatusText) {
                   streamStatusText.textContent = 'Generating English Semantic Grounding...';
                 }
               } else {
                 if (streamRagText) {
-                  streamRagText.textContent = `⚡ Dynamic RAG: ${count} Words Filtered (${kw || 'General'})`;
+                  streamRagText.textContent = `Dynamic RAG: ${count} Words Filtered (${kw || 'General'})`;
                 }
                 if (streamStatusText) {
                   streamStatusText.textContent = 'Streaming Authentic Ormuri...';
@@ -1339,7 +1339,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const textToCopy = el.innerText;
     navigator.clipboard.writeText(textToCopy).then(() => {
       const dict = TRANSLATIONS[currentLanguage] || TRANSLATIONS.en;
-      showToast(dict.copied_toast || 'Copied to clipboard! ✓');
+      showToast(dict.copied_toast || 'Copied to clipboard');
     }).catch(err => {
       console.error('Copy failed:', err);
     });
@@ -1350,7 +1350,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (activeText) {
       navigator.clipboard.writeText(activeText).then(() => {
         const dict = TRANSLATIONS[currentLanguage] || TRANSLATIONS.en;
-        showToast(dict.ormuri_copied_toast || 'Ormuri text copied! ✓');
+        showToast(dict.ormuri_copied_toast || 'Ormuri text copied');
       });
     }
   });
@@ -1360,7 +1360,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const iban = "PK62ASCM0001143230003241";
     navigator.clipboard.writeText(iban).then(() => {
       const dict = TRANSLATIONS[currentLanguage] || TRANSLATIONS.en;
-      showToast(dict.account_copied_toast || 'Account details copied: PK62ASCM0001143230003241 (ALI SHER KHAN BURKI) ✓');
+      showToast(dict.account_copied_toast || 'Account details copied: PK62ASCM0001143230003241 (ALI SHER KHAN BURKI)');
     }).catch(() => {
       prompt("Copy Account Number / IBAN:", iban);
     });
@@ -1508,7 +1508,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderLexiconChunk(items, isReset) {
     if (!items.length) {
       if (isReset) {
-        lexiconResults.innerHTML = '<div style="color: #64748B; padding: 2.5rem 1rem; text-align: center;"><div style="font-size: 2rem; margin-bottom: 0.5rem;">🔍</div>No words match your search or filter.</div>';
+        lexiconResults.innerHTML = '<div style="color: #64748B; padding: 2.5rem 1rem; text-align: center;"><div style="font-size: 1.2rem; margin-bottom: 0.5rem; color: #475569;">[0 Matches]</div>No words match your search or filter.</div>';
       }
       return;
     }
@@ -1548,7 +1548,7 @@ document.addEventListener('DOMContentLoaded', () => {
       sentinel.style.display = 'flex';
     } else {
       if (loadedCount > 0) {
-        sentinel.innerHTML = `<span>✓ All ${lexiconTotal.toLocaleString()} words loaded</span>`;
+        sentinel.innerHTML = `<span>All ${lexiconTotal.toLocaleString()} words loaded</span>`;
         sentinel.style.display = 'flex';
       } else {
         sentinel.style.display = 'none';
@@ -1714,7 +1714,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const badgeCount = (w.badge || '').split(' ')[0];
 
       btn.innerHTML = `
-        <span class="subtab-icon">${w.icon || '📄'}</span>
+        
         <span class="subtab-name">${escapeHtml(shortTitle)}</span>
         <span class="subtab-count">${escapeHtml(badgeCount)}</span>
       `;
@@ -1819,11 +1819,11 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="work-meta-card">
         <div class="work-meta-top">
           <div class="work-meta-header">
-            <span class="work-meta-icon">${w.icon || '📚'}</span>
+            
             <div class="work-meta-titles">
               <h3 class="work-meta-title">${escapeHtml(w.title)}</h3>
               <div class="work-meta-sub">
-                <span class="work-meta-author">✍️ ${escapeHtml(w.author)}</span>
+                <span class="work-meta-author">${escapeHtml(w.author)}</span>
                 <span class="work-meta-badge">${escapeHtml(w.badge)}</span>
               </div>
             </div>
@@ -1837,7 +1837,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </span>
           ${workKey === 'dict' ? `
             <button class="btn btn-primary btn-sm btn-open-dict-drawer" onclick="document.getElementById('btnOpenLexicon').click()">
-              🔍 Open Full Dictionary Drawer (6,657 Words)
+              Open Dictionary Explorer (6,657 Words)
             </button>
           ` : ''}
         </div>
@@ -1849,7 +1849,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!filteredItems.length) {
       corpusItemsStream.innerHTML = `
         <div class="corpus-empty-state">
-          <div class="corpus-empty-icon">🔍</div>
+          <div class="corpus-empty-icon" style="color:#475569;">[No Matches]</div>
           <h4>No matches found for "${escapeHtml(filterQuery)}"</h4>
           <p>Try searching for a different word in Ormuri, Urdu, or English, or clear the search filter.</p>
         </div>
@@ -1898,7 +1898,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Copy Action
       card.querySelector('.btn-copy-corpus').addEventListener('click', () => {
         navigator.clipboard.writeText(cleanTxt).then(() => {
-          showToast(`Copied excerpt from ${item.title}! ✓`);
+          showToast(`Copied excerpt from ${item.title}`);
         }).catch(() => {
           prompt('Copy text:', cleanTxt);
         });
@@ -1957,7 +1957,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const formatted = `Translate and explain in authentic Ormuri from ${workTitle} (${itemTitle}): "${cleanSnippet}"`;
     promptInput.value = formatted;
     promptInput.focus();
-    showToast(`Inserted "${itemTitle}" into Prompt Formulation! ✓`);
+    showToast(`Inserted "${itemTitle}" into Prompt Formulation`);
     if (window.innerWidth <= 1024) {
       const promptPanel = document.querySelector('.prompt-panel');
       if (promptPanel) promptPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1980,7 +1980,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (badgeKb && data.kb_tokens) {
         const tokensFmt = Number(data.kb_tokens).toLocaleString();
         const charsFmt = data.kb_characters ? `${(data.kb_characters / 1000000).toFixed(1)}M Chars` : '2.0M Chars';
-        badgeKb.textContent = `📚 ${tokensFmt} Tokens (${charsFmt})`;
+        badgeKb.textContent = `${tokensFmt} Tokens (${charsFmt})`;
       }
 
       const lexiconBtnText = document.getElementById('lexiconBtnText');
@@ -2064,13 +2064,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
         if (isIos) {
           const iosMsgs = {
-            en: 'To install on iPhone/iPad: tap the Share button (⎋) in Safari and select "Add to Home Screen" (➕)',
+            en: 'To install on iPhone/iPad: tap the Share button (⎋) in Safari and select "Add to Home Screen"',
             ur: 'آئی فون پر انسٹال کرنے کے لیے: سفاری میں شیئر بٹن (⎋) دبائیں اور "Add to Home Screen" منتخب کریں۔',
             ps: 'په آیفون کې د انسټال لپاره: په سفاري کې د Share تڼۍ (⎋) کېکاږئ او "Add to Home Screen" وټاکئ.'
           };
           showToast(iosMsgs[currentLanguage] || iosMsgs.en);
         } else {
-          showToast('To install: click the Install icon (📲) in your browser address bar.');
+          showToast('To install: click the Install icon in your browser address bar.');
         }
       }
     });
@@ -2081,7 +2081,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnInstallPwa) {
       btnInstallPwa.classList.add('hidden');
     }
-    showToast('Ormuri AI installed successfully! ✓');
+    showToast('Ormuri AI installed successfully');
   });
 
   // Handle shortcut action URL parameters
