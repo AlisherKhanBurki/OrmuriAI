@@ -96,7 +96,7 @@
     <link rel="shortcut icon" href="favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
 
-    <link rel="stylesheet" href="style.css?v=4.9" />
+    <link rel="stylesheet" href="style.css?v=5.0" />
   </head>
   <body>
     <div class="app-container">
@@ -757,6 +757,21 @@
               </p>
               <div class="timer-display">
                 <span data-i18n="elapsed_label">Elapsed:</span> <span id="timerText">0.0s</span>
+              </div>
+
+              <!-- Live Token Streaming Preview Container -->
+              <div class="stream-live-container hidden" id="streamLiveBox">
+                <div class="stream-badge-row">
+                  <span class="stream-rag-pill" id="streamRagPill">
+                    <span class="stream-pulse-dot"></span>
+                    <span id="streamRagText">⚡ Dynamic RAG Active</span>
+                  </span>
+                  <span class="stream-status-pill" id="streamStatusPill">
+                    <span class="stream-icon">✨</span>
+                    <span id="streamStatusText">Streaming Generation...</span>
+                  </span>
+                </div>
+                <div class="stream-prose-preview" id="streamLiveText"></div>
               </div>
             </div>
 
@@ -1490,6 +1505,6 @@
     </div>
 
     <script src="corpus_data.js?v=4.0"></script>
-    <script src="app.js?v=4.8"></script>
+    <script src="app.js?v=5.0"></script>
   </body>
 </html>

@@ -1762,6 +1762,91 @@ html[dir="rtl"] .advanced-params-popover {
   border-radius: 4px;
 }
 
+/* Live Token Streaming Preview Container */
+.stream-live-container {
+  width: 100%;
+  max-width: 680px;
+  margin-top: 1.25rem;
+  background: rgba(10, 15, 26, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.2rem;
+  text-align: left;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6), 0 0 15px rgba(16, 185, 129, 0.08);
+  animation: fadeIn 0.25s ease-out;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  box-sizing: border-box;
+}
+.stream-live-container.hidden {
+  display: none !important;
+}
+.stream-badge-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.stream-rag-pill {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #34d399;
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.stream-pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #34d399;
+  display: inline-block;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+.stream-status-pill {
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px solid rgba(99, 102, 241, 0.35);
+  color: #a5b4fc;
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.stream-prose-preview {
+  max-height: 240px;
+  overflow-y: auto;
+  font-family: var(--font-code, monospace);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  padding: 0.85rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+  scrollbar-width: thin;
+}
+.stream-prose-preview::after {
+  content: '▋';
+  color: var(--primary-cyan);
+  display: inline-block;
+  vertical-align: middle;
+  animation: blink 0.8s infinite;
+  margin-left: 2px;
+}
+
 /* Output Tab Content */
 .tab-content {
   display: flex;

@@ -480,6 +480,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const outputLoading = document.getElementById('outputLoading');
   const outputQuotaError = document.getElementById('outputQuotaError');
   const timerText = document.getElementById('timerText');
+  const streamLiveBox = document.getElementById('streamLiveBox');
+  const streamRagText = document.getElementById('streamRagText');
+  const streamStatusText = document.getElementById('streamStatusText');
+  const streamLiveText = document.getElementById('streamLiveText');
   const outputTabs = document.getElementById('outputTabs');
   const tabRendered = document.getElementById('tabRendered');
   const tabScratchpad = document.getElementById('tabScratchpad');
@@ -1053,7 +1057,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return 'en';
   }
 
-  // 7. Generation Trigger
+  // 7. Generation Trigger (Fast Dynamic RAG + Token Streaming)
   async function triggerGeneration() {
     const prompt = promptInput.value.trim();
     if (!prompt) {
@@ -1067,6 +1071,16 @@ document.addEventListener('DOMContentLoaded', () => {
     btnGenerate.disabled = true;
     btnSpinner.classList.add('active');
     showOutputState('loading');
+
+    // Reset and reveal live streaming container
+    if (streamLiveBox) {
+      streamLiveBox.classList.remove('hidden');
+      if (streamLiveText) streamLiveText.textContent = '';
+      if (streamRagText) {
+        streamRagText.textContent = '⚡ Slicing targeted lexicon (RAG)...';
+      }
+      if (streamStatusText) streamStatusText.textContent = 'Connecting to model...';
+    }
 
     // Auto-scroll to output panel if on smaller/stacked screens
     if (outputPanel && (window.innerWidth <= 1024 || outputPanel.getBoundingClientRect().top > 80)) {
@@ -1082,7 +1096,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputLang = detectInputLanguage(prompt);
 
     try {
-      const response = await fetch('/api/generate', {
+      const response = await fetch('/api/generate_stream', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -1093,13 +1107,91 @@ document.addEventListener('DOMContentLoaded', () => {
         })
       });
 
-      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(`HTTP Error ${response.status}: ${response.statusText}`);
+      }
+
+      // Check for streaming reader support
+      if (!response.body || !response.body.getReader) {
+        throw new Error('Streaming not supported by this browser.');
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder('utf-8');
+      let buffer = '';
+      let accumulatedText = '';
+      let streamDone = false;
+      let finalData = null;
+
+      while (!streamDone) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+
+        const parts = buffer.split('\n\n');
+        buffer = parts.pop(); // keep trailing incomplete chunk in buffer
+
+        for (const rawEvent of parts) {
+          if (!rawEvent.trim()) continue;
+          let eventType = 'message';
+          let dataStr = '';
+
+          const lines = rawEvent.split('\n');
+          for (const line of lines) {
+            if (line.startsWith('event: ')) {
+              eventType = line.substring(7).trim();
+            } else if (line.startsWith('data: ')) {
+              dataStr = line.substring(6).trim();
+            }
+          }
+
+          if (!dataStr) continue;
+
+          try {
+            const data = JSON.parse(dataStr);
+            if (eventType === 'init') {
+              const count = data.vocab_count || 0;
+              const kw = data.keywords && data.keywords.length ? data.keywords.join(', ') : '';
+              if (data.stage === 'planning') {
+                if (streamRagText) {
+                  streamRagText.textContent = `🧠 English Grounding: Formulating conceptual response & plan...`;
+                }
+                if (streamStatusText) {
+                  streamStatusText.textContent = 'Generating English Semantic Grounding...';
+                }
+              } else {
+                if (streamRagText) {
+                  streamRagText.textContent = `⚡ Dynamic RAG: ${count} Words Filtered (${kw || 'General'})`;
+                }
+                if (streamStatusText) {
+                  streamStatusText.textContent = 'Streaming Authentic Ormuri...';
+                }
+              }
+            } else if (eventType === 'chunk') {
+              accumulatedText += data.text;
+              if (streamLiveText) {
+                streamLiveText.textContent = accumulatedText;
+                streamLiveText.scrollTop = streamLiveText.scrollHeight;
+              }
+            } else if (eventType === 'done') {
+              streamDone = true;
+              finalData = data;
+            } else if (eventType === 'error') {
+              streamDone = true;
+              finalData = data;
+            }
+          } catch (e) {
+            console.warn('[SSE] Event parse error:', e);
+          }
+        }
+      }
+
       clearInterval(timerInterval);
 
-      if (!data.success) {
-        // Check for Quota / Rate limit / Cost errors
-        const isQuota = data.is_quota_limit || 
-          (data.error && /429|quota|resource_exhausted|rate|limit|cost|credit|exhausted|billing/i.test(data.error));
+      if (!finalData || !finalData.success) {
+        const errObj = finalData || {};
+        const isQuota = errObj.is_quota_limit || 
+          (errObj.error && /429|quota|resource_exhausted|rate|limit|cost|credit|exhausted|billing/i.test(errObj.error));
         
         if (isQuota) {
           showOutputState('quota');
@@ -1108,16 +1200,16 @@ document.addEventListener('DOMContentLoaded', () => {
           }
           return;
         }
-        throw new Error(data.error || 'Server generation error');
+        throw new Error(errObj.error || 'Streaming generation failed');
       }
 
-      const parsed = data.parsed || {};
-      const outputLang = data.detected_lang || inputLang;
+      const parsed = finalData.parsed || {};
+      const outputLang = finalData.detected_lang || inputLang;
       
       // Render Content with clean asterisks and proper language matching
       renderOrmuriOutput(parsed, outputLang);
 
-      // DIRECTLY REPLACE "Ready to Generate" where it was written
+      // DIRECTLY REPLACE "Ready to Generate" with the finished output tab
       if (currentTab === 'corpus') {
         currentTab = 'rendered';
         outputTabs.querySelectorAll('.tab-btn').forEach(b => {
@@ -1144,6 +1236,7 @@ document.addEventListener('DOMContentLoaded', () => {
         alert(`Generation Failed: ${err.message}`);
       }
     } finally {
+      if (streamLiveBox) streamLiveBox.classList.add('hidden');
       btnGenerate.disabled = false;
       btnSpinner.classList.remove('active');
     }
