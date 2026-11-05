@@ -3,14 +3,14 @@
  * Enables Progressive Web App (PWA) offline capability, fast startup, and app caching.
  */
 
-const CACHE_NAME = 'ormuri-ai-pwa-v1.3';
+const CACHE_NAME = 'ormuri-ai-pwa-v1.4';
 
 // Core assets to pre-cache on install
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
-  '/style.css?v=5.0',
-  '/app.js?v=5.0',
+  '/style.css?v=5.1',
+  '/app.js?v=5.1',
   '/corpus_data.js?v=4.0',
   '/manifest.json',
   '/favicon.svg',
