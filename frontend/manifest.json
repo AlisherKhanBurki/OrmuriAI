@@ -1,14 +1,14 @@
 {
   "id": "/",
-  "name": "Ormuri AI (Bargista / بارګِسته)",
+  "name": "Ormuri AI (اُرمَڑی / Bargista)",
   "short_name": "Ormuri AI",
   "description": "Endangered Language Generative AI Playground, 6,657-Word Dictionary & 10-Work Primary Corpus Archive",
   "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#07090E",
-  "theme_color": "#0E131F",
+  "background_color": "#030E0B",
+  "theme_color": "#072019",
   "lang": "en",
   "dir": "auto",
   "categories": [

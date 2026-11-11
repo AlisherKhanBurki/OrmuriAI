@@ -1,20 +1,21 @@
 /**
- * Ormuri AI — Service Worker (v1.0)
+ * Ormuri AI — Service Worker (v2.0)
  * Enables Progressive Web App (PWA) offline capability, fast startup, and app caching.
  */
 
-const CACHE_NAME = 'ormuri-ai-pwa-v1.4';
+const CACHE_NAME = 'ormuri-ai-pwa-v2.0';
 
 // Core assets to pre-cache on install
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
-  '/style.css?v=5.1',
-  '/app.js?v=5.1',
+  '/style.css?v=5.2',
+  '/app.js?v=5.2',
   '/corpus_data.js?v=4.0',
   '/manifest.json',
   '/favicon.svg',
   '/favicon.ico',
+  '/brand-logo.svg',
   '/icon-192.png',
   '/icon-512.png',
   '/icon-maskable-192.png',
