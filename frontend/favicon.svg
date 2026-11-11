@@ -1,23 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#10B981"/>
-      <stop offset="100%" stop-color="#06B6D4"/>
+    <linearGradient id="favBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#072019"/>
+      <stop offset="100%" stop-color="#030E0B"/>
     </linearGradient>
-    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000000" flood-opacity="0.35"/>
-    </filter>
+    <linearGradient id="favBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D4AF37"/>
+      <stop offset="100%" stop-color="#10B981"/>
+    </linearGradient>
   </defs>
   <!-- Background Squircle Badge -->
-  <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#bgGrad)" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" />
-  <rect x="5" y="5" width="54" height="54" rx="13" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1" />
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="url(#favBg)" stroke="url(#favBorder)" stroke-width="1.5" />
+  <rect x="4.5" y="4.5" width="55" height="55" rx="11.5" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="0.8" />
   
-  <!-- Ormuri Emblem: Calligraphic اُ -->
-  <text x="32" y="44" 
-        font-family="'Noto Nastaliq Urdu', 'Amiri', 'Arial', sans-serif" 
-        font-size="34" 
-        font-weight="bold" 
-        fill="#042F2E" 
-        text-anchor="middle"
-        filter="url(#shadow)">اُ</text>
+  <!-- Ormuri Calligraphy for اُرمَڑی -->
+  <g transform="translate(7.00, 18.53) scale(0.1497)">
+    <path d="M 269,113 L 267,114 L 259,128 L 259,130 L 274,144 L 277,149 L 277,154 L 274,159 L 263,170 L 252,177 L 232,187 L 232,190 L 244,192 L 262,192 L 270,185 L 276,175 L 280,164 L 282,155 L 282,138 L 280,130 L 277,123 L 273,117 Z M 221,97 L 215,93 L 206,93 L 202,95 L 195,102 L 192,109 L 192,121 L 191,123 L 186,126 L 179,127 L 173,126 L 169,123 L 159,112 L 150,125 L 149,129 L 155,135 L 156,135 L 165,145 L 167,149 L 167,154 L 166,156 L 153,170 L 140,178 L 130,183 L 128,183 L 119,188 L 124,190 L 136,192 L 151,192 L 154,191 L 161,183 L 168,170 L 171,160 L 172,151 L 174,146 L 180,147 L 185,145 L 191,138 L 193,132 L 196,132 L 199,139 L 207,148 L 211,150 L 217,150 L 223,147 L 227,143 L 231,136 L 232,133 L 232,123 L 230,114 L 227,106 Z M 206,109 L 212,109 L 215,112 L 220,122 L 221,130 L 217,135 L 212,135 L 208,131 L 203,121 L 202,115 L 203,112 Z M 115,86 L 110,81 L 105,79 L 92,79 L 86,81 L 83,83 L 74,93 L 68,105 L 63,119 L 63,128 L 67,133 L 76,136 L 97,138 L 107,140 L 109,141 L 112,145 L 108,151 L 105,153 L 95,156 L 76,158 L 56,158 L 40,156 L 33,154 L 24,149 L 20,145 L 17,140 L 16,137 L 16,123 L 18,117 L 18,110 L 15,111 L 12,118 L 8,135 L 7,145 L 8,153 L 10,159 L 14,165 L 22,171 L 34,175 L 41,176 L 69,176 L 92,171 L 105,164 L 110,159 L 115,149 L 116,143 L 116,131 L 115,128 L 112,124 L 107,121 L 74,116 L 70,113 L 70,109 L 72,105 L 80,97 L 88,94 L 104,94 L 119,98 L 119,94 Z M 143,67 L 142,72 L 145,82 L 145,86 L 143,92 L 136,92 L 135,91 L 133,91 L 141,97 L 144,98 L 153,98 L 160,96 L 165,93 L 170,87 L 171,84 L 170,80 L 168,80 L 167,79 L 159,80 L 150,85 L 145,86 L 148,69 L 146,65 Z M 167,86 L 167,88 L 163,91 L 157,92 L 146,90 L 152,85 L 157,83 L 163,83 Z M 322,50 L 313,55 L 302,64 L 302,71 L 303,72 L 304,89 L 305,90 L 309,133 L 312,146 L 314,145 L 315,142 L 319,92 L 320,67 L 321,66 Z M 324,8 L 321,7 L 316,9 L 312,16 L 311,23 L 316,30 L 304,40 L 301,41 L 300,43 L 305,43 L 309,41 L 320,31 L 324,34 L 326,34 L 327,28 L 324,26 L 323,24 L 326,18 L 326,12 Z M 316,14 L 319,14 L 322,18 L 320,23 L 315,18 Z" fill="#FFFFFF" fill-rule="evenodd"/>
+  </g>
 </svg>
